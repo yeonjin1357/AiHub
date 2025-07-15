@@ -39,20 +39,23 @@ export function SignInForm() {
     setError(null);
     
     try {
+      console.log('Attempting sign in with:', data.email);
       const { data: authData, error: authError } = await auth.signIn(data.email, data.password);
       
       if (authError) {
+        console.error('Auth error:', authError);
         setError(authError.message);
         return;
       }
       
       if (authData.user) {
+        console.log('Sign in successful:', authData.user.id);
         router.push('/');
         router.refresh();
       }
     } catch (error) {
       console.error('Sign in error:', error);
-      setError('로그인 중 오류가 발생했습니다.');
+      setError(`로그인 중 오류가 발생했습니다: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsLoading(false);
     }
