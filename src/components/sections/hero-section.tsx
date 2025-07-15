@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Sparkles } from 'lucide-react';
@@ -23,9 +24,11 @@ export function HeroSection() {
             맞는 최고의 AI 도구를 찾아보세요.
           </p>
           <div className='mt-10 flex items-center justify-center gap-x-6'>
-            <Button size='lg' className='h-12 px-8'>
-              서비스 둘러보기
-              <ArrowRight className='ml-2 h-4 w-4' />
+            <Button size='lg' className='h-12 px-8' asChild>
+              <Link href='/services'>
+                서비스 둘러보기
+                <ArrowRight className='ml-2 h-4 w-4' />
+              </Link>
             </Button>
             <Button variant='outline' size='lg' className='h-12 px-8'>
               카테고리 보기

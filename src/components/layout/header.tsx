@@ -9,7 +9,7 @@ export function Header() {
   const { user, loading, signOut } = useAuth();
 
   return (
-    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <header className='sticky top-0 z-50 w-full shadow-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
       <div className='flex px-4 w-full h-16 items-center'>
         <div className='mr-4 hidden md:flex'>
           <a className='mr-6 flex items-center space-x-2' href='/'>
@@ -18,24 +18,19 @@ export function Header() {
             </span>
           </a>
           <nav className='flex items-center space-x-6 text-sm font-medium'>
-            <a
-              href='/services'
-              className='transition-colors text-foreground/60 hover:text-foreground/80'
-            >
-              서비스
-            </a>
-            <a
-              href='/categories'
-              className='transition-colors text-foreground/60 hover:text-foreground/80'
-            >
+            <Link href='/services'>
+              <span className='transition-colors text-foreground/60 hover:text-foreground/80'>
+                서비스
+              </span>
+            </Link>
+
+            <span className='transition-colors text-foreground/60 hover:text-foreground/80'>
               카테고리
-            </a>
-            <a
-              href='/reviews'
-              className='transition-colors text-foreground/60 hover:text-foreground/80'
-            >
+            </span>
+
+            <span className='transition-colors text-foreground/60 hover:text-foreground/80'>
               리뷰
-            </a>
+            </span>
           </nav>
         </div>
         <button className='inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-9 py-2 mr-2 px-0 text-base hover:text-accent-foreground hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden'>
