@@ -13,6 +13,7 @@ import { Eye, EyeOff, Github, Mail } from 'lucide-react';
 import { auth } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { translateAuthError } from '@/utils/auth-errors';
+import { toast } from 'sonner';
 
 const signInSchema = z.object({
   email: z.string().email('올바른 이메일 주소를 입력해주세요'),
@@ -51,6 +52,7 @@ export function SignInForm() {
       
       if (authData.user) {
         console.log('Sign in successful:', authData.user.id);
+        toast.success('로그인되었습니다');
         router.push('/');
         router.refresh();
       }
@@ -67,6 +69,9 @@ export function SignInForm() {
       const { error } = await auth.signInWithGoogle();
       if (error) {
         setError(translateAuthError(error.message));
+      } else {
+        // 리다이렉트가 성공적으로 시작됨
+        toast.loading('Google 로그인 중...');
       }
     } catch (error) {
       setError('Google 로그인 중 오류가 발생했습니다.');
@@ -78,6 +83,9 @@ export function SignInForm() {
       const { error } = await auth.signInWithGithub();
       if (error) {
         setError(translateAuthError(error.message));
+      } else {
+        // 리다이렉트가 성공적으로 시작됨
+        toast.loading('GitHub 로그인 중...');
       }
     } catch (error) {
       setError('GitHub 로그인 중 오류가 발생했습니다.');

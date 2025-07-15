@@ -17,5 +17,5 @@ export async function GET(request: NextRequest) {
   }
 
   // Redirect to dashboard or home page after successful auth
-  return NextResponse.redirect(`${requestUrl.origin}/`);
+  return NextResponse.redirect(`${requestUrl.origin}/?auth=success`);
 }

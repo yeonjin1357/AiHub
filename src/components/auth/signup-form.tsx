@@ -22,6 +22,7 @@ import {
 import { auth } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { translateAuthError } from '@/utils/auth-errors';
+import { toast } from 'sonner';
 
 const signUpSchema = z
   .object({
@@ -154,6 +155,7 @@ export function SignUpForm() {
 
       if (authData.user) {
         setSuccess('가입이 완료되었습니다! 이메일을 확인해주세요.');
+        toast.success('회원가입이 완료되었습니다! 이메일을 확인해주세요.');
         // 이메일 확인이 필요한 경우가 많으므로 바로 리다이렉트하지 않음
       }
     } catch (error) {
@@ -169,6 +171,8 @@ export function SignUpForm() {
       const { error } = await auth.signInWithGoogle();
       if (error) {
         setError(translateAuthError(error.message));
+      } else {
+        toast.loading('Google 가입 중...');
       }
     } catch (error) {
       setError('Google 가입 중 오류가 발생했습니다.');
@@ -180,6 +184,8 @@ export function SignUpForm() {
       const { error } = await auth.signInWithGithub();
       if (error) {
         setError(translateAuthError(error.message));
+      } else {
+        toast.loading('GitHub 가입 중...');
       }
     } catch (error) {
       setError('GitHub 가입 중 오류가 발생했습니다.');

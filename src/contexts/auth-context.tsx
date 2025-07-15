@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { auth, supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 interface AuthContextType {
   user: User | null;
@@ -46,8 +47,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await auth.signOut();
       setUser(null);
+      toast.success('로그아웃되었습니다');
     } catch (error) {
       console.error('Error signing out:', error);
+      toast.error('로그아웃 중 오류가 발생했습니다');
     }
   };
 
