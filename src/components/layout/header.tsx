@@ -1,14 +1,20 @@
+'use client';
+
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/auth-context';
 
 export function Header() {
+  const { user, loading, signOut } = useAuth();
+
   return (
     <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
       <div className='flex px-4 w-full h-16 items-center'>
         <div className='mr-4 hidden md:flex'>
           <a className='mr-6 flex items-center space-x-2' href='/'>
             <span className='hidden font-bold text-xl sm:inline-block'>
-              AI Hub Directory
+              AIMOA
             </span>
           </a>
           <nav className='flex items-center space-x-6 text-sm font-medium'>
@@ -47,10 +53,29 @@ export function Header() {
             </div>
           </div>
           <nav className='flex items-center space-x-2'>
-            <Button variant='ghost' size='sm'>
-              로그인
-            </Button>
-            <Button size='sm'>회원가입</Button>
+            {loading ? (
+              <div className='h-9 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse' />
+            ) : user ? (
+              <>
+                <Button variant='ghost' size='sm'>
+                  <User className='mr-2 h-4 w-4' />
+                  {user.user_metadata?.name || '사용자'}
+                </Button>
+                <Button variant='ghost' size='sm' onClick={signOut}>
+                  <LogOut className='mr-2 h-4 w-4' />
+                  로그아웃
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant='ghost' size='sm' asChild>
+                  <Link href='/signin'>로그인</Link>
+                </Button>
+                <Button size='sm' asChild>
+                  <Link href='/signup'>회원가입</Link>
+                </Button>
+              </>
+            )}
           </nav>
         </div>
       </div>

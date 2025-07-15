@@ -1,9 +1,9 @@
 {
-  "name": "aihub",
+  "name": "aimoa",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8081",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,19 +11,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yeonjin1357/AiHub.git"
+    "url": "git+https://github.com/yeonjin1357/AIMOA.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yeonjin1357/AiHub/issues"
+    "url": "https://github.com/yeonjin1357/AIMOA/issues"
   },
-  "homepage": "https://github.com/yeonjin1357/AiHub#readme",
+  "homepage": "https://github.com/yeonjin1357/AIMOA#readme",
   "description": "",
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
+    "@radix-ui/react-checkbox": "^1.3.2",
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.51.0",
     "@tailwindcss/postcss": "^4.1.11",

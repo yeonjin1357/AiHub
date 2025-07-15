@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { AuthProvider } from '@/contexts/auth-context';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: {
-    template: '%s | AI Hub Directory',
-    default: 'AI Hub Directory - Discover AI Tools',
+    template: '%s | AIMOA',
+    default: 'AIMOA - Discover AI Tools',
   },
   description:
     'AI 구독 서비스들을 체계적으로 정리하고 비교할 수 있는 원스톱 플랫폼',
@@ -21,10 +22,10 @@ export const metadata: Metadata = {
     '구독서비스',
   ],
   openGraph: {
-    title: 'AI Hub Directory',
+    title: 'AIMOA',
     description: 'Discover the best AI tools for your needs',
-    url: 'https://aihub-directory.com',
-    siteName: 'AI Hub Directory',
+    url: 'https://aimoa.com',
+    siteName: 'AIMOA',
     images: '/og-image.png',
   },
 };
@@ -36,7 +37,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko'>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }
