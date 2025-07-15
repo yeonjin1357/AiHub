@@ -29,10 +29,10 @@ export function AILogosSection() {
       <div className='mx-auto max-w-7xl'>
         <div className='text-center mb-12'>
           <p className='text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
-            100+ AI 서비스 중 일부
+            인기 AI 서비스 모음
           </p>
           <h2 className='mt-2 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl'>
-            전 세계가 신뢰하는 AI 플랫폼들
+            개발자부터 창작자까지 모두가 사용하는
           </h2>
         </div>
 
@@ -64,7 +64,7 @@ export function AILogosSection() {
 
         <div className='text-center mt-8'>
           <p className='text-sm text-gray-500 dark:text-gray-400'>
-            그리고 수십 개의 다른 AI 서비스들...
+            검증된 AI 도구들을 한눈에 확인하세요
           </p>
         </div>
       </div>

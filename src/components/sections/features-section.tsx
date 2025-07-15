@@ -4,14 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Search,
-  Star,
-  TrendingUp,
-  Users,
-  Zap,
-  Sparkles,
-} from 'lucide-react';
+import { Search, Star, TrendingUp, Users, Zap, Sparkles } from 'lucide-react';
 
 export function FeaturesSection() {
   return (
@@ -19,7 +12,7 @@ export function FeaturesSection() {
       <div className='mx-auto max-w-7xl'>
         <div className='text-center mb-16'>
           <h2 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
-            왜 AIMOA를 선택해야 할까요?
+            AIMOA가 특별한 이유
           </h2>
           <p className='mt-4 text-lg text-gray-600 dark:text-gray-300'>
             최고의 AI 서비스를 찾기 위한 모든 도구를 제공합니다
@@ -66,8 +59,8 @@ export function FeaturesSection() {
                 <CardTitle className='text-xl'>가격 비교</CardTitle>
               </div>
               <CardDescription>
-                여러 AI 서비스의 요금제를 한눈에 비교하고, 가성비 최고의
-                옵션을 찾아보세요. 할인 정보도 놓치지 마세요.
+                여러 AI 서비스의 요금제를 한눈에 비교하고, 가성비 최고의 옵션을
+                찾아보세요. 할인 정보도 놓치지 마세요.
               </CardDescription>
             </CardHeader>
           </Card>
