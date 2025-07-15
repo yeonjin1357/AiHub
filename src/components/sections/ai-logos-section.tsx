@@ -64,7 +64,7 @@ export function AILogosSection() {
 
         <div className='text-center mt-8'>
           <p className='text-sm text-gray-500 dark:text-gray-400'>
-            그리고 수백 개의 다른 AI 서비스들...
+            그리고 수십 개의 다른 AI 서비스들...
           </p>
         </div>
       </div>

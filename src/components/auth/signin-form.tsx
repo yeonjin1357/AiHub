@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, Github, Mail } from 'lucide-react';
 import { auth } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { translateAuthError } from '@/utils/auth-errors';
 
 const signInSchema = z.object({
   email: z.string().email('올바른 이메일 주소를 입력해주세요'),
@@ -44,7 +45,7 @@ export function SignInForm() {
       
       if (authError) {
         console.error('Auth error:', authError);
-        setError(authError.message);
+        setError(translateAuthError(authError.message));
         return;
       }
       
@@ -65,7 +66,7 @@ export function SignInForm() {
     try {
       const { error } = await auth.signInWithGoogle();
       if (error) {
-        setError(error.message);
+        setError(translateAuthError(error.message));
       }
     } catch (error) {
       setError('Google 로그인 중 오류가 발생했습니다.');
@@ -76,7 +77,7 @@ export function SignInForm() {
     try {
       const { error } = await auth.signInWithGithub();
       if (error) {
-        setError(error.message);
+        setError(translateAuthError(error.message));
       }
     } catch (error) {
       setError('GitHub 로그인 중 오류가 발생했습니다.');

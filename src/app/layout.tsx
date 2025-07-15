@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     siteName: 'AIMOA',
     images: '/og-image.png',
   },
+  icons: {
+    icon: '/logos/favicon/favicon.ico',
+  },
 };
 
 export default function RootLayout({
