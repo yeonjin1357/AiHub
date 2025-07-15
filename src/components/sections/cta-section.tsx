@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export function CTASection() {
@@ -12,7 +13,7 @@ export function CTASection() {
         </p>
         <div className='mt-8 flex items-center justify-center gap-x-6'>
           <Button size='lg' variant='secondary' className='h-12 px-8'>
-            무료로 시작하기
+            <Link href='/signup'>무료로 시작하기</Link>
           </Button>
           <Button size='lg' variant='outline' className='h-12 px-8'>
             더 알아보기

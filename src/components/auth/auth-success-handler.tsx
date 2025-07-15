@@ -25,9 +25,11 @@ export function AuthSuccessHandler() {
       }
       
       // URL에서 auth 파라미터 제거 (브라우저 히스토리에 영향 없이)
-      const url = new URL(window.location.href);
-      url.searchParams.delete('auth');
-      router.replace(url.pathname + url.search, { scroll: false });
+      if (window.history.replaceState) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('auth');
+        window.history.replaceState({}, '', url.toString());
+      }
     }
   }, [searchParams, user, router]);
 
