@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/card';
 import { useState } from 'react';
 import { AIService, Category } from '@/lib/api/services';
+import { useAuth } from '@/contexts/auth-context';
 
 interface ServiceCardProps {
   service: AIService;
@@ -32,6 +33,7 @@ export function ServiceCard({
   category,
   viewMode = 'grid',
 }: ServiceCardProps) {
+  const { user } = useAuth();
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -166,14 +168,16 @@ export function ServiceCard({
             </div>
 
             <div className='flex items-center gap-2 ml-4'>
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={handleFavorite}
-                className={isFavorited ? 'text-red-500' : 'text-gray-400'}
-              >
-                <Heart size={16} fill={isFavorited ? 'currentColor' : 'none'} />
-              </Button>
+              {user && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={handleFavorite}
+                  className={isFavorited ? 'text-red-500' : 'text-gray-400'}
+                >
+                  <Heart size={16} fill={isFavorited ? 'currentColor' : 'none'} />
+                </Button>
+              )}
 
               <Button size='sm' asChild>
                 <Link href={`/services/${service.slug}` as any}>
@@ -224,16 +228,20 @@ export function ServiceCard({
             </div>
           </div>
 
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={handleFavorite}
-            className={`${
-              isFavorited ? 'text-red-500' : 'text-gray-400'
-            } opacity-0 group-hover:opacity-100 transition-opacity`}
-          >
-            <Heart size={16} fill={isFavorited ? 'currentColor' : 'none'} />
-          </Button>
+          {user && (
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={handleFavorite}
+              className={`${
+                isFavorited ? 'text-red-500' : 'text-gray-400'
+              } ${
+                isFavorited ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+              } transition-opacity`}
+            >
+              <Heart size={16} fill={isFavorited ? 'currentColor' : 'none'} />
+            </Button>
+          )}
         </div>
       </CardHeader>
 

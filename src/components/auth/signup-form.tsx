@@ -268,7 +268,7 @@ export function SignUpForm() {
               <Input
                 id='email'
                 type='email'
-                placeholder='your@email.com'
+                placeholder='example@email.com'
                 {...register('email')}
                 className={`pr-10 ${
                   errors.email || emailStatus.isValid === false

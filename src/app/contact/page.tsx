@@ -1,10 +1,18 @@
 import { ContactForm } from '@/components/contact/contact-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, MessageSquare, Clock, MapPin } from 'lucide-react';
+import { Header } from '@/components/layout/header';
+
+export const metadata = {
+  title: '문의하기',
+  description: 'AIMOA에 대한 의견이나 제안사항을 보내주세요. 여러분의 소중한 피드백을 기다리고 있습니다.',
+};
 
 export default function ContactPage() {
   return (
-    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 py-12'>
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
+      <Header />
+      <div className='py-12'>
       <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* 헤더 */}
         <div className='text-center mb-12'>
@@ -74,6 +82,7 @@ export default function ContactPage() {
             <ContactForm />
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   );

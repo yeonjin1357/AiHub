@@ -39,17 +39,20 @@ export function SignInForm() {
   const onSubmit = async (data: SignInFormData) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       console.log('Attempting sign in with:', data.email);
-      const { data: authData, error: authError } = await auth.signIn(data.email, data.password);
-      
+      const { data: authData, error: authError } = await auth.signIn(
+        data.email,
+        data.password
+      );
+
       if (authError) {
         console.error('Auth error:', authError);
         setError(translateAuthError(authError.message));
         return;
       }
-      
+
       if (authData.user) {
         console.log('Sign in successful:', authData.user.id);
         toast.success('로그인되었습니다');
@@ -58,7 +61,11 @@ export function SignInForm() {
       }
     } catch (error) {
       console.error('Sign in error:', error);
-      setError(`로그인 중 오류가 발생했습니다: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setError(
+        `로그인 중 오류가 발생했습니다: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +113,7 @@ export function SignInForm() {
             <Mail className='mr-2 h-4 w-4' />
             Google로 로그인
           </Button>
-          
+
           <Button
             variant='outline'
             className='w-full h-11'
@@ -136,14 +143,14 @@ export function SignInForm() {
             <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <div className='space-y-2'>
             <Label htmlFor='email'>이메일</Label>
             <Input
               id='email'
               type='email'
-              placeholder='your@email.com'
+              placeholder='example@email.com'
               {...register('email')}
               className={errors.email ? 'border-red-500' : ''}
             />
@@ -194,11 +201,7 @@ export function SignInForm() {
             </div>
           </div>
 
-          <Button
-            type='submit'
-            className='w-full h-11'
-            disabled={isLoading}
-          >
+          <Button type='submit' className='w-full h-11' disabled={isLoading}>
             {isLoading ? '로그인 중...' : '로그인'}
           </Button>
         </form>
