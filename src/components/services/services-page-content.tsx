@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ServiceCard } from './service-card';
 import { CategoryFilter } from './category-filter';
+import { PricingTypeFilter } from './pricing-type-filter';
 import { ServiceSearch } from './service-search';
 import { ServiceSort } from './service-sort';
 import { Search, Filter, Grid, List } from 'lucide-react';
@@ -20,9 +21,10 @@ export function ServicesPageContent() {
   const [filteredServices, setFilteredServices] = useState<AIService[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'name' | 'featured' | 'free'>(
+  const [sortBy, setSortBy] = useState<'name' | 'featured' | 'freemium'>(
     'featured'
   );
+  const [selectedPricingType, setSelectedPricingType] = useState<'all' | 'freemium' | 'paid'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -59,6 +61,13 @@ export function ServicesPageContent() {
       );
     }
 
+    // 가격 타입 필터
+    if (selectedPricingType !== 'all') {
+      filtered = filtered.filter((service) => {
+        return service.pricing_type === selectedPricingType;
+      });
+    }
+
     // 검색 필터
     if (searchQuery) {
       filtered = filtered.filter(
@@ -75,9 +84,9 @@ export function ServicesPageContent() {
           if (a.is_featured && !b.is_featured) return -1;
           if (!a.is_featured && b.is_featured) return 1;
           return a.name.localeCompare(b.name);
-        case 'free':
-          if (a.is_free && !b.is_free) return -1;
-          if (!a.is_free && b.is_free) return 1;
+        case 'freemium':
+          if (a.pricing_type === 'freemium' && b.pricing_type !== 'freemium') return -1;
+          if (a.pricing_type !== 'freemium' && b.pricing_type === 'freemium') return 1;
           return a.name.localeCompare(b.name);
         case 'name':
         default:
@@ -86,7 +95,7 @@ export function ServicesPageContent() {
     });
 
     setFilteredServices(filtered);
-  }, [services, selectedCategory, searchQuery, sortBy]);
+  }, [services, selectedCategory, selectedPricingType, searchQuery, sortBy]);
 
   if (loading) {
     return (
@@ -107,46 +116,13 @@ export function ServicesPageContent() {
           <p className='mt-3 text-xl text-gray-500 dark:text-gray-400'>
             최고의 AI 도구들을 한눈에 비교하고 찾아보세요
           </p>
-        </div>
-
-        {/* 통계 */}
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-4 mb-8'>
-          <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm'>
-            <div className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
-              {filteredServices.length}
-            </div>
-            <div className='text-sm text-gray-500 dark:text-gray-400'>
-              전체 서비스
-            </div>
-          </div>
-          <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm'>
-            <div className='text-2xl font-bold text-green-600 dark:text-green-400'>
-              {filteredServices.filter((s) => s.is_free).length}
-            </div>
-            <div className='text-sm text-gray-500 dark:text-gray-400'>
-              무료 서비스
-            </div>
-          </div>
-          <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm'>
-            <div className='text-2xl font-bold text-purple-600 dark:text-purple-400'>
-              {filteredServices.filter((s) => s.is_featured).length}
-            </div>
-            <div className='text-sm text-gray-500 dark:text-gray-400'>
-              추천 서비스
-            </div>
-          </div>
-          <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm'>
-            <div className='text-2xl font-bold text-orange-600 dark:text-orange-400'>
-              {categories.length}
-            </div>
-            <div className='text-sm text-gray-500 dark:text-gray-400'>
-              카테고리
-            </div>
-          </div>
+          <p className='mt-2 text-sm text-gray-400 dark:text-gray-500'>
+            총 {services.length}개의 AI 서비스 • 검색 결과 {filteredServices.length}개
+          </p>
         </div>
 
         {/* 검색 및 필터 */}
-        <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm mb-8'>
+        <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm mb-8 border border-gray-200 dark:border-gray-700'>
           <div className='flex flex-col lg:flex-row gap-4'>
             {/* 검색 */}
             <div className='flex-1'>
@@ -162,7 +138,7 @@ export function ServicesPageContent() {
               <ServiceSort value={sortBy} onChange={setSortBy} />
 
               {/* 뷰 모드 */}
-              <div className='flex rounded-lg border border-gray-200 dark:border-gray-600'>
+              <div className='flex rounded-lg border border-gray-300 dark:border-gray-600'>
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-l-lg ${
@@ -214,6 +190,13 @@ export function ServicesPageContent() {
 
           {/* 서비스 그리드 */}
           <div className='flex-1'>
+            {/* 가격 유형 필터 */}
+            <PricingTypeFilter
+              selectedPricingType={selectedPricingType}
+              onPricingTypeChange={setSelectedPricingType}
+              services={services}
+            />
+            
             {filteredServices.length === 0 ? (
               <div className='text-center py-12'>
                 <Search className='mx-auto h-12 w-12 text-gray-400' />

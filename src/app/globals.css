@@ -11,9 +11,13 @@
   --color-accent-foreground: #0f172a;
   --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
   --color-ring: #3b82f6;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
 }
 
 /* Line clamp utilities */
@@ -36,4 +40,13 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+/* Custom input focus styles */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 1px var(--color-ring);
 }

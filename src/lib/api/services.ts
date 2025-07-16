@@ -1,5 +1,7 @@
 import { createClient } from '@/utils/supabase/client';
 
+export type PricingType = 'free' | 'freemium' | 'paid';
+
 export interface AIService {
   id: string;
   name: string;
@@ -11,6 +13,7 @@ export interface AIService {
   pricing_info: any;
   features: string[];
   is_free: boolean;
+  pricing_type: PricingType;
   is_featured: boolean;
   created_at: string;
   updated_at: string;

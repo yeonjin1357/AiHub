@@ -48,14 +48,16 @@ export function CategoryFilter({
       .length;
   };
 
-  const getFreeServiceCount = (categoryId: string) => {
+  const getFreemiumServiceCount = (categoryId: string) => {
     return services.filter(
-      (service) => service.category_id === categoryId && service.is_free
+      (service) =>
+        service.category_id === categoryId &&
+        service.pricing_type === 'freemium'
     ).length;
   };
 
   return (
-    <Card className='sticky top-16'>
+    <Card className='sticky top-16 border-gray-200 dark:border-gray-700'>
       <CardHeader>
         <div className='flex items-center gap-2'>
           <Filter size={20} className='text-gray-500' />
@@ -89,9 +91,6 @@ export function CategoryFilter({
                 {services.length}개 서비스
               </div>
             </div>
-            <Badge variant='secondary'>
-              {services.filter((s) => s.is_free).length}개 무료
-            </Badge>
           </div>
         </Button>
 
@@ -99,7 +98,7 @@ export function CategoryFilter({
         {categories.map((category) => {
           const Icon = getCategoryIcon(category.slug);
           const serviceCount = getServiceCount(category.id);
-          const freeCount = getFreeServiceCount(category.id);
+          const freemiumCount = getFreemiumServiceCount(category.id);
 
           return (
             <Button
@@ -129,9 +128,6 @@ export function CategoryFilter({
                     {serviceCount}개 서비스
                   </div>
                 </div>
-                {freeCount > 0 && (
-                  <Badge variant='secondary'>{freeCount}개 무료</Badge>
-                )}
               </div>
             </Button>
           );

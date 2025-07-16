@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 interface ServiceSortProps {
-  value: 'name' | 'featured' | 'free';
-  onChange: (value: 'name' | 'featured' | 'free') => void;
+  value: 'name' | 'featured' | 'freemium';
+  onChange: (value: 'name' | 'featured' | 'freemium') => void;
 }
 
 export function ServiceSort({ value, onChange }: ServiceSortProps) {
@@ -23,10 +23,10 @@ export function ServiceSort({ value, onChange }: ServiceSortProps) {
       description: '추천 서비스를 먼저 표시'
     },
     {
-      value: 'free' as const,
-      label: '무료순',
+      value: 'freemium' as const,
+      label: '프리미엄순',
       icon: DollarSign,
-      description: '무료 서비스를 먼저 표시'
+      description: '프리미엄 서비스를 먼저 표시'
     },
     {
       value: 'name' as const,

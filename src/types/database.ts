@@ -16,6 +16,8 @@ export interface Category {
   created_at: string
 }
 
+export type PricingType = 'free' | 'freemium' | 'paid';
+
 export interface AIService {
   id: string
   name: string
@@ -28,6 +30,7 @@ export interface AIService {
   pricing_info: PricingPlan[]
   features: string[]
   is_free: boolean
+  pricing_type: PricingType
   is_featured: boolean
   created_at: string
   updated_at: string

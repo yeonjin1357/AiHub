@@ -77,22 +77,43 @@ export function ServiceCard({
   };
 
   const getPricingDisplay = () => {
+    // pricing_type이 있으면 우선 사용
+    if (service.pricing_type) {
+      switch (service.pricing_type) {
+        case 'free':
+          return {
+            label: '무료',
+            color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+          };
+        case 'freemium':
+          return {
+            label: '프리미엄',
+            color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+          };
+        case 'paid':
+          return {
+            label: '유료',
+            color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+          };
+      }
+    }
+    
+    // 기존 로직 (하위 호환성)
     if (service.is_free) {
       return {
         label: '무료',
-        color:
-          'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+        color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
       };
     }
     if (service.pricing_info?.free_tier) {
       return {
-        label: '무료체험',
+        label: '프리미엄',
         color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
       };
     }
     return {
       label: '유료',
-      color: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+      color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
     };
   };
 
@@ -100,7 +121,7 @@ export function ServiceCard({
 
   if (viewMode === 'list') {
     return (
-      <Card className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-200'>
+      <Card className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-200 border-gray-200 dark:border-gray-700'>
         <div className='md:w-48 p-6 flex items-center justify-center bg-gray-50 dark:bg-gray-800'>
           {getLogoElement()}
         </div>
@@ -178,7 +199,7 @@ export function ServiceCard({
   }
 
   return (
-    <Card className='group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 overflow-hidden'>
+    <Card className='group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 overflow-hidden border-gray-200 dark:border-gray-700'>
       <CardHeader className='pb-3'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
@@ -226,13 +247,6 @@ export function ServiceCard({
             <DollarSign size={10} className='mr-1' />
             {pricing.label}
           </Badge>
-
-          {service.is_free && (
-            <Badge className='bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'>
-              <Zap size={10} className='mr-1' />
-              무료
-            </Badge>
-          )}
         </div>
 
         <div className='space-y-1'>
