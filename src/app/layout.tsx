@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/auth-context';
+import { FavoritesProvider } from '@/contexts/favorites-context';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -42,7 +43,11 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <FavoritesProvider>
+            {children}
+          </FavoritesProvider>
+        </AuthProvider>
         <Toaster position="top-center" richColors closeButton />
       </body>
     </html>

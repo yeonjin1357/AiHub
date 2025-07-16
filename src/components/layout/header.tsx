@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, User, LogOut, X } from 'lucide-react';
+import { Search, Menu, User, LogOut, X, Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 
 export function Header() {
@@ -59,6 +59,12 @@ export function Header() {
               <div className='h-9 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse' />
             ) : user ? (
               <>
+                <Button variant='ghost' size='sm' asChild>
+                  <Link href='/favorites'>
+                    <Heart className='mr-2 h-4 w-4' />
+                    찜 목록
+                  </Link>
+                </Button>
                 <Button variant='ghost' size='sm'>
                   <User className='mr-2 h-4 w-4' />
                   {user.user_metadata?.name || '사용자'}
@@ -111,6 +117,12 @@ export function Header() {
                 <div className='h-9 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse' />
               ) : user ? (
                 <div className='flex flex-col space-y-2'>
+                  <Button variant='ghost' size='sm' asChild className='justify-start'>
+                    <Link href='/favorites' onClick={() => setIsMobileMenuOpen(false)}>
+                      <Heart className='mr-2 h-4 w-4' />
+                      찜 목록
+                    </Link>
+                  </Button>
                   <Button variant='ghost' size='sm' className='justify-start'>
                     <User className='mr-2 h-4 w-4' />
                     {user.user_metadata?.name || '사용자'}

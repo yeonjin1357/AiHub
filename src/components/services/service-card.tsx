@@ -21,6 +21,7 @@ import {
 import { useState } from 'react';
 import { AIService, Category } from '@/lib/api/services';
 import { useAuth } from '@/contexts/auth-context';
+import { useFavorites } from '@/contexts/favorites-context';
 
 interface ServiceCardProps {
   service: AIService;
@@ -34,13 +35,19 @@ export function ServiceCard({
   viewMode = 'grid',
 }: ServiceCardProps) {
   const { user } = useAuth();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { isFavorited, toggleFavorite } = useFavorites();
   const [imageError, setImageError] = useState(false);
 
-  const handleFavorite = () => {
-    setIsFavorited(!isFavorited);
-    // TODO: API 호출로 즐겨찾기 상태 업데이트
+  const handleFavorite = async () => {
+    if (!user) return;
+    
+    // 즉시 반응하도록 비동기로 처리 (await 제거)
+    toggleFavorite(service.id).catch(error => {
+      console.error('Error toggling favorite:', error);
+    });
   };
+
+  const isServiceFavorited = isFavorited(service.id);
 
   const getLogoSrc = () => {
     if (service.logo_url && !imageError) {
@@ -173,9 +180,9 @@ export function ServiceCard({
                   variant='ghost'
                   size='sm'
                   onClick={handleFavorite}
-                  className={isFavorited ? 'text-red-500' : 'text-gray-400'}
+                  className={isServiceFavorited ? 'text-red-500' : 'text-gray-400'}
                 >
-                  <Heart size={16} fill={isFavorited ? 'currentColor' : 'none'} />
+                  <Heart size={16} fill={isServiceFavorited ? 'currentColor' : 'none'} />
                 </Button>
               )}
 
@@ -234,12 +241,12 @@ export function ServiceCard({
               size='sm'
               onClick={handleFavorite}
               className={`${
-                isFavorited ? 'text-red-500' : 'text-gray-400'
+                isServiceFavorited ? 'text-red-500' : 'text-gray-400'
               } ${
-                isFavorited ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                isServiceFavorited ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
               } transition-opacity`}
             >
-              <Heart size={16} fill={isFavorited ? 'currentColor' : 'none'} />
+              <Heart size={16} fill={isServiceFavorited ? 'currentColor' : 'none'} />
             </Button>
           )}
         </div>

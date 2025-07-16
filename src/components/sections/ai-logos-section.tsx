@@ -9,10 +9,7 @@ const aiServices = [
   { name: 'Midjourney', logo: '/logos/ai-services/midjourney.svg' },
   { name: 'DALL-E', logo: '/logos/ai-services/dalle.svg' },
   { name: 'GitHub Copilot', logo: '/logos/ai-services/github-copilot.svg' },
-  {
-    name: 'Microsoft Copilot',
-    logo: '/logos/ai-services/microsoft-copilot.svg',
-  },
+  { name: 'Microsoft Copilot', logo: '/logos/ai-services/copilot.svg' },
   { name: 'Cursor', logo: '/logos/ai-services/cursor.svg' },
   { name: 'Notion', logo: '/logos/ai-services/notion.svg' },
   { name: 'Perplexity', logo: '/logos/ai-services/perplexity.svg' },
