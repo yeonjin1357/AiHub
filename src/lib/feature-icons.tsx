@@ -743,7 +743,7 @@ export const featureData: Record<
     icon: Monitor,
     description: '웹 브라우저에서 작동하는 통합 개발 환경을 제공합니다.',
   },
-  'AI 코딩 지원': {
+  '코딩 지원': {
     icon: Code,
     description: 'AI를 활용한 코딩 지원 기능을 제공합니다.',
   },
