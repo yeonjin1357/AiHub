@@ -31,7 +31,7 @@ export function HeroSection() {
               </Link>
             </Button>
             <Button variant='outline' size='lg' className='h-12 px-8'>
-              카테고리 보기
+              커뮤니티 보기
             </Button>
           </div>
         </div>

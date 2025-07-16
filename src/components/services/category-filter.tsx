@@ -12,6 +12,8 @@ import {
   BarChart,
   Grid,
   Filter,
+  Zap,
+  Palette,
 } from 'lucide-react';
 import { AIService, Category } from '@/lib/api/services';
 
@@ -31,6 +33,8 @@ const getCategoryIcon = (slug: string) => {
     'voice-processing': Mic,
     'video-editing': Play,
     'data-analysis': BarChart,
+    'ai-assistant': Zap,
+    'design-tools': Palette,
   };
 
   return iconMap[slug as keyof typeof iconMap] || Grid;

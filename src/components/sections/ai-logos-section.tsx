@@ -39,6 +39,15 @@ const aiServices = [
   { name: 'Stability AI', logo: '/logos/ai-services/stability.svg' },
   { name: 'Suno', logo: '/logos/ai-services/suno.svg' },
   { name: 'Windsurf', logo: '/logos/ai-services/windsurf.svg' },
+  { name: 'Leonardo AI', logo: '/logos/ai-services/leonardo-ai.svg' },
+  { name: 'Grammarly', logo: '/logos/ai-services/grammarly.svg' },
+  { name: 'GAMMA', logo: '/logos/ai-services/gamma.svg' },
+  { name: 'Farmer AI', logo: '/logos/ai-services/framer-ai.svg' },
+  { name: 'Descript', logo: '/logos/ai-services/descript.svg' },
+  { name: 'Pika Labs', logo: '/logos/ai-services/pika.svg' },
+  { name: 'Speechify', logo: '/logos/ai-services/speechify.svg' },
+  { name: 'Synthesia', logo: '/logos/ai-services/synthesia.svg' },
+  { name: 'Writesonic', logo: '/logos/ai-services/writesonic.svg' },
 ];
 
 export function AILogosSection() {
