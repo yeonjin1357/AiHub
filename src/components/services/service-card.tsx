@@ -40,10 +40,10 @@ export function ServiceCard({
 
   const handleFavorite = async () => {
     if (!user) return;
-    
+
     // 즉시 반응하도록 비동기로 처리 (await 제거)
-    toggleFavorite(service.id).catch(error => {
-      console.error('Error toggling favorite:', error);
+    toggleFavorite(service.id).catch(() => {
+      // Error handled in context
     });
   };
 
@@ -92,29 +92,26 @@ export function ServiceCard({
         case 'free':
           return {
             label: '무료',
-            color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+            color:
+              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
           };
         case 'freemium':
           return {
             label: '프리미엄',
-            color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+            color:
+              'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
           };
         case 'paid':
           return {
             label: '유료',
-            color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+            color:
+              'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
           };
       }
     }
-    
+
     // 기존 로직 (하위 호환성)
-    if (service.is_free) {
-      return {
-        label: '무료',
-        color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-      };
-    }
-    if (service.pricing_info?.free_tier) {
+    if (service.pricing_type === 'freemium') {
       return {
         label: '프리미엄',
         color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
@@ -122,7 +119,8 @@ export function ServiceCard({
     }
     return {
       label: '유료',
-      color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+      color:
+        'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
     };
   };
 
@@ -180,9 +178,14 @@ export function ServiceCard({
                   variant='ghost'
                   size='sm'
                   onClick={handleFavorite}
-                  className={isServiceFavorited ? 'text-red-500' : 'text-gray-400'}
+                  className={
+                    isServiceFavorited ? 'text-red-500' : 'text-gray-400'
+                  }
                 >
-                  <Heart size={16} fill={isServiceFavorited ? 'currentColor' : 'none'} />
+                  <Heart
+                    size={16}
+                    fill={isServiceFavorited ? 'currentColor' : 'none'}
+                  />
                 </Button>
               )}
 
@@ -243,10 +246,15 @@ export function ServiceCard({
               className={`${
                 isServiceFavorited ? 'text-red-500' : 'text-gray-400'
               } ${
-                isServiceFavorited ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                isServiceFavorited
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100'
               } transition-opacity`}
             >
-              <Heart size={16} fill={isServiceFavorited ? 'currentColor' : 'none'} />
+              <Heart
+                size={16}
+                fill={isServiceFavorited ? 'currentColor' : 'none'}
+              />
             </Button>
           )}
         </div>

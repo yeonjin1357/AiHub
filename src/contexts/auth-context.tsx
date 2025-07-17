@@ -24,7 +24,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { data } = await auth.getCurrentUser();
         setUser(data.user);
       } catch (error) {
-        console.error('Error getting initial user:', error);
       } finally {
         setLoading(false);
       }
@@ -49,7 +48,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       toast.success('로그아웃되었습니다');
     } catch (error) {
-      console.error('Error signing out:', error);
       toast.error('로그아웃 중 오류가 발생했습니다');
     }
   };

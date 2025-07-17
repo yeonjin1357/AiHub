@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
     try {
       await supabase.auth.exchangeCodeForSession(code);
     } catch (error) {
-      console.error('Error exchanging code for session:', error);
       return NextResponse.redirect(`${requestUrl.origin}/signin?error=auth_error`);
     }
   }

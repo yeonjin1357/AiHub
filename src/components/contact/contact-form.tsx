@@ -53,7 +53,6 @@ export function ContactForm() {
         setSubmitStatus('error');
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
       toast.error('전송 실패. 다시 시도해주세요');
       setSubmitStatus('error');
     } finally {

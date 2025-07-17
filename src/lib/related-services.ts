@@ -47,7 +47,6 @@ export async function getRelatedServices(serviceSlug: string): Promise<RelatedSe
       description: service.short_description || '관련 AI 서비스',
     }));
   } catch (error) {
-    console.error('Error fetching related services:', error);
     return [];
   }
 }

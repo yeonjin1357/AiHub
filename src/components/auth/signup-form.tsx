@@ -159,7 +159,6 @@ export function SignUpForm() {
         // 이메일 확인이 필요한 경우가 많으므로 바로 리다이렉트하지 않음
       }
     } catch (error) {
-      console.error('Sign up error:', error);
       setError('회원가입 중 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);

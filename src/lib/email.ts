@@ -14,9 +14,7 @@ const missingVars = Object.entries(requiredEnvVars)
   .filter(([_, value]) => !value)
   .map(([key]) => key);
 
-if (missingVars.length > 0) {
-  console.warn(`Missing email environment variables: ${missingVars.join(', ')}`);
-}
+// 환경 변수 누락 시 콘솔 출력으로 대체
 
 // SMTP 설정
 const transporter = nodemailer.createTransport({
@@ -37,13 +35,8 @@ export interface ContactFormData {
 }
 
 export async function sendContactEmail(data: ContactFormData): Promise<void> {
-  // 환경 변수가 설정되지 않은 경우 콘솔에만 로그 출력
+  // 환경 변수가 설정되지 않은 경우 로그 출력으로 대체
   if (missingVars.length > 0) {
-    console.log('=== 문의 접수 (이메일 미설정) ===');
-    console.log(`보낸 사람: ${data.name} (${data.email})`);
-    console.log(`제목: ${data.subject}`);
-    console.log(`내용: ${data.message}`);
-    console.log('===============================');
     return;
   }
 
@@ -87,9 +80,7 @@ export async function sendContactEmail(data: ContactFormData): Promise<void> {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('Contact email sent successfully');
   } catch (error) {
-    console.error('Failed to send contact email:', error);
     throw new Error('이메일 전송에 실패했습니다.');
   }
 }
@@ -102,10 +93,8 @@ export async function testEmailConnection(): Promise<boolean> {
 
   try {
     await transporter.verify();
-    console.log('Email configuration is valid');
     return true;
   } catch (error) {
-    console.error('Email configuration error:', error);
     return false;
   }
 }

@@ -66,7 +66,7 @@ export function SearchBar() {
           setSelectedIndex(-1);
         }
       } catch (error) {
-        console.error('Search error:', error);
+        // Error handled by UI state
       } finally {
         setIsLoading(false);
       }

@@ -10,7 +10,6 @@ export interface AIService {
   website_url: string;
   logo_url: string | null;
   category_id: string;
-  pricing_info: any;
   features: string[];
   is_free: boolean;
   pricing_type: PricingType;
@@ -30,7 +29,7 @@ export interface Category {
 
 export async function getServices(): Promise<AIService[]> {
   const supabase = createClient();
-  
+
   const { data, error } = await supabase
     .from('ai_services')
     .select('*')
@@ -38,7 +37,6 @@ export async function getServices(): Promise<AIService[]> {
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('Error fetching services:', error);
     throw new Error('Failed to fetch services');
   }
 
@@ -47,23 +45,24 @@ export async function getServices(): Promise<AIService[]> {
 
 export async function getCategories(): Promise<Category[]> {
   const supabase = createClient();
-  
+
   const { data, error } = await supabase
     .from('categories')
     .select('*')
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('Error fetching categories:', error);
     throw new Error('Failed to fetch categories');
   }
 
   return data || [];
 }
 
-export async function getServiceBySlug(slug: string): Promise<AIService | null> {
+export async function getServiceBySlug(
+  slug: string
+): Promise<AIService | null> {
   const supabase = createClient();
-  
+
   const { data, error } = await supabase
     .from('ai_services')
     .select('*')
@@ -74,16 +73,17 @@ export async function getServiceBySlug(slug: string): Promise<AIService | null> 
     if (error.code === 'PGRST116') {
       return null; // Service not found
     }
-    console.error('Error fetching service:', error);
     throw new Error('Failed to fetch service');
   }
 
   return data;
 }
 
-export async function getServicesByCategory(categoryId: string): Promise<AIService[]> {
+export async function getServicesByCategory(
+  categoryId: string
+): Promise<AIService[]> {
   const supabase = createClient();
-  
+
   const { data, error } = await supabase
     .from('ai_services')
     .select('*')
@@ -92,7 +92,6 @@ export async function getServicesByCategory(categoryId: string): Promise<AIServi
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('Error fetching services by category:', error);
     throw new Error('Failed to fetch services');
   }
 
@@ -101,7 +100,7 @@ export async function getServicesByCategory(categoryId: string): Promise<AIServi
 
 export async function searchServices(query: string): Promise<AIService[]> {
   const supabase = createClient();
-  
+
   const { data, error } = await supabase
     .from('ai_services')
     .select('*')
@@ -110,7 +109,6 @@ export async function searchServices(query: string): Promise<AIService[]> {
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('Error searching services:', error);
     throw new Error('Failed to search services');
   }
 

@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+
     const { data: favorites, error } = await supabase
       .from('favorites')
       .select(`
@@ -30,21 +31,18 @@ export async function GET(request: NextRequest) {
           is_featured,
           created_at,
           updated_at,
-          category_id,
-          pricing_info
+          category_id
         )
       `)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching favorites:', error);
       return NextResponse.json({ error: 'Failed to fetch favorites' }, { status: 500 });
     }
 
     return NextResponse.json({ favorites });
   } catch (error) {
-    console.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -62,12 +60,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { service_id } = body;
 
+
     if (!service_id) {
       return NextResponse.json({ error: 'service_id is required' }, { status: 400 });
     }
 
     // 이미 찜한 서비스인지 확인
-    const { data: existingFavorite } = await supabase
+    const { data: existingFavorite, error: checkError } = await supabase
       .from('favorites')
       .select('id')
       .eq('user_id', user.id)
@@ -102,20 +101,36 @@ export async function POST(request: NextRequest) {
           is_featured,
           created_at,
           updated_at,
-          category_id,
-          pricing_info
+          category_id
         )
       `)
       .single();
 
     if (error) {
-      console.error('Error adding favorite:', error);
-      return NextResponse.json({ error: 'Failed to add favorite' }, { status: 500 });
+      
+      // 구체적인 에러 타입별 메시지
+      if (error.code === '23503') {
+        return NextResponse.json({ 
+          error: '존재하지 않는 서비스이거나 사용자 프로필이 없습니다.',
+          details: error.message 
+        }, { status: 400 });
+      }
+      
+      if (error.code === '23505') {
+        return NextResponse.json({ 
+          error: '이미 찜한 서비스입니다.',
+          details: error.message 
+        }, { status: 409 });
+      }
+      
+      return NextResponse.json({ 
+        error: 'Failed to add favorite',
+        details: error.message 
+      }, { status: 500 });
     }
 
     return NextResponse.json({ favorite }, { status: 201 });
   } catch (error) {
-    console.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -144,13 +159,11 @@ export async function DELETE(request: NextRequest) {
       .eq('service_id', service_id);
 
     if (error) {
-      console.error('Error removing favorite:', error);
       return NextResponse.json({ error: 'Failed to remove favorite' }, { status: 500 });
     }
 
     return NextResponse.json({ message: 'Favorite removed successfully' });
   } catch (error) {
-    console.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { AIService } from '@/lib/api/services';
+import { toast } from 'sonner';
+import { usePathname } from 'next/navigation';
 
 interface Favorite {
   id: string;
@@ -26,10 +28,24 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(undefin
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const pathname = usePathname();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [favoriteServiceIds, setFavoriteServiceIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
+
+  // 찜 기능이 필요한 페이지인지 확인
+  const needsFavorites = useCallback(() => {
+    // 메인 페이지, 로그인/회원가입 페이지, 연락처 페이지에서는 찜 기능 불필요
+    if (pathname === '/' || 
+        pathname === '/signin' || 
+        pathname === '/signup' || 
+        pathname === '/contact') {
+      return false;
+    }
+    // 찜 목록 페이지, 서비스 상세 페이지, 서비스 목록 페이지에서는 필요
+    return true;
+  }, [pathname]);
 
   // 사용자의 찜 목록 로드 (한 번만 실행)
   const loadFavorites = useCallback(async () => {
@@ -38,6 +54,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       setFavoriteServiceIds(new Set());
       setHasLoaded(false);
       setLoading(false);
+      return;
+    }
+
+    // 찜 기능이 필요 없는 페이지에서는 로드하지 않음
+    if (!needsFavorites()) {
       return;
     }
 
@@ -53,14 +74,15 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         setFavoriteServiceIds(new Set(data.favorites?.map((f: Favorite) => f.service_id) || []));
         setHasLoaded(true);
       } else {
-        console.error('Failed to load favorites');
+        if (response.status !== 401) { // 401은 로그아웃 상태이므로 에러 토스트 표시하지 않음
+          toast.error('찜 목록을 불러오는데 실패했습니다.');
+        }
       }
     } catch (error) {
-      console.error('Error loading favorites:', error);
     } finally {
       setLoading(false);
     }
-  }, [user, hasLoaded]);
+  }, [user, hasLoaded, needsFavorites]);
 
   // 서비스를 찜 목록에 추가
   const addFavorite = useCallback(async (serviceId: string) => {
@@ -82,6 +104,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         // 성공 시 favorites 목록도 업데이트
         const data = await response.json();
         setFavorites(prev => [data.favorite, ...prev]);
+        toast.success('찜 목록에 추가되었습니다.');
         return true;
       } else {
         // 실패 시 rollback
@@ -91,7 +114,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           return newSet;
         });
         const error = await response.json();
-        console.error('Failed to add favorite:', error);
+        toast.error(error.error || '찜 추가에 실패했습니다.');
         return false;
       }
     } catch (error) {
@@ -101,7 +124,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         newSet.delete(serviceId);
         return newSet;
       });
-      console.error('Error adding favorite:', error);
+      toast.error('찜 추가 중 오류가 발생했습니다.');
       return false;
     }
   }, [user]);
@@ -127,27 +150,31 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       });
 
       if (response.ok) {
+        toast.success('찜 목록에서 제거되었습니다.');
         return true;
       } else {
         // 실패 시 rollback
         setFavoriteServiceIds(prev => new Set(prev).add(serviceId));
         setFavorites(prevFavorites);
         const error = await response.json();
-        console.error('Failed to remove favorite:', error);
+        toast.error(error.error || '찜 제거에 실패했습니다.');
         return false;
       }
     } catch (error) {
       // 에러 시 rollback
       setFavoriteServiceIds(prev => new Set(prev).add(serviceId));
       setFavorites(prevFavorites);
-      console.error('Error removing favorite:', error);
+      toast.error('찜 제거 중 오류가 발생했습니다.');
       return false;
     }
   }, [user, favorites]);
 
   // 찜 상태 토글
   const toggleFavorite = useCallback(async (serviceId: string) => {
-    if (!user) return false;
+    if (!user) {
+      toast.error('로그인이 필요합니다.');
+      return false;
+    }
 
     const isFavorited = favoriteServiceIds.has(serviceId);
     
@@ -163,17 +190,19 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     return favoriteServiceIds.has(serviceId);
   }, [favoriteServiceIds]);
 
-  // 사용자가 변경될 때만 찜 목록 로드
+  // 사용자가 변경되거나 페이지가 변경될 때 찜 목록 로드
   useEffect(() => {
-    if (user) {
+    if (user && needsFavorites()) {
       loadFavorites();
     } else {
-      // 로그아웃 시 상태 초기화
+      // 로그아웃 시 또는 찜 기능이 필요 없는 페이지에서 상태 초기화
       setFavorites([]);
       setFavoriteServiceIds(new Set());
-      setHasLoaded(false);
+      if (!user) {
+        setHasLoaded(false);
+      }
     }
-  }, [user, loadFavorites]);
+  }, [user, pathname, loadFavorites, needsFavorites]);
 
   const value: FavoritesContextType = {
     favorites,

@@ -100,7 +100,6 @@ export default function FavoritesPage() {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
               {favorites.map((favorite) => {
                 if (!favorite.ai_services) {
-                  console.warn('Favorite missing ai_services data:', favorite);
                   return null;
                 }
 

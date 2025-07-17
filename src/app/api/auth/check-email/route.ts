@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
 
     if (error && error.code !== 'PGRST116') {
       // PGRST116: 결과가 없음 (중복 아님)
-      console.error('Email check error:', error);
       return NextResponse.json(
         { error: '이메일 확인 중 오류가 발생했습니다.' },
         { status: 500 }
@@ -38,7 +37,6 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Email check API error:', error);
     return NextResponse.json(
       { error: '서버 오류가 발생했습니다.' },
       { status: 500 }

@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { getFeatureData } from '@/lib/feature-icons';
 import { RelatedService } from '@/lib/related-services';
+import { ReviewForm } from './review-form';
+import { ReviewList } from './review-list';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -44,15 +46,20 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
   const { user } = useAuth();
   const { isFavorited, toggleFavorite } = useFavorites();
   const [imageError, setImageError] = useState(false);
+  const [reviewRefreshTrigger, setReviewRefreshTrigger] = useState(0);
 
   const isServiceFavorited = isFavorited(service.id);
 
 
   const handleFavorite = async () => {
     if (!user) return;
-    toggleFavorite(service.id).catch((error) => {
-      console.error('Error toggling favorite:', error);
+    toggleFavorite(service.id).catch(() => {
+      // Error already handled in context
     });
+  };
+
+  const handleReviewSubmitted = () => {
+    setReviewRefreshTrigger(prev => prev + 1);
   };
 
   const getLogoElement = () => {
@@ -228,7 +235,7 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
       <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <Tabs defaultValue='overview' className='space-y-10'>
           <div className='flex justify-center'>
-            <TabsList className='grid w-full max-w-md grid-cols-4 h-12 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl'>
+            <TabsList className='grid w-full max-w-md grid-cols-3 h-12 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl'>
               <TabsTrigger
                 value='overview'
                 className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-blue-400 rounded-lg transition-all'
@@ -240,12 +247,6 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
                 className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-blue-400 rounded-lg transition-all'
               >
                 기능
-              </TabsTrigger>
-              <TabsTrigger
-                value='pricing'
-                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-blue-400 rounded-lg transition-all'
-              >
-                요금제
               </TabsTrigger>
               <TabsTrigger
                 value='reviews'
@@ -486,117 +487,22 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
             </div>
           </TabsContent>
 
-          {/* Pricing Tab */}
-          <TabsContent value='pricing' className='space-y-8'>
-            <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {Array.isArray(service.pricing_info) &&
-                service.pricing_info.map((plan: any, index: number) => (
-                  <Card
-                    key={index}
-                    className={`relative border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all ${
-                      plan.is_popular
-                        ? 'ring-2 ring-blue-500 dark:ring-blue-400 scale-105'
-                        : ''
-                    }`}
-                  >
-                    {plan.is_popular && (
-                      <div className='absolute -top-4 left-1/2 transform -translate-x-1/2'>
-                        <Badge className='bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-1 shadow-lg'>
-                          ⭐ 가장 인기
-                        </Badge>
-                      </div>
-                    )}
-                    <CardHeader className='text-center pb-4'>
-                      <CardTitle className='text-xl text-gray-900 dark:text-white'>
-                        {plan.name}
-                      </CardTitle>
-                      <div className='text-4xl font-bold text-gray-900 dark:text-white'>
-                        ${plan.price}
-                        <span className='text-lg font-normal text-gray-600 dark:text-gray-400'>
-                          /{plan.period === 'monthly' ? '월' : '년'}
-                        </span>
-                      </div>
-                    </CardHeader>
-                    <CardContent className='pt-4'>
-                      <ul className='space-y-3 mb-8'>
-                        {plan.features?.map(
-                          (feature: string, featureIndex: number) => (
-                            <li
-                              key={featureIndex}
-                              className='flex items-start gap-3 text-sm'
-                            >
-                              <div className='mt-0.5'>
-                                <Check size={16} className='text-green-500' />
-                              </div>
-                              <span className='leading-relaxed'>{feature}</span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                      <Button
-                        className={`w-full py-3 font-medium ${
-                          plan.is_popular ? 'bg-blue-600 hover:bg-blue-700' : ''
-                        }`}
-                        variant={plan.is_popular ? 'default' : 'outline'}
-                        asChild
-                      >
-                        <a
-                          href={service.website_url}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                        >
-                          시작하기
-                        </a>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-            </div>
-          </TabsContent>
-
           {/* Reviews Tab */}
           <TabsContent value='reviews' className='space-y-8'>
-            <Card className='border-gray-200 dark:border-gray-700 shadow-sm'>
-              <CardHeader className='pb-6'>
-                <CardTitle className='text-xl'>사용자 리뷰</CardTitle>
-                <div className='flex items-center gap-3'>
-                  <div className='flex'>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        size={24}
-                        className='text-yellow-400 fill-current'
-                      />
-                    ))}
-                  </div>
-                  <span className='text-2xl font-bold text-gray-900 dark:text-white'>
-                    4.8
-                  </span>
-                  <span className='text-gray-600 dark:text-gray-400'>
-                    (1,234 리뷰)
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className='text-center py-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-xl border border-gray-200 dark:border-gray-600'>
-                  <div className='mb-4'>
-                    <div className='w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4'>
-                      <Star
-                        size={32}
-                        className='text-blue-600 dark:text-blue-400'
-                      />
-                    </div>
-                  </div>
-                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-                    리뷰 기능 준비 중
-                  </h3>
-                  <p className='text-gray-600 dark:text-gray-400 max-w-md mx-auto'>
-                    곧 사용자 리뷰를 확인하고 직접 리뷰를 작성하실 수 있습니다.
-                    더 나은 서비스 선택에 도움이 되도록 준비하고 있습니다.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className='grid lg:grid-cols-3 gap-8'>
+              <div className='lg:col-span-2'>
+                <ReviewList 
+                  serviceId={service.id} 
+                  refreshTrigger={reviewRefreshTrigger}
+                />
+              </div>
+              <div>
+                <ReviewForm 
+                  serviceId={service.id}
+                  onReviewSubmitted={handleReviewSubmitted}
+                />
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </section>

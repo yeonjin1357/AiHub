@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
       .limit(10);
 
     if (error) {
-      console.error('Search error:', error);
       return NextResponse.json([], { status: 500 });
     }
 
@@ -54,7 +53,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(formattedResults);
   } catch (error) {
-    console.error('Search API error:', error);
     return NextResponse.json([], { status: 500 });
   }
 }
