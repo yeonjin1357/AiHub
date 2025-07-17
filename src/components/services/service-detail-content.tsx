@@ -39,6 +39,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/auth-context';
 import { useFavorites } from '@/contexts/favorites-context';
 import { AIService } from '@/lib/api/services';
+import { ServiceFeaturesDisplay } from '@/components/service-features-display';
 
 interface ServiceDetailContentProps {
   service: AIService & {
@@ -381,74 +382,7 @@ export function ServiceDetailContent({
                   </CardContent>
                 </Card>
 
-                <Card className='border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden'>
-                  <CardHeader className='pb-4'>
-                    <CardTitle className='flex items-center gap-2 text-xl'>
-                      <div className='p-2 bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/40 dark:to-yellow-800/40 rounded-lg border border-yellow-200 dark:border-yellow-700'>
-                        <Award
-                          size={20}
-                          className='text-yellow-600 dark:text-yellow-400'
-                        />
-                      </div>
-                      서비스 특징
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className='space-y-6'>
-                    <div className='p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-100 dark:border-blue-800'>
-                      <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-                        {service.name}은 최신 AI 기술을 활용하여 사용자에게
-                        최고의 경험을 제공합니다. 직관적인 인터페이스와 강력한
-                        기능으로 다양한 작업을 효율적으로 수행할 수 있습니다.
-                      </p>
-                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                        <div className='flex items-center gap-3 p-3 bg-white/70 dark:bg-gray-800/50 rounded-lg border border-blue-200/50 dark:border-blue-700/50'>
-                          <div className='w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center'>
-                            <Zap
-                              size={16}
-                              className='text-blue-600 dark:text-blue-400'
-                            />
-                          </div>
-                          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
-                            최신 AI 모델 기반
-                          </span>
-                        </div>
-                        <div className='flex items-center gap-3 p-3 bg-white/70 dark:bg-gray-800/50 rounded-lg border border-blue-200/50 dark:border-blue-700/50'>
-                          <div className='w-8 h-8 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center'>
-                            <Users
-                              size={16}
-                              className='text-green-600 dark:text-green-400'
-                            />
-                          </div>
-                          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
-                            사용자 친화적 UI
-                          </span>
-                        </div>
-                        <div className='flex items-center gap-3 p-3 bg-white/70 dark:bg-gray-800/50 rounded-lg border border-blue-200/50 dark:border-blue-700/50'>
-                          <div className='w-8 h-8 bg-purple-100 dark:bg-purple-900/40 rounded-full flex items-center justify-center'>
-                            <Globe
-                              size={16}
-                              className='text-purple-600 dark:text-purple-400'
-                            />
-                          </div>
-                          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
-                            다양한 통합 옵션
-                          </span>
-                        </div>
-                        <div className='flex items-center gap-3 p-3 bg-white/70 dark:bg-gray-800/50 rounded-lg border border-blue-200/50 dark:border-blue-700/50'>
-                          <div className='w-8 h-8 bg-orange-100 dark:bg-orange-900/40 rounded-full flex items-center justify-center'>
-                            <Clock
-                              size={16}
-                              className='text-orange-600 dark:text-orange-400'
-                            />
-                          </div>
-                          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
-                            지속적인 업데이트
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <ServiceFeaturesDisplay serviceId={service.id} />
               </div>
 
               <div className='space-y-8'>

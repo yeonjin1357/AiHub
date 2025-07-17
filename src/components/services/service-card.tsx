@@ -217,7 +217,7 @@ export function ServiceCard({
                   size='sm'
                   asChild
                 >
-                  <Link href={`/admin/services/${service.id}/edit` as any}>
+                  <Link href={`/admin/services/${service.slug}/features` as any}>
                     <Settings size={16} />
                   </Link>
                 </Button>
@@ -300,7 +300,7 @@ export function ServiceCard({
                 asChild
                 className='opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-600'
               >
-                <Link href={`/admin/services/${service.id}/edit` as any}>
+                <Link href={`/admin/services/${service.slug}/features` as any}>
                   <Settings size={16} />
                 </Link>
               </Button>

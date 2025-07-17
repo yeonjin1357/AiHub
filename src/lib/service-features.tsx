@@ -287,65 +287,156 @@ export const SERVICE_FEATURES: Record<string, ServiceFeature> = {
   }
 };
 
-// 서비스 이름별 특성 매핑 (실제 서비스에 맞게 설정)
-export const getServiceFeatures = (serviceName: string, serviceFeatures: string[]): string[] => {
+// 카테고리별 기본 특징 템플릿
+export const CATEGORY_FEATURE_TEMPLATES: Record<string, string[]> = {
+  'text-generation': [
+    'text_generation',
+    'web_based',
+    'api_available',
+    'multilingual',
+    'team_collaboration',
+    'regular_updates'
+  ],
+  'image-generation': [
+    'image_generation',
+    'professional_grade',
+    'subscription_model',
+    'customer_support',
+    'regular_updates',
+    'export_import'
+  ],
+  'video-generation': [
+    'video_generation',
+    'professional_grade',
+    'subscription_model',
+    'export_import',
+    'customer_support',
+    'web_based'
+  ],
+  'voice-ai': [
+    'voice_synthesis',
+    'multilingual',
+    'api_available',
+    'export_import',
+    'customer_support',
+    'professional_grade'
+  ],
+  'code-assistant': [
+    'code_assistant',
+    'api_available',
+    'team_collaboration',
+    'professional_grade',
+    'regular_updates',
+    'documentation'
+  ],
+  'data-analysis': [
+    'data_analysis',
+    'web_based',
+    'api_available',
+    'export_import',
+    'team_collaboration',
+    'data_security'
+  ],
+  'design-tools': [
+    'design_tools',
+    'web_based',
+    'team_collaboration',
+    'professional_grade',
+    'export_import',
+    'regular_updates'
+  ],
+  'productivity': [
+    'web_based',
+    'mobile_app',
+    'team_collaboration',
+    'free_tier',
+    'api_available',
+    'multilingual'
+  ],
+  'research': [
+    'web_based',
+    'data_analysis',
+    'api_available',
+    'export_import',
+    'documentation',
+    'data_security'
+  ],
+  'education': [
+    'web_based',
+    'beginner_friendly',
+    'multilingual',
+    'free_tier',
+    'documentation',
+    'customer_support'
+  ]
+};
+
+// 서비스 특징 데이터 타입 정의
+export interface ServiceFeatureData {
+  id: string;
+  service_id: string;
+  feature_key: string;
+  custom_label?: string;
+  custom_description?: string;
+  is_highlighted: boolean;
+  display_order: number;
+  category: string;
+}
+
+// 서비스 특징 표시용 데이터 타입
+export interface DisplayServiceFeature {
+  key: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+  category: string;
+  isHighlighted: boolean;
+  displayOrder: number;
+}
+
+// 카테고리별 기본 특징 가져오기
+export const getCategoryDefaultFeatures = (categorySlug: string): string[] => {
+  return CATEGORY_FEATURE_TEMPLATES[categorySlug] || CATEGORY_FEATURE_TEMPLATES['productivity'];
+};
+
+// 서비스 특징 데이터를 표시용 데이터로 변환
+export const convertToDisplayFeatures = (features: ServiceFeatureData[]): DisplayServiceFeature[] => {
+  return features
+    .map(feature => {
+      const baseFeature = SERVICE_FEATURES[feature.feature_key];
+      if (!baseFeature) return null;
+      
+      return {
+        key: feature.feature_key,
+        label: feature.custom_label || baseFeature.label,
+        description: feature.custom_description || baseFeature.description,
+        icon: baseFeature.icon,
+        category: feature.category,
+        isHighlighted: feature.is_highlighted,
+        displayOrder: feature.display_order
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a!.displayOrder - b!.displayOrder) as DisplayServiceFeature[];
+};
+
+// 서비스 이름과 카테고리로 추천 특징 가져오기 (fallback용)
+export const getRecommendedFeatures = (serviceName: string, categorySlug: string): string[] => {
   const name = serviceName.toLowerCase();
   
-  // ChatGPT 계열
+  // 특정 서비스별 추천 특징
   if (name.includes('chatgpt') || name.includes('openai')) {
-    return ['web_based', 'mobile_app', 'data_security', 'team_collaboration', 'api_available', 'multilingual', 'regular_updates'];
+    return ['web_based', 'mobile_app', 'data_security', 'team_collaboration', 'api_available', 'multilingual'];
   }
   
-  // Claude 계열
   if (name.includes('claude') || name.includes('anthropic')) {
-    return ['web_based', 'data_security', 'individual_use', 'free_tier', 'api_available', 'korean_support', 'customer_support'];
+    return ['web_based', 'data_security', 'individual_use', 'free_tier', 'api_available', 'korean_support'];
   }
   
-  // Midjourney 계열
   if (name.includes('midjourney')) {
-    return ['discord_integration', 'image_generation', 'subscription_model', 'professional_grade', 'customer_support', 'regular_updates'];
+    return ['discord_integration', 'image_generation', 'subscription_model', 'professional_grade', 'customer_support'];
   }
   
-  // Notion 계열
-  if (name.includes('notion')) {
-    return ['web_based', 'mobile_app', 'desktop_app', 'team_collaboration', 'free_tier', 'api_available', 'multilingual'];
-  }
-  
-  // GitHub Copilot 계열
-  if (name.includes('copilot') || name.includes('github')) {
-    return ['code_assistant', 'api_available', 'subscription_model', 'professional_grade', 'team_collaboration', 'regular_updates'];
-  }
-  
-  // 기본값: 서비스 기능에 따라 자동 추론
-  const defaultFeatures = ['web_based', 'data_security', 'individual_use'];
-  
-  // 서비스 기능을 기반으로 특성 추론
-  const inferredFeatures: string[] = [];
-  
-  serviceFeatures.forEach(feature => {
-    const lowerFeature = feature.toLowerCase();
-    if (lowerFeature.includes('텍스트') || lowerFeature.includes('글쓰기')) {
-      inferredFeatures.push('text_generation');
-    }
-    if (lowerFeature.includes('이미지') || lowerFeature.includes('그림')) {
-      inferredFeatures.push('image_generation');
-    }
-    if (lowerFeature.includes('비디오') || lowerFeature.includes('영상')) {
-      inferredFeatures.push('video_generation');
-    }
-    if (lowerFeature.includes('음성') || lowerFeature.includes('보이스')) {
-      inferredFeatures.push('voice_synthesis');
-    }
-    if (lowerFeature.includes('코드') || lowerFeature.includes('프로그래밍')) {
-      inferredFeatures.push('code_assistant');
-    }
-    if (lowerFeature.includes('분석') || lowerFeature.includes('데이터')) {
-      inferredFeatures.push('data_analysis');
-    }
-    if (lowerFeature.includes('디자인') || lowerFeature.includes('ui')) {
-      inferredFeatures.push('design_tools');
-    }
-  });
-  
-  return [...defaultFeatures, ...inferredFeatures].slice(0, 6); // 최대 6개로 제한
+  // 카테고리별 기본 특징 반환
+  return getCategoryDefaultFeatures(categorySlug);
 };
