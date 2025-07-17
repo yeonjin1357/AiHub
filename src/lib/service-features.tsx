@@ -320,7 +320,7 @@ export const getServiceFeatures = (serviceName: string, serviceFeatures: string[
   const defaultFeatures = ['web_based', 'data_security', 'individual_use'];
   
   // 서비스 기능을 기반으로 특성 추론
-  const inferredFeatures = [];
+  const inferredFeatures: string[] = [];
   
   serviceFeatures.forEach(feature => {
     const lowerFeature = feature.toLowerCase();

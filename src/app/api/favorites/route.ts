@@ -44,8 +44,10 @@ export async function GET(request: NextRequest) {
 
     // 평점과 리뷰 수 계산
     const favoritesWithRatings = favorites?.map(favorite => {
-      if (favorite.ai_services) {
-        const reviews = favorite.ai_services.reviews || [];
+      if (favorite.ai_services && Array.isArray(favorite.ai_services)) {
+        // ai_services가 배열인 경우 첫 번째 서비스를 사용
+        const service = favorite.ai_services[0];
+        const reviews = (service as any).reviews || [];
         const reviewCount = reviews.length;
         const averageRating = reviewCount > 0 
           ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
@@ -54,7 +56,24 @@ export async function GET(request: NextRequest) {
         return {
           ...favorite,
           ai_services: {
-            ...favorite.ai_services,
+            ...service,
+            reviews: undefined, // reviews 필드 제거
+            review_count: reviewCount,
+            average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+          }
+        };
+      } else if (favorite.ai_services && !Array.isArray(favorite.ai_services)) {
+        // ai_services가 객체인 경우
+        const reviews = (favorite.ai_services as any).reviews || [];
+        const reviewCount = reviews.length;
+        const averageRating = reviewCount > 0 
+          ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+          : 0;
+
+        return {
+          ...favorite,
+          ai_services: {
+            ...(favorite.ai_services as any),
             reviews: undefined, // reviews 필드 제거
             review_count: reviewCount,
             average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
@@ -155,7 +174,7 @@ export async function POST(request: NextRequest) {
 
     // 평점과 리뷰 수 계산
     if (favorite?.ai_services) {
-      const reviews = favorite.ai_services.reviews || [];
+      const reviews = (favorite.ai_services as any).reviews || [];
       const reviewCount = reviews.length;
       const averageRating = reviewCount > 0 
         ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
@@ -166,7 +185,7 @@ export async function POST(request: NextRequest) {
         reviews: undefined, // reviews 필드 제거
         review_count: reviewCount,
         average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
-      };
+      } as any;
     }
 
     return NextResponse.json({ favorite }, { status: 201 });
