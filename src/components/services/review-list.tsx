@@ -5,6 +5,7 @@ import { Star, User, Calendar, MoreVertical, ChevronDown, ChevronUp, Trash2, Loc
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { useAuth } from '@/contexts/auth-context';
 import { toast } from 'sonner';
 
@@ -33,9 +34,10 @@ interface ReviewStats {
 interface ReviewListProps {
   serviceId: string;
   refreshTrigger?: number;
+  onReviewDeleted?: () => void;
 }
 
-export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
+export function ReviewList({ serviceId, refreshTrigger = 0, onReviewDeleted }: ReviewListProps) {
   const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [stats, setStats] = useState<ReviewStats>({
@@ -48,6 +50,8 @@ export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
   const [hasMore, setHasMore] = useState(false);
   const [expandedReviews, setExpandedReviews] = useState<Set<string>>(new Set());
   const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [reviewToDelete, setReviewToDelete] = useState<string | null>(null);
 
   const fetchReviews = async (pageNum = 1, append = false) => {
     try {
@@ -120,20 +124,22 @@ export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
     });
   };
 
-  const handleDeleteReview = async (reviewId: string) => {
+  const handleDeleteClick = (reviewId: string) => {
     if (!user) {
       toast.error('로그인이 필요합니다.');
       return;
     }
+    setReviewToDelete(reviewId);
+    setDeleteDialogOpen(true);
+  };
 
-    if (!confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
-      return;
-    }
+  const handleDeleteConfirm = async () => {
+    if (!reviewToDelete) return;
 
-    setDeletingReviewId(reviewId);
+    setDeletingReviewId(reviewToDelete);
 
     try {
-      const response = await fetch(`/api/reviews?id=${reviewId}`, {
+      const response = await fetch(`/api/reviews?id=${reviewToDelete}`, {
         method: 'DELETE',
       });
 
@@ -142,6 +148,8 @@ export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
         // 리뷰 목록 새로고침
         fetchReviews(1, false);
         setPage(1);
+        // 상단 통계 업데이트 콜백 호출
+        onReviewDeleted?.();
       } else {
         const errorData = await response.json();
         toast.error(errorData.error || '리뷰 삭제에 실패했습니다.');
@@ -150,6 +158,7 @@ export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
       toast.error('리뷰 삭제 중 오류가 발생했습니다.');
     } finally {
       setDeletingReviewId(null);
+      setReviewToDelete(null);
     }
   };
 
@@ -373,7 +382,7 @@ export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteReview(review.id)}
+                            onClick={() => handleDeleteClick(review.id)}
                             disabled={deletingReviewId === review.id}
                             className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 p-2"
                             title="리뷰 삭제"
@@ -444,6 +453,19 @@ export function ReviewList({ serviceId, refreshTrigger = 0 }: ReviewListProps) {
           )}
         </CardContent>
       </Card>
+
+      {/* 삭제 확인 다이얼로그 */}
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title="리뷰 삭제"
+        description="정말로 이 리뷰를 삭제하시겠습니까? 삭제된 리뷰는 복구할 수 없습니다."
+        confirmText="삭제"
+        cancelText="취소"
+        variant="destructive"
+        onConfirm={handleDeleteConfirm}
+        loading={deletingReviewId === reviewToDelete}
+      />
     </div>
   );
 }

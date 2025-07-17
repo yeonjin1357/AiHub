@@ -1618,167 +1618,167 @@ export const featureData: Record<
   string,
   { icon: LucideIcon; description: string }
 > = {
-  // 핵심 대화 및 텍스트 기능
-  '생성 기능능': {
-    icon: Zap,
+  // 생성 기능
+  '텍스트-이미지 생성': {
+    icon: Image,
     description: '텍스트 설명을 통해 이미지를 생성합니다.',
   },
   '텍스트-비디오 생성': {
-    icon: Zap,
+    icon: Video,
     description: '텍스트 설명을 통해 비디오를 생성합니다.',
   },
   '이미지-비디오 생성': {
-    icon: Zap,
+    icon: Film,
     description: '이미지를 기반으로 비디오를 생성합니다.',
   },
   '텍스트-음악 생성': {
-    icon: Zap,
+    icon: Music,
     description: '텍스트 설명을 통해 음악을 생성합니다.',
   },
   '텍스트-음성 변환': {
-    icon: Zap,
+    icon: Volume2,
     description: '텍스트를 자연스러운 음성으로 변환합니다.',
   },
   'AI 음성 생성': {
-    icon: Zap,
+    icon: Mic,
     description: 'AI 기술을 활용하여 음성을 생성합니다.',
   },
   'AI 음성 합성': {
-    icon: Zap,
+    icon: AudioWaveform,
     description: 'AI 기술로 자연스러운 음성을 합성합니다.',
   },
   'AI 콘텐츠 생성': {
-    icon: Zap,
+    icon: Sparkles,
     description: 'AI를 활용하여 다양한 콘텐츠를 생성합니다.',
   },
   'AI 비디오 생성': {
-    icon: Zap,
+    icon: Video,
     description: 'AI 기술로 비디오를 생성합니다.',
   },
   'AI 비디오 편집': {
-    icon: Zap,
+    icon: Clapperboard,
     description: 'AI 기술을 활용하여 비디오를 편집합니다.',
   },
   'AI 이미지 생성': {
-    icon: Zap,
+    icon: Image,
     description: 'AI 기술로 이미지를 생성합니다.',
   },
   'AI 스토리 생성': {
-    icon: Zap,
+    icon: BookOpen,
     description: 'AI를 활용하여 스토리를 생성합니다.',
   },
   'AI 스크립트 생성': {
-    icon: Zap,
+    icon: FileText,
     description: 'AI가 스크립트를 자동으로 생성합니다.',
   },
   'AI 가사 생성': {
-    icon: Zap,
+    icon: FileMusic,
     description: 'AI를 활용하여 음악 가사를 생성합니다.',
   },
   'AI 아바타 생성': {
-    icon: Zap,
+    icon: User,
     description: 'AI 기술로 아바타를 생성합니다.',
   },
   'AI 디자인 생성': {
-    icon: Zap,
+    icon: Palette,
     description: 'AI를 활용하여 디자인을 생성합니다.',
   },
   'AI 웹사이트 생성': {
-    icon: Zap,
+    icon: Globe,
     description: 'AI 기술로 웹사이트를 생성합니다.',
   },
   'AI 프레젠테이션 생성': {
-    icon: Zap,
+    icon: Presentation,
     description: 'AI를 활용하여 프레젠테이션을 생성합니다.',
   },
   'AI 앱 개발': {
-    icon: Zap,
+    icon: Smartphone,
     description: 'AI를 활용하여 앱을 개발합니다.',
   },
   'AI 회의록 생성': {
-    icon: Zap,
+    icon: FileCheck,
     description: 'AI가 회의 내용을 분석하여 회의록을 생성합니다.',
   },
   '생성형 채우기': {
-    icon: Zap,
+    icon: PaintBucket,
     description: '이미지의 빈 공간을 AI가 자동으로 채웁니다.',
   },
   '보컬 생성': {
-    icon: Zap,
+    icon: Mic,
     description: 'AI가 보컬을 생성합니다.',
   },
   '음악 생성': {
-    icon: Zap,
+    icon: Music,
     description: 'AI를 활용하여 음악을 생성합니다.',
   },
   '대화 생성': {
-    icon: Zap,
+    icon: MessageSquare,
     description: 'AI가 대화를 생성합니다.',
   },
   '차트 생성': {
-    icon: Zap,
+    icon: ChartBar,
     description: 'AI를 활용하여 차트를 생성합니다.',
   },
   '콘텐츠 생성': {
-    icon: Zap,
+    icon: Wand,
     description: 'AI가 다양한 콘텐츠를 생성합니다.',
   },
 
   // 코딩 기능
   'AI 코드 완성': {
-    icon: Zap,
+    icon: Code,
     description: 'AI가 코드를 자동으로 완성합니다.',
   },
   'AI 코드 생성': {
-    icon: Zap,
+    icon: FileCode,
     description: 'AI를 활용하여 코드를 생성합니다.',
   },
   'AI 프롬프트 코딩': {
-    icon: Zap,
+    icon: Terminal,
     description: '자연어 프롬프트를 통해 코딩을 수행합니다.',
   },
   '코드 실행': {
-    icon: Zap,
+    icon: Play,
     description: '코드를 실행하고 결과를 확인할 수 있습니다.',
   },
   '코드 리팩토링': {
-    icon: Zap,
+    icon: RefreshCw,
     description: '기존 코드를 개선하고 최적화합니다.',
   },
   '코드 검색': {
-    icon: Zap,
+    icon: Search,
     description: '코드베이스에서 특정 코드를 검색합니다.',
   },
   '코드 리뷰': {
-    icon: Zap,
+    icon: Eye,
     description: '코드를 검토하고 피드백을 제공합니다.',
   },
   '코드 설명': {
-    icon: Zap,
+    icon: MessageSquareText,
     description: '코드의 기능과 작동 방식을 설명합니다.',
   },
   '자연어 코딩': {
-    icon: Zap,
+    icon: MessageCircleCode,
     description: '자연어로 코딩 명령을 내릴 수 있습니다.',
   },
   '프롬프트 기반 개발': {
-    icon: Zap,
+    icon: Command,
     description: '프롬프트를 통해 개발을 수행합니다.',
   },
   '테스트 생성': {
-    icon: Zap,
+    icon: TestTube,
     description: '코드에 대한 테스트를 자동으로 생성합니다.',
   },
   '자동 문서화': {
-    icon: Zap,
+    icon: Book,
     description: '코드에 대한 문서를 자동으로 생성합니다.',
   },
   '커스텀 모델 훈련': {
-    icon: Zap,
+    icon: BrainCircuit,
     description: '사용자 정의 모델을 훈련시킵니다.',
   },
   '배경 에이전트': {
-    icon: Zap,
+    icon: Bot,
     description: '백그라운드에서 작업을 수행하는 에이전트입니다.',
   },
   '에이전트 모드': {
@@ -1786,49 +1786,49 @@ export const featureData: Record<
     description: '자율적으로 작업을 수행하는 에이전트 모드입니다.',
   },
   '코딩 에이전트': {
-    icon: Zap,
+    icon: Bot,
     description: '코딩 작업을 자동으로 수행하는 에이전트입니다.',
   },
 
   // 편집 기능
   '텍스트 기반 편집': {
-    icon: Zap,
+    icon: Type,
     description: '텍스트를 기반으로 편집 작업을 수행합니다.',
   },
   '실시간 편집': {
-    icon: Zap,
+    icon: Clock,
     description: '실시간으로 편집 작업을 수행합니다.',
   },
   '배경 제거': {
-    icon: Zap,
+    icon: Eraser,
     description: '이미지나 비디오에서 배경을 제거합니다.',
   },
   '이미지 편집': {
-    icon: Zap,
+    icon: Image,
     description: '이미지를 편집하고 수정합니다.',
   },
   '음성 편집': {
-    icon: Zap,
+    icon: AudioWaveform,
     description: '음성을 편집하고 수정합니다.',
   },
   '벡터 편집': {
-    icon: Zap,
+    icon: PenTool,
     description: '벡터 그래픽을 편집합니다.',
   },
   '캔버스 편집': {
-    icon: Zap,
+    icon: Square,
     description: '캔버스에서 편집 작업을 수행합니다.',
   },
   '멀티트랙 편집': {
-    icon: Zap,
+    icon: Layers,
     description: '여러 트랙을 동시에 편집합니다.',
   },
   '동영상 편집기': {
-    icon: Zap,
+    icon: Video,
     description: '동영상을 편집할 수 있는 도구입니다.',
   },
   '매직 박스 편집': {
-    icon: Zap,
+    icon: Wand,
     description: '매직 박스 기능을 통해 편집을 수행합니다.',
   },
   '시각적 편집기': {
@@ -1870,27 +1870,27 @@ export const featureData: Record<
 
   // 음성 기능
   '음성 인식': {
-    icon: Zap,
+    icon: Mic,
     description: '음성을 인식하고 텍스트로 변환합니다.',
   },
   '음성 채팅': {
-    icon: Zap,
+    icon: MessageCircle,
     description: '음성으로 대화할 수 있습니다.',
   },
   '음성 복제': {
-    icon: Zap,
+    icon: Copy,
     description: '기존 음성을 복제합니다.',
   },
   '음성 생성': {
-    icon: Zap,
+    icon: Volume2,
     description: 'AI가 음성을 생성합니다.',
   },
   '음성 검색': {
-    icon: Zap,
+    icon: Search,
     description: '음성을 통해 검색을 수행합니다.',
   },
   '음성 변환': {
-    icon: Zap,
+    icon: RotateCw,
     description: '음성을 다른 형태로 변환합니다.',
   },
   '음성 설계': {
@@ -1898,19 +1898,19 @@ export const featureData: Record<
     description: '원하는 음성을 설계합니다.',
   },
   '실시간 전사': {
-    icon: Zap,
+    icon: FileText,
     description: '실시간으로 음성을 텍스트로 변환합니다.',
   },
   '자동 자막': {
-    icon: Zap,
+    icon: Captions,
     description: '자동으로 자막을 생성합니다.',
   },
   '화자 분리': {
-    icon: Zap,
+    icon: Users,
     description: '여러 화자의 음성을 분리합니다.',
   },
   '더빙 기능': {
-    icon: Zap,
+    icon: VolumeX,
     description: '음성 더빙을 수행합니다.',
   },
   'AI 더빙': {
@@ -1968,15 +1968,15 @@ export const featureData: Record<
 
   // 검색 & 분석 기능
   '실시간 웹 검색': {
-    icon: Zap,
+    icon: Globe,
     description: '실시간으로 웹에서 정보를 검색합니다.',
   },
   '자연어 검색': {
-    icon: Zap,
+    icon: Search,
     description: '자연어로 검색을 수행합니다.',
   },
   '이미지 검색': {
-    icon: Zap,
+    icon: Image,
     description: '이미지를 검색합니다.',
   },
   '기업용 검색': {
@@ -1984,7 +1984,7 @@ export const featureData: Record<
     description: '기업용 검색 기능을 제공합니다.',
   },
   'AI 검색 엔진': {
-    icon: Zap,
+    icon: Brain,
     description: 'AI 기반의 검색 엔진입니다.',
   },
   '실시간 정보': {
@@ -1996,27 +1996,27 @@ export const featureData: Record<
     description: '심층적인 연구를 수행합니다.',
   },
   '인용 기능': {
-    icon: Zap,
+    icon: Quote,
     description: '정보의 출처를 인용합니다.',
   },
   '데이터 분석': {
-    icon: Zap,
+    icon: ChartBar,
     description: '데이터를 분석합니다.',
   },
   '데이터 시각화': {
-    icon: Zap,
+    icon: ChartPie,
     description: '데이터를 시각적으로 표현합니다.',
   },
   '데이터베이스 분석': {
-    icon: Zap,
+    icon: Database,
     description: '데이터베이스를 분석합니다.',
   },
   '예측 모델링': {
-    icon: Zap,
+    icon: TrendingUp,
     description: '예측 모델을 생성합니다.',
   },
   '분석 기능': {
-    icon: Zap,
+    icon: Target,
     description: '다양한 분석 기능을 제공합니다.',
   },
   '검색 기능': {
@@ -2026,7 +2026,7 @@ export const featureData: Record<
 
   // AI 모델 & 처리
   '멀티모달 AI': {
-    icon: Zap,
+    icon: Layers,
     description: '텍스트, 이미지, 음성 등을 통합적으로 처리합니다.',
   },
   '추론 모델': {
@@ -2042,15 +2042,15 @@ export const featureData: Record<
     description: '새로운 콘텐츠를 생성하는 AI입니다.',
   },
   '대화형 AI': {
-    icon: Zap,
+    icon: MessageSquareText,
     description: '대화를 통해 상호작용하는 AI입니다.',
   },
   'AI 어시스턴트': {
-    icon: Zap,
+    icon: Bot,
     description: '사용자를 도와주는 AI 어시스턴트입니다.',
   },
   'AI 에이전트': {
-    icon: Zap,
+    icon: Cpu,
     description: '자율적으로 작업을 수행하는 AI 에이전트입니다.',
   },
   'AI 서포터': {
@@ -2058,11 +2058,11 @@ export const featureData: Record<
     description: '사용자를 지원하는 AI 서포터입니다.',
   },
   'AI 컴패니언': {
-    icon: Zap,
+    icon: Heart,
     description: '사용자의 동반자 역할을 하는 AI입니다.',
   },
   'AI 캐릭터': {
-    icon: Zap,
+    icon: User,
     description: 'AI로 구현된 캐릭터입니다.',
   },
   'AI 캐릭터 대화': {
@@ -2074,7 +2074,7 @@ export const featureData: Record<
     description: '다국어를 지원하는 AI입니다.',
   },
   '자연어 처리': {
-    icon: Zap,
+    icon: Type,
     description: '자연어를 처리하고 이해합니다.',
   },
   '수학 추론': {
@@ -2082,7 +2082,7 @@ export const featureData: Record<
     description: '수학적 추론을 수행합니다.',
   },
   '비전 기능': {
-    icon: Zap,
+    icon: Eye,
     description: '시각적 정보를 처리합니다.',
   },
   '연장된 사고': {
@@ -2094,11 +2094,11 @@ export const featureData: Record<
     description: '시스템 수준의 프롬프트를 지원합니다.',
   },
   'JSON 출력': {
-    icon: Zap,
+    icon: Code,
     description: 'JSON 형태로 출력을 제공합니다.',
   },
   '함수 호출': {
-    icon: Zap,
+    icon: Terminal,
     description: '함수를 호출하여 작업을 수행합니다.',
   },
   '모델 증류': {
@@ -2316,7 +2316,7 @@ export const featureData: Record<
 
   // 언어 & 지역화
   '다국어 지원': {
-    icon: Zap,
+    icon: Globe,
     description: '다양한 언어를 지원합니다.',
   },
   '25+ 언어 지원': {
@@ -2352,7 +2352,7 @@ export const featureData: Record<
     description: '30개 이상의 감정을 표현합니다.',
   },
   '언어 번역': {
-    icon: Zap,
+    icon: Languages,
     description: '언어를 번역합니다.',
   },
   '원클릭 번역': {
@@ -2480,11 +2480,11 @@ export const featureData: Record<
 
   // 플랫폼 & 접근성
   '모바일 앱': {
-    icon: Zap,
+    icon: Smartphone,
     description: '모바일 앱으로 사용할 수 있습니다.',
   },
   '웹 인터페이스': {
-    icon: Zap,
+    icon: Globe,
     description:
       '설치 없이 모든 브라우저에서 즉시 접근 가능한 반응형 웹 애플리케이션을 제공합니다.',
   },
@@ -2524,11 +2524,11 @@ export const featureData: Record<
 
   // 협업 & 공유
   '실시간 협업': {
-    icon: Zap,
+    icon: Users,
     description: '여러 사용자의 실시간 변경사항을 확인하고 충돌을 방지합니다.',
   },
   '공유 기능': {
-    icon: Zap,
+    icon: Share,
     description: '콘텐츠를 공유할 수 있습니다.',
   },
   '그룹 채팅': {
@@ -2549,7 +2549,7 @@ export const featureData: Record<
       '편집 중인 내용을 실시간으로 미리 확인하여 결과물을 즉시 검토하고 수정할 수 있습니다.',
   },
   '파일 업로드': {
-    icon: Zap,
+    icon: Upload,
     description: '다양한 파일 형식을 업로드할 수 있습니다.',
   },
   '메모 기능': {
@@ -2638,15 +2638,15 @@ export const featureData: Record<
 
   // 보안 & 개인정보
   '프라이버시 보호': {
-    icon: Zap,
+    icon: Shield,
     description: '사용자 개인정보를 보호합니다.',
   },
   '기업용 보안': {
-    icon: Zap,
+    icon: Lock,
     description: '엔터프라이즈급 보안 체계를 제공합니다.',
   },
   '보안 기능': {
-    icon: Zap,
+    icon: Shield,
     description: '전방위 보안 시스템을 구축합니다.',
   },
   '보안 및 규정 준수': {

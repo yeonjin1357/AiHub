@@ -16,6 +16,8 @@ export interface AIService {
   is_featured: boolean;
   created_at: string;
   updated_at: string;
+  average_rating?: number;
+  review_count?: number;
 }
 
 export interface Category {
@@ -32,7 +34,10 @@ export async function getServices(): Promise<AIService[]> {
 
   const { data, error } = await supabase
     .from('ai_services')
-    .select('*')
+    .select(`
+      *,
+      reviews:reviews(rating)
+    `)
     .order('is_featured', { ascending: false })
     .order('name', { ascending: true });
 
@@ -40,7 +45,23 @@ export async function getServices(): Promise<AIService[]> {
     throw new Error('Failed to fetch services');
   }
 
-  return data || [];
+  // 평점과 리뷰 수 계산
+  const servicesWithRatings = (data || []).map(service => {
+    const reviews = service.reviews || [];
+    const reviewCount = reviews.length;
+    const averageRating = reviewCount > 0 
+      ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+      : 0;
+
+    return {
+      ...service,
+      reviews: undefined, // reviews 필드 제거
+      review_count: reviewCount,
+      average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+    };
+  });
+
+  return servicesWithRatings;
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -65,7 +86,10 @@ export async function getServiceBySlug(
 
   const { data, error } = await supabase
     .from('ai_services')
-    .select('*')
+    .select(`
+      *,
+      reviews:reviews(rating)
+    `)
     .eq('slug', slug)
     .single();
 
@@ -76,7 +100,19 @@ export async function getServiceBySlug(
     throw new Error('Failed to fetch service');
   }
 
-  return data;
+  // 평점과 리뷰 수 계산
+  const reviews = data.reviews || [];
+  const reviewCount = reviews.length;
+  const averageRating = reviewCount > 0 
+    ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+    : 0;
+
+  return {
+    ...data,
+    reviews: undefined, // reviews 필드 제거
+    review_count: reviewCount,
+    average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+  };
 }
 
 export async function getServicesByCategory(
@@ -86,7 +122,10 @@ export async function getServicesByCategory(
 
   const { data, error } = await supabase
     .from('ai_services')
-    .select('*')
+    .select(`
+      *,
+      reviews:reviews(rating)
+    `)
     .eq('category_id', categoryId)
     .order('is_featured', { ascending: false })
     .order('name', { ascending: true });
@@ -95,7 +134,23 @@ export async function getServicesByCategory(
     throw new Error('Failed to fetch services');
   }
 
-  return data || [];
+  // 평점과 리뷰 수 계산
+  const servicesWithRatings = (data || []).map(service => {
+    const reviews = service.reviews || [];
+    const reviewCount = reviews.length;
+    const averageRating = reviewCount > 0 
+      ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+      : 0;
+
+    return {
+      ...service,
+      reviews: undefined, // reviews 필드 제거
+      review_count: reviewCount,
+      average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+    };
+  });
+
+  return servicesWithRatings;
 }
 
 export async function searchServices(query: string): Promise<AIService[]> {
@@ -103,7 +158,10 @@ export async function searchServices(query: string): Promise<AIService[]> {
 
   const { data, error } = await supabase
     .from('ai_services')
-    .select('*')
+    .select(`
+      *,
+      reviews:reviews(rating)
+    `)
     .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
     .order('is_featured', { ascending: false })
     .order('name', { ascending: true });
@@ -112,5 +170,21 @@ export async function searchServices(query: string): Promise<AIService[]> {
     throw new Error('Failed to search services');
   }
 
-  return data || [];
+  // 평점과 리뷰 수 계산
+  const servicesWithRatings = (data || []).map(service => {
+    const reviews = service.reviews || [];
+    const reviewCount = reviews.length;
+    const averageRating = reviewCount > 0 
+      ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+      : 0;
+
+    return {
+      ...service,
+      reviews: undefined, // reviews 필드 제거
+      review_count: reviewCount,
+      average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+    };
+  });
+
+  return servicesWithRatings;
 }

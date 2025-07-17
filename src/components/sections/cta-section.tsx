@@ -16,7 +16,7 @@ export function CTASection() {
             <Link href='/signup'>무료로 시작하기</Link>
           </Button>
           <Button size='lg' variant='outline' className='h-12 px-8'>
-            더 알아보기
+            <Link href='/services'>더 알아보기</Link>
           </Button>
         </div>
       </div>

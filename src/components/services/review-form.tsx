@@ -39,7 +39,7 @@ export function ReviewForm({ serviceId, onReviewSubmitted }: ReviewFormProps) {
     }
 
     setIsSubmitting(true);
-    toast.loading('리뷰를 작성하는 중...');
+    const loadingToast = toast.loading('리뷰를 작성하는 중...');
 
     try {
       const response = await fetch('/api/reviews', {
@@ -67,6 +67,7 @@ export function ReviewForm({ serviceId, onReviewSubmitted }: ReviewFormProps) {
     } catch (error) {
       toast.error('리뷰 작성 중 오류가 발생했습니다.');
     } finally {
+      toast.dismiss(loadingToast);
       setIsSubmitting(false);
     }
   };

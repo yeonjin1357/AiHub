@@ -6,10 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Search, Menu, User, LogOut, X, Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { SearchBar } from './search-bar';
+import { toast } from 'sonner';
 
 export function Header() {
   const { user, loading, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleCommunityClick = () => {
+    toast.info('커뮤니티 기능이 준비 중입니다. 곧 만나보실 수 있어요! 🚀');
+  };
 
   return (
     <header className='sticky top-0 z-50 w-full shadow-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
@@ -27,7 +32,10 @@ export function Header() {
               </span>
             </Link>
 
-            <span className='transition-colors text-foreground/60 hover:text-foreground/80'>
+            <span 
+              className='transition-colors text-foreground/60 hover:text-foreground/80 cursor-pointer'
+              onClick={handleCommunityClick}
+            >
               커뮤니티
             </span>
 
@@ -49,7 +57,7 @@ export function Header() {
           <div className='w-full flex-1 md:w-auto md:flex-none'>
             <SearchBar />
           </div>
-          <nav className='flex items-center space-x-2'>
+          <nav className='hidden md:flex items-center space-x-2'>
             {loading ? (
               <div className='h-9 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse' />
             ) : user ? (
@@ -95,7 +103,10 @@ export function Header() {
               >
                 서비스
               </Link>
-              <span className='text-foreground/80 hover:text-foreground transition-colors py-2'>
+              <span 
+                className='text-foreground/80 hover:text-foreground transition-colors py-2 cursor-pointer'
+                onClick={handleCommunityClick}
+              >
                 커뮤니티
               </span>
               <Link 

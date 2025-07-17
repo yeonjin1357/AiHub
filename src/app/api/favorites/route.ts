@@ -31,7 +31,8 @@ export async function GET(request: NextRequest) {
           is_featured,
           created_at,
           updated_at,
-          category_id
+          category_id,
+          reviews:reviews(rating)
         )
       `)
       .eq('user_id', user.id)
@@ -41,7 +42,29 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch favorites' }, { status: 500 });
     }
 
-    return NextResponse.json({ favorites });
+    // 평점과 리뷰 수 계산
+    const favoritesWithRatings = favorites?.map(favorite => {
+      if (favorite.ai_services) {
+        const reviews = favorite.ai_services.reviews || [];
+        const reviewCount = reviews.length;
+        const averageRating = reviewCount > 0 
+          ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+          : 0;
+
+        return {
+          ...favorite,
+          ai_services: {
+            ...favorite.ai_services,
+            reviews: undefined, // reviews 필드 제거
+            review_count: reviewCount,
+            average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+          }
+        };
+      }
+      return favorite;
+    }) || [];
+
+    return NextResponse.json({ favorites: favoritesWithRatings });
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
@@ -101,7 +124,8 @@ export async function POST(request: NextRequest) {
           is_featured,
           created_at,
           updated_at,
-          category_id
+          category_id,
+          reviews:reviews(rating)
         )
       `)
       .single();
@@ -127,6 +151,22 @@ export async function POST(request: NextRequest) {
         error: 'Failed to add favorite',
         details: error.message 
       }, { status: 500 });
+    }
+
+    // 평점과 리뷰 수 계산
+    if (favorite?.ai_services) {
+      const reviews = favorite.ai_services.reviews || [];
+      const reviewCount = reviews.length;
+      const averageRating = reviewCount > 0 
+        ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+        : 0;
+
+      favorite.ai_services = {
+        ...favorite.ai_services,
+        reviews: undefined, // reviews 필드 제거
+        review_count: reviewCount,
+        average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+      };
     }
 
     return NextResponse.json({ favorite }, { status: 201 });

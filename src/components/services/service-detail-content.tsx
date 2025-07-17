@@ -16,9 +16,20 @@ import {
   Clock,
   Award,
   ArrowRight,
+  CreditCard,
+  BookOpen,
+  PlayCircle,
+  Phone,
+  Code,
+  MessageCircle,
+  Rss,
+  Download,
+  Monitor,
 } from 'lucide-react';
 import { getFeatureData } from '@/lib/feature-icons';
 import { RelatedService } from '@/lib/related-services';
+import { getServiceLinks } from '@/lib/service-links';
+import { StarRating } from '@/components/ui/star-rating';
 import { ReviewForm } from './review-form';
 import { ReviewList } from './review-list';
 import { Button } from '@/components/ui/button';
@@ -42,14 +53,20 @@ interface ServiceDetailContentProps {
   relatedServices: RelatedService[];
 }
 
-export function ServiceDetailContent({ service, relatedServices }: ServiceDetailContentProps) {
+export function ServiceDetailContent({
+  service,
+  relatedServices,
+}: ServiceDetailContentProps) {
   const { user } = useAuth();
   const { isFavorited, toggleFavorite } = useFavorites();
   const [imageError, setImageError] = useState(false);
   const [reviewRefreshTrigger, setReviewRefreshTrigger] = useState(0);
+  const [reviewStats, setReviewStats] = useState({
+    averageRating: service.average_rating || 0,
+    reviewCount: service.review_count || 0
+  });
 
   const isServiceFavorited = isFavorited(service.id);
-
 
   const handleFavorite = async () => {
     if (!user) return;
@@ -58,8 +75,29 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
     });
   };
 
-  const handleReviewSubmitted = () => {
-    setReviewRefreshTrigger(prev => prev + 1);
+  const updateReviewStats = async () => {
+    try {
+      const response = await fetch(`/api/services/${service.id}/stats`);
+      if (response.ok) {
+        const stats = await response.json();
+        setReviewStats({
+          averageRating: stats.average_rating || 0,
+          reviewCount: stats.review_count || 0
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch updated review stats:', error);
+    }
+  };
+
+  const handleReviewSubmitted = async () => {
+    setReviewRefreshTrigger((prev) => prev + 1);
+    await updateReviewStats();
+  };
+
+  const handleReviewDeleted = async () => {
+    setReviewRefreshTrigger((prev) => prev + 1);
+    await updateReviewStats();
   };
 
   const getLogoElement = () => {
@@ -114,6 +152,34 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
 
   const pricing = getPricingDisplay();
 
+  // 서비스별 유용한 링크 가져오기
+  const serviceLinks = getServiceLinks(service.name, service.website_url);
+
+  const getIconForLinkType = (iconType: string) => {
+    switch (iconType) {
+      case 'pricing':
+        return CreditCard;
+      case 'docs':
+        return BookOpen;
+      case 'tutorial':
+        return PlayCircle;
+      case 'support':
+        return Phone;
+      case 'api':
+        return Code;
+      case 'community':
+        return MessageCircle;
+      case 'blog':
+        return Rss;
+      case 'download':
+        return Download;
+      case 'demo':
+        return Monitor;
+      default:
+        return ExternalLink;
+    }
+  };
+
   return (
     <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
       {/* Hero Section */}
@@ -144,6 +210,23 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
                       <Badge variant='outline'>{service.categories.name}</Badge>
                     )}
                   </div>
+                </div>
+              </div>
+
+              {/* 평점 및 리뷰 수 표시 */}
+              <div className='flex items-center gap-3 mb-6'>
+                <div className='flex items-center gap-2'>
+                  <StarRating 
+                    rating={reviewStats.averageRating} 
+                    size={20}
+                  />
+                  <span className='text-lg font-medium text-gray-900 dark:text-white'>
+                    {reviewStats.averageRating.toFixed(1)}
+                  </span>
+                </div>
+                <div className='flex items-center gap-1 text-gray-500 dark:text-gray-400'>
+                  <MessageCircle size={16} />
+                  <span>{reviewStats.reviewCount}개 리뷰</span>
                 </div>
               </div>
 
@@ -188,40 +271,50 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
               <Card className='border-gray-200 dark:border-gray-700 shadow-sm'>
                 <CardHeader className='pb-4'>
                   <CardTitle className='text-center text-lg'>
-                    서비스 정보
+                    유용한 링크
                   </CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-6'>
-                  <div className='grid grid-cols-2 gap-4 text-center'>
-                    <div className='p-5 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl border border-blue-200 dark:border-blue-800'>
-                      <div className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
-                        {service.pricing_type === 'free' ? '무료' : '프리미엄'}
-                      </div>
-                      <div className='text-sm text-blue-600/70 dark:text-blue-400/70 font-medium'>
-                        요금제
-                      </div>
-                    </div>
-                    <div className='p-5 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border border-green-200 dark:border-green-800'>
-                      <div className='text-2xl font-bold text-green-600 dark:text-green-400'>
-                        {service.features.length}+
-                      </div>
-                      <div className='text-sm text-green-600/70 dark:text-green-400/70 font-medium'>
-                        주요 기능
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className='pt-6 border-t border-gray-200 dark:border-gray-700 space-y-4'>
-                    <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400'>
-                      <Globe size={16} />웹 기반 서비스
-                    </div>
-                    <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400'>
-                      <Shield size={16} />
-                      데이터 보안 제공
-                    </div>
-                    <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400'>
-                      <Users size={16} />
-                      개인 및 팀 사용 가능
+                  <div className='pt-6 border-t border-gray-200 dark:border-gray-700 space-y-3'>
+                    <div className='grid grid-cols-1 gap-2'>
+                      {serviceLinks.map((link, index) => {
+                        const IconComponent = getIconForLinkType(link.icon);
+                        return (
+                          <Button
+                            key={index}
+                            variant='ghost'
+                            size='sm'
+                            asChild
+                            className='h-auto p-3 justify-start text-left hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                          >
+                            <a
+                              href={link.url}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              className='flex items-center gap-3'
+                            >
+                              <div className='w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0'>
+                                <IconComponent
+                                  size={14}
+                                  className='text-blue-600 dark:text-blue-400'
+                                />
+                              </div>
+                              <div className='flex-1 min-w-0'>
+                                <div className='text-sm font-medium text-gray-900 dark:text-white'>
+                                  {link.label}
+                                </div>
+                                <div className='text-xs text-gray-500 dark:text-gray-400 truncate'>
+                                  {link.description}
+                                </div>
+                              </div>
+                              <ExternalLink
+                                size={12}
+                                className='text-gray-400 flex-shrink-0'
+                              />
+                            </a>
+                          </Button>
+                        );
+                      })}
                     </div>
                   </div>
                 </CardContent>
@@ -491,13 +584,14 @@ export function ServiceDetailContent({ service, relatedServices }: ServiceDetail
           <TabsContent value='reviews' className='space-y-8'>
             <div className='grid lg:grid-cols-3 gap-8'>
               <div className='lg:col-span-2'>
-                <ReviewList 
-                  serviceId={service.id} 
+                <ReviewList
+                  serviceId={service.id}
                   refreshTrigger={reviewRefreshTrigger}
+                  onReviewDeleted={handleReviewDeleted}
                 />
               </div>
               <div>
-                <ReviewForm 
+                <ReviewForm
                   serviceId={service.id}
                   onReviewSubmitted={handleReviewSubmitted}
                 />

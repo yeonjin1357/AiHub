@@ -9,6 +9,8 @@ import {
   DollarSign,
   Check,
   Zap,
+  Settings,
+  MessageCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +24,7 @@ import { useState } from 'react';
 import { AIService, Category } from '@/lib/api/services';
 import { useAuth } from '@/contexts/auth-context';
 import { useFavorites } from '@/contexts/favorites-context';
+import { StarRating } from '@/components/ui/star-rating';
 
 interface ServiceCardProps {
   service: AIService;
@@ -34,9 +37,11 @@ export function ServiceCard({
   category,
   viewMode = 'grid',
 }: ServiceCardProps) {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const { isFavorited, toggleFavorite } = useFavorites();
   const [imageError, setImageError] = useState(false);
+
+  const isAdmin = userProfile?.role === 'ADMIN';
 
   const handleFavorite = async () => {
     if (!user) return;
@@ -170,10 +175,27 @@ export function ServiceCard({
                   </span>
                 ))}
               </div>
+
+              {/* 평점 및 리뷰 수 */}
+              <div className='flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-4'>
+                <div className='flex items-center gap-1'>
+                  <StarRating 
+                    rating={service.average_rating || 0} 
+                    size={14}
+                  />
+                  <span className='font-medium'>
+                    {(service.average_rating || 0).toFixed(1)}
+                  </span>
+                </div>
+                <div className='flex items-center gap-1'>
+                  <MessageCircle size={12} />
+                  <span>{service.review_count || 0}개 리뷰</span>
+                </div>
+              </div>
             </div>
 
             <div className='flex items-center gap-2 ml-4'>
-              {user && (
+              {user && !isAdmin && (
                 <Button
                   variant='ghost'
                   size='sm'
@@ -186,6 +208,18 @@ export function ServiceCard({
                     size={16}
                     fill={isServiceFavorited ? 'currentColor' : 'none'}
                   />
+                </Button>
+              )}
+
+              {isAdmin && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  asChild
+                >
+                  <Link href={`/admin/services/${service.id}/edit` as any}>
+                    <Settings size={16} />
+                  </Link>
                 </Button>
               )}
 
@@ -238,25 +272,40 @@ export function ServiceCard({
             </div>
           </div>
 
-          {user && (
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={handleFavorite}
-              className={`${
-                isServiceFavorited ? 'text-red-500' : 'text-gray-400'
-              } ${
-                isServiceFavorited
-                  ? 'opacity-100'
-                  : 'opacity-0 group-hover:opacity-100'
-              } transition-opacity`}
-            >
-              <Heart
-                size={16}
-                fill={isServiceFavorited ? 'currentColor' : 'none'}
-              />
-            </Button>
-          )}
+          <div className='flex items-center gap-1'>
+            {user && !isAdmin && (
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={handleFavorite}
+                className={`${
+                  isServiceFavorited ? 'text-red-500' : 'text-gray-400'
+                } ${
+                  isServiceFavorited
+                    ? 'opacity-100'
+                    : 'opacity-0 group-hover:opacity-100'
+                } transition-opacity`}
+              >
+                <Heart
+                  size={16}
+                  fill={isServiceFavorited ? 'currentColor' : 'none'}
+                />
+              </Button>
+            )}
+
+            {isAdmin && (
+              <Button
+                variant='ghost'
+                size='sm'
+                asChild
+                className='opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-600'
+              >
+                <Link href={`/admin/services/${service.id}/edit` as any}>
+                  <Settings size={16} />
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
       </CardHeader>
 
@@ -272,7 +321,7 @@ export function ServiceCard({
           </Badge>
         </div>
 
-        <div className='space-y-1'>
+        <div className='space-y-1 mb-3'>
           {service.features.slice(0, 2).map((feature, index) => (
             <div
               key={index}
@@ -282,6 +331,23 @@ export function ServiceCard({
               {feature}
             </div>
           ))}
+        </div>
+
+        {/* 평점 및 리뷰 수 */}
+        <div className='flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400'>
+          <div className='flex items-center gap-1'>
+            <StarRating 
+              rating={service.average_rating || 0} 
+              size={12}
+            />
+            <span className='font-medium'>
+              {(service.average_rating || 0).toFixed(1)}
+            </span>
+          </div>
+          <div className='flex items-center gap-1'>
+            <MessageCircle size={10} />
+            <span>{service.review_count || 0}</span>
+          </div>
         </div>
       </CardContent>
 
