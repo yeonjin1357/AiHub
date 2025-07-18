@@ -7,13 +7,13 @@ import Link from 'next/link';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 
 interface AdminServiceFunctionsPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function AdminServiceFunctionsPage({ params }: AdminServiceFunctionsPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const supabase = await createClient();
   
   const { data: { user } } = await supabase.auth.getUser();

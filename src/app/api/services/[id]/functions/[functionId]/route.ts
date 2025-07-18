@@ -4,10 +4,10 @@ import { createClient } from '@/utils/supabase/server';
 // PATCH: 개별 기능 수정
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string; functionId: string } }
+  { params }: { params: Promise<{ id: string; functionId: string }> }
 ) {
   try {
-    const { id: serviceId, functionId } = params;
+    const { id: serviceId, functionId } = await params;
     const supabase = await createClient();
     
     // 관리자 권한 확인
@@ -64,10 +64,10 @@ export async function PATCH(
 // DELETE: 개별 기능 삭제
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; functionId: string } }
+  { params }: { params: Promise<{ id: string; functionId: string }> }
 ) {
   try {
-    const { id: serviceId, functionId } = params;
+    const { id: serviceId, functionId } = await params;
     const supabase = await createClient();
     
     // 관리자 권한 확인

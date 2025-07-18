@@ -4,10 +4,10 @@ import { createClient } from '@/utils/supabase/server';
 // GET: 서비스 기능 목록 조회
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const serviceId = params.id;
+    const serviceId = (await params).id;
     console.log('Fetching functions for service:', serviceId);
     
     const supabase = await createClient();
@@ -73,10 +73,10 @@ export async function GET(
 // POST: 새 기능 추가
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const serviceId = params.id;
+    const serviceId = (await params).id;
     const supabase = await createClient();
     
     // 관리자 권한 확인
@@ -138,10 +138,10 @@ export async function POST(
 // PUT: 기능 일괄 업데이트
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const serviceId = params.id;
+    const serviceId = (await params).id;
     const supabase = await createClient();
     
     // 관리자 권한 확인
