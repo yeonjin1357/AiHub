@@ -18,7 +18,6 @@ import {
   ArrowRight,
   MessageCircle,
 } from 'lucide-react';
-import { getFeatureData } from '@/lib/feature-icons';
 import { RelatedService } from '@/lib/related-services';
 import { StarRating } from '@/components/ui/star-rating';
 import { ReviewForm } from './review-form';
@@ -32,6 +31,7 @@ import { useFavorites } from '@/contexts/favorites-context';
 import { AIService } from '@/lib/api/services';
 import { ServiceFeaturesDisplay } from '@/components/service-features-display';
 import { ServiceLinksDisplay } from '@/components/service-links-display';
+import { ServiceFunctionsDisplay } from '@/components/service-functions-display';
 
 interface ServiceDetailContentProps {
   service: AIService & {
@@ -401,35 +401,7 @@ export function ServiceDetailContent({
 
           {/* Features Tab */}
           <TabsContent value='features' className='space-y-8'>
-            <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {service.features.map((feature, index) => {
-                const featureData = getFeatureData(feature);
-                const FeatureIcon = featureData.icon;
-                return (
-                  <Card
-                    key={index}
-                    className='border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 group bg-white'
-                  >
-                    <CardContent className='p-6'>
-                      <div className='flex items-center gap-3 mb-4'>
-                        <div className='w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center border border-blue-200 group-hover:scale-110 transition-transform'>
-                          <FeatureIcon
-                            size={20}
-                            className='text-blue-600'
-                          />
-                        </div>
-                        <h3 className='font-semibold text-gray-900 group-hover:text-blue-600 transition-colors'>
-                          {feature}
-                        </h3>
-                      </div>
-                      <p className='text-sm text-gray-600 leading-relaxed'>
-                        {featureData.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+            <ServiceFunctionsDisplay serviceId={service.id} />
           </TabsContent>
 
           {/* Reviews Tab */}

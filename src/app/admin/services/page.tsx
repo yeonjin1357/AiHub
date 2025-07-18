@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ExternalLink, Settings, Link as LinkIcon } from 'lucide-react';
+import { ExternalLink, Settings, Link as LinkIcon, Zap } from 'lucide-react';
 
 export default async function AdminServicesPage() {
   const supabase = await createClient();
@@ -86,26 +86,32 @@ export default async function AdminServicesPage() {
                     {service.description}
                   </p>
                   <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <Button asChild size="sm" className="flex-1">
-                        <Link href={`/admin/services/${service.slug}/features`}>
-                          <Settings className="h-4 w-4 mr-2" />
-                          특징 관리
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/admin/services/${service.slug}/functions`}>
+                          <Zap className="h-4 w-4 mr-1" />
+                          기능
                         </Link>
                       </Button>
-                      <Button asChild size="sm" className="flex-1">
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/admin/services/${service.slug}/features`}>
+                          <Settings className="h-4 w-4 mr-1" />
+                          특징
+                        </Link>
+                      </Button>
+                      <Button asChild size="sm" variant="outline">
                         <Link href={`/admin/services/${service.slug}/links`}>
-                          <LinkIcon className="h-4 w-4 mr-2" />
-                          링크 관리
+                          <LinkIcon className="h-4 w-4 mr-1" />
+                          링크
+                        </Link>
+                      </Button>
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/services/${service.slug}`} target="_blank">
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          보기
                         </Link>
                       </Button>
                     </div>
-                    <Button asChild size="sm" variant="outline" className="w-full">
-                      <Link href={`/services/${service.slug}`} target="_blank">
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        서비스 보기
-                      </Link>
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
