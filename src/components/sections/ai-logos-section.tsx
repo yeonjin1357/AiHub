@@ -52,13 +52,13 @@ const aiServices = [
 
 export function AILogosSection() {
   return (
-    <section className='py-16 px-4 sm:px-6 lg:px-8 bg-white/50 dark:bg-slate-900/50 backdrop-blur'>
+    <section className='py-16 px-4 sm:px-6 lg:px-8 bg-white/50 backdrop-blur'>
       <div className='mx-auto max-w-7xl'>
         <div className='text-center mb-12'>
-          <p className='text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
+          <p className='text-sm font-semibold text-gray-500 uppercase tracking-wide'>
             인기 AI 서비스 모음
           </p>
-          <h2 className='mt-2 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl'>
+          <h2 className='mt-2 text-2xl font-bold text-gray-900 sm:text-3xl'>
             개발자부터 창작자까지 모두가 사용하는
           </h2>
         </div>
@@ -85,12 +85,12 @@ export function AILogosSection() {
           </div>
 
           {/* 그라데이션 페이드 */}
-          <div className='absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white/80 dark:from-slate-900/80 to-transparent pointer-events-none z-10'></div>
-          <div className='absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white/80 dark:from-slate-900/80 to-transparent pointer-events-none z-10'></div>
+          <div className='absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white/80 to-transparent pointer-events-none z-10'></div>
+          <div className='absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white/80 to-transparent pointer-events-none z-10'></div>
         </div>
 
         <div className='text-center mt-8'>
-          <p className='text-sm text-gray-500 dark:text-gray-400'>
+          <p className='text-sm text-gray-500'>
             검증된 AI 도구들을 한눈에 확인하세요
           </p>
         </div>

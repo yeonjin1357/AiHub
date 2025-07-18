@@ -49,7 +49,7 @@ export function ServiceSort({ value, onChange }: ServiceSortProps) {
         </Button>
       </DropdownMenuTrigger>
       
-      <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+      <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg">
         {sortOptions.map((option) => {
           const Icon = option.icon;
           return (
@@ -57,7 +57,7 @@ export function ServiceSort({ value, onChange }: ServiceSortProps) {
               key={option.value}
               onClick={() => onChange(option.value)}
               className={`flex items-center gap-3 ${
-                value === option.value ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                value === option.value ? 'bg-blue-50' : ''
               }`}
             >
               <Icon size={16} className="text-gray-500" />

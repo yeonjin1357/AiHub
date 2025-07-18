@@ -61,7 +61,7 @@ export function PricingTypeFilter({
 
   return (
     <div className='flex flex-wrap items-center gap-2 mb-4'>
-      <span className='text-sm font-medium text-gray-700 dark:text-gray-300 mr-2'>
+      <span className='text-sm font-medium text-gray-700 mr-2'>
         가격 유형:
       </span>
       
@@ -84,7 +84,7 @@ export function PricingTypeFilter({
                   className={`ml-2 h-5 ${
                     isSelected 
                       ? 'bg-white/20 text-white border-white/30' 
-                      : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+                      : 'bg-gray-100 text-gray-600'
                   }`}
                 >
                   {count}

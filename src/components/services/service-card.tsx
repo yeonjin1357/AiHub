@@ -98,19 +98,19 @@ export function ServiceCard({
           return {
             label: '무료',
             color:
-              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+              'bg-green-100 text-green-800',
           };
         case 'freemium':
           return {
             label: '프리미엄',
             color:
-              'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+              'bg-blue-100 text-blue-800',
           };
         case 'paid':
           return {
             label: '유료',
             color:
-              'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+              'bg-orange-100 text-orange-800',
           };
       }
     }
@@ -119,13 +119,13 @@ export function ServiceCard({
     if (service.pricing_type === 'freemium') {
       return {
         label: '프리미엄',
-        color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+        color: 'bg-blue-100 text-blue-800',
       };
     }
     return {
       label: '유료',
       color:
-        'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+        'bg-orange-100 text-orange-800',
     };
   };
 
@@ -133,8 +133,8 @@ export function ServiceCard({
 
   if (viewMode === 'list') {
     return (
-      <Card className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-200 border-gray-200 dark:border-gray-700'>
-        <div className='md:w-48 p-6 flex items-center justify-center bg-gray-50 dark:bg-gray-800'>
+      <Card className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-200 border-gray-200'>
+        <div className='md:w-48 p-6 flex items-center justify-center bg-gray-50'>
           {getLogoElement()}
         </div>
 
@@ -142,11 +142,11 @@ export function ServiceCard({
           <div className='flex items-start justify-between'>
             <div className='flex-1'>
               <div className='flex items-center gap-2 mb-2'>
-                <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+                <h3 className='text-xl font-semibold text-gray-900'>
                   {service.name}
                 </h3>
                 {service.is_featured && (
-                  <Badge className='bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'>
+                  <Badge className='bg-yellow-100 text-yellow-800'>
                     <Star size={12} className='mr-1' />
                     추천
                   </Badge>
@@ -155,12 +155,12 @@ export function ServiceCard({
               </div>
 
               {category && (
-                <div className='text-sm text-gray-500 dark:text-gray-400 mb-2'>
+                <div className='text-sm text-gray-500 mb-2'>
                   {category.name}
                 </div>
               )}
 
-              <p className='text-gray-600 dark:text-gray-300 mb-4'>
+              <p className='text-gray-600 mb-4'>
                 {service.description}
               </p>
 
@@ -168,7 +168,7 @@ export function ServiceCard({
                 {service.features.slice(0, 3).map((feature, index) => (
                   <span
                     key={index}
-                    className='inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                    className='inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800'
                   >
                     <Check size={10} className='mr-1' />
                     {feature}
@@ -177,7 +177,7 @@ export function ServiceCard({
               </div>
 
               {/* 평점 및 리뷰 수 */}
-              <div className='flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-4'>
+              <div className='flex items-center gap-3 text-sm text-gray-500 mb-4'>
                 <div className='flex items-center gap-1'>
                   <StarRating 
                     rating={service.average_rating || 0} 
@@ -200,8 +200,7 @@ export function ServiceCard({
                   variant='ghost'
                   size='sm'
                   onClick={handleFavorite}
-                  className={
-                    isServiceFavorited ? 'text-red-500' : 'text-gray-400'
+                  className={isServiceFavorited ?'text-red-500' : 'text-gray-400'
                   }
                 >
                   <Heart
@@ -247,7 +246,7 @@ export function ServiceCard({
   }
 
   return (
-    <Card className='group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 overflow-hidden border-gray-200 dark:border-gray-700'>
+    <Card className='group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 overflow-hidden border-gray-200'>
       <CardHeader className='pb-3'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
@@ -261,11 +260,11 @@ export function ServiceCard({
             </div>
 
             <div className='flex-1'>
-              <h3 className='font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis'>
+              <h3 className='font-semibold text-gray-900 group-hover:text-blue-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis'>
                 {service.name}
               </h3>
               {category && (
-                <p className='text-sm text-gray-500 dark:text-gray-400'>
+                <p className='text-sm text-gray-500'>
                   {category.name}
                 </p>
               )}
@@ -310,13 +309,12 @@ export function ServiceCard({
       </CardHeader>
 
       <CardContent className='pb-4'>
-        <p className='text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2'>
+        <p className='text-sm text-gray-600 mb-3 line-clamp-2'>
           {service.description}
         </p>
 
         <div className='flex items-center gap-2 mb-3'>
-          <Badge className={pricing.color}>
-            <DollarSign size={10} className='mr-1' />
+          <Badge className={pricing.color}> <DollarSign size={10} className='mr-1' />
             {pricing.label}
           </Badge>
         </div>
@@ -325,7 +323,7 @@ export function ServiceCard({
           {service.features.slice(0, 2).map((feature, index) => (
             <div
               key={index}
-              className='flex items-center text-xs text-gray-500 dark:text-gray-400'
+              className='flex items-center text-xs text-gray-500'
             >
               <Check size={10} className='mr-2 text-green-500' />
               {feature}
@@ -334,7 +332,7 @@ export function ServiceCard({
         </div>
 
         {/* 평점 및 리뷰 수 */}
-        <div className='flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400'>
+        <div className='flex items-center gap-2 text-xs text-gray-500'>
           <div className='flex items-center gap-1'>
             <StarRating 
               rating={service.average_rating || 0} 

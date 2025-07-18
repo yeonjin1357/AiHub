@@ -16,19 +16,10 @@ import {
   Clock,
   Award,
   ArrowRight,
-  CreditCard,
-  BookOpen,
-  PlayCircle,
-  Phone,
-  Code,
   MessageCircle,
-  Rss,
-  Download,
-  Monitor,
 } from 'lucide-react';
 import { getFeatureData } from '@/lib/feature-icons';
 import { RelatedService } from '@/lib/related-services';
-import { getServiceLinks } from '@/lib/service-links';
 import { StarRating } from '@/components/ui/star-rating';
 import { ReviewForm } from './review-form';
 import { ReviewList } from './review-list';
@@ -40,6 +31,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { useFavorites } from '@/contexts/favorites-context';
 import { AIService } from '@/lib/api/services';
 import { ServiceFeaturesDisplay } from '@/components/service-features-display';
+import { ServiceLinksDisplay } from '@/components/service-links-display';
 
 interface ServiceDetailContentProps {
   service: AIService & {
@@ -128,63 +120,35 @@ export function ServiceDetailContent({
         return {
           label: '무료',
           color:
-            'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+            'bg-green-100 text-green-800',
         };
       case 'freemium':
         return {
           label: '프리미엄',
           color:
-            'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+            'bg-blue-100 text-blue-800',
         };
       case 'paid':
         return {
           label: '유료',
           color:
-            'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+            'bg-orange-100 text-orange-800',
         };
       default:
         return {
           label: '프리미엄',
           color:
-            'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+            'bg-blue-100 text-blue-800',
         };
     }
   };
 
   const pricing = getPricingDisplay();
 
-  // 서비스별 유용한 링크 가져오기
-  const serviceLinks = getServiceLinks(service.name, service.website_url);
-
-  const getIconForLinkType = (iconType: string) => {
-    switch (iconType) {
-      case 'pricing':
-        return CreditCard;
-      case 'docs':
-        return BookOpen;
-      case 'tutorial':
-        return PlayCircle;
-      case 'support':
-        return Phone;
-      case 'api':
-        return Code;
-      case 'community':
-        return MessageCircle;
-      case 'blog':
-        return Rss;
-      case 'download':
-        return Download;
-      case 'demo':
-        return Monitor;
-      default:
-        return ExternalLink;
-    }
-  };
-
   return (
-    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
+    <div className='min-h-screen bg-gray-50'>
       {/* Hero Section */}
-      <section className='bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700'>
+      <section className='bg-white border-b border-gray-100'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
           <div className='grid lg:grid-cols-2 gap-8 items-center'>
             <div>
@@ -192,19 +156,18 @@ export function ServiceDetailContent({
                 {getLogoElement()}
                 <div>
                   <div className='flex items-center gap-3 mb-2'>
-                    <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
+                    <h1 className='text-3xl font-bold text-gray-900'>
                       {service.name}
                     </h1>
                     {service.is_featured && (
-                      <Badge className='bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'>
+                      <Badge className='bg-yellow-100 text-yellow-800'>
                         <Star size={14} className='mr-1' />
                         추천
                       </Badge>
                     )}
                   </div>
                   <div className='flex items-center gap-3'>
-                    <Badge className={pricing.color}>
-                      <DollarSign size={12} className='mr-1' />
+                    <Badge className={pricing.color}> <DollarSign size={12} className='mr-1' />
                       {pricing.label}
                     </Badge>
                     {service.categories && (
@@ -221,17 +184,17 @@ export function ServiceDetailContent({
                     rating={reviewStats.averageRating} 
                     size={20}
                   />
-                  <span className='text-lg font-medium text-gray-900 dark:text-white'>
+                  <span className='text-lg font-medium text-gray-900'>
                     {reviewStats.averageRating.toFixed(1)}
                   </span>
                 </div>
-                <div className='flex items-center gap-1 text-gray-500 dark:text-gray-400'>
+                <div className='flex items-center gap-1 text-gray-500'>
                   <MessageCircle size={16} />
                   <span>{reviewStats.reviewCount}개 리뷰</span>
                 </div>
               </div>
 
-              <p className='text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed'>
+              <p className='text-lg text-gray-600 mb-6 leading-relaxed'>
                 {service.description}
               </p>
 
@@ -267,59 +230,14 @@ export function ServiceDetailContent({
               </div>
             </div>
 
-            {/* Stats Card */}
+            {/* Service Links Card */}
             <div className='lg:pl-8'>
-              <Card className='border-gray-200 dark:border-gray-700 shadow-sm'>
-                <CardHeader className='pb-4'>
-                  <CardTitle className='text-center text-lg'>
-                    유용한 링크
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className='space-y-6'>
-                  <div className='pt-6 border-t border-gray-200 dark:border-gray-700 space-y-3'>
-                    <div className='grid grid-cols-1 gap-2'>
-                      {serviceLinks.map((link, index) => {
-                        const IconComponent = getIconForLinkType(link.icon);
-                        return (
-                          <Button
-                            key={index}
-                            variant='ghost'
-                            size='sm'
-                            asChild
-                            className='h-auto p-3 justify-start text-left hover:bg-gray-50 dark:hover:bg-gray-800/50'
-                          >
-                            <a
-                              href={link.url}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                              className='flex items-center gap-3'
-                            >
-                              <div className='w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0'>
-                                <IconComponent
-                                  size={14}
-                                  className='text-blue-600 dark:text-blue-400'
-                                />
-                              </div>
-                              <div className='flex-1 min-w-0'>
-                                <div className='text-sm font-medium text-gray-900 dark:text-white'>
-                                  {link.label}
-                                </div>
-                                <div className='text-xs text-gray-500 dark:text-gray-400 truncate'>
-                                  {link.description}
-                                </div>
-                              </div>
-                              <ExternalLink
-                                size={12}
-                                className='text-gray-400 flex-shrink-0'
-                              />
-                            </a>
-                          </Button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <ServiceLinksDisplay 
+                serviceId={service.id}
+                serviceSlug={service.slug}
+                serviceName={service.name}
+                websiteUrl={service.website_url}
+              />
             </div>
           </div>
         </div>
@@ -329,22 +247,22 @@ export function ServiceDetailContent({
       <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <Tabs defaultValue='overview' className='space-y-10'>
           <div className='flex justify-center'>
-            <TabsList className='grid w-full max-w-md grid-cols-3 h-12 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl'>
+            <TabsList className='grid w-full max-w-md grid-cols-3 h-12 bg-gray-100 p-1 rounded-xl'>
               <TabsTrigger
                 value='overview'
-                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-blue-400 rounded-lg transition-all'
+                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-lg transition-all'
               >
                 개요
               </TabsTrigger>
               <TabsTrigger
                 value='features'
-                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-blue-400 rounded-lg transition-all'
+                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-lg transition-all'
               >
                 기능
               </TabsTrigger>
               <TabsTrigger
                 value='reviews'
-                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-blue-400 rounded-lg transition-all'
+                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-lg transition-all'
               >
                 리뷰
               </TabsTrigger>
@@ -355,13 +273,13 @@ export function ServiceDetailContent({
           <TabsContent value='overview' className='space-y-8'>
             <div className='grid lg:grid-cols-3 gap-8'>
               <div className='lg:col-span-2 space-y-8'>
-                <Card className='border-gray-200 dark:border-gray-700 shadow-sm'>
+                <Card className='border-gray-100 shadow-sm bg-white'>
                   <CardHeader className='pb-4'>
                     <CardTitle className='flex items-center gap-2 text-xl'>
-                      <div className='p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg'>
+                      <div className='p-2 bg-blue-100 rounded-lg'>
                         <Zap
                           size={20}
-                          className='text-blue-600 dark:text-blue-400'
+                          className='text-blue-600'
                         />
                       </div>
                       주요 기능
@@ -386,13 +304,13 @@ export function ServiceDetailContent({
               </div>
 
               <div className='space-y-8'>
-                <Card className='border-gray-200 dark:border-gray-700 shadow-sm'>
+                <Card className='border-gray-100 shadow-sm bg-white'>
                   <CardHeader className='pb-4'>
                     <CardTitle className='flex items-center gap-2 text-lg'>
-                      <div className='p-2 bg-green-100 dark:bg-green-900/30 rounded-lg'>
+                      <div className='p-2 bg-green-100 rounded-lg'>
                         <Clock
                           size={18}
-                          className='text-green-600 dark:text-green-400'
+                          className='text-green-600'
                         />
                       </div>
                       최근 업데이트
@@ -400,21 +318,21 @@ export function ServiceDetailContent({
                   </CardHeader>
                   <CardContent>
                     <div className='space-y-3 text-sm'>
-                      <div className='pb-3 border-b border-gray-200 dark:border-gray-700'>
+                      <div className='pb-3 border-b border-gray-100'>
                         <div className='font-medium'>새로운 기능 추가</div>
-                        <div className='text-gray-600 dark:text-gray-400'>
+                        <div className='text-gray-600'>
                           2025년 1월
                         </div>
                       </div>
-                      <div className='pb-3 border-b border-gray-200 dark:border-gray-700'>
+                      <div className='pb-3 border-b border-gray-100'>
                         <div className='font-medium'>성능 개선</div>
-                        <div className='text-gray-600 dark:text-gray-400'>
+                        <div className='text-gray-600'>
                           2024년 12월
                         </div>
                       </div>
                       <div>
                         <div className='font-medium'>UI/UX 개선</div>
-                        <div className='text-gray-600 dark:text-gray-400'>
+                        <div className='text-gray-600'>
                           2024년 11월
                         </div>
                       </div>
@@ -422,7 +340,7 @@ export function ServiceDetailContent({
                   </CardContent>
                 </Card>
 
-                <Card className='border-gray-200 dark:border-gray-700 shadow-sm'>
+                <Card className='border-gray-100 shadow-sm bg-white'>
                   <CardHeader className='pb-4'>
                     <CardTitle className='text-lg'>관련 서비스</CardTitle>
                   </CardHeader>
@@ -435,8 +353,8 @@ export function ServiceDetailContent({
                             href={`/services/${relatedService.slug}`}
                             className='block'
                           >
-                            <div className='flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-lg hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all cursor-pointer border border-transparent hover:border-blue-200 dark:hover:border-blue-700 group'>
-                              <div className='w-10 h-10 rounded-lg bg-white dark:bg-gray-800 flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-200 dark:border-gray-600'>
+                            <div className='flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-blue-100 transition-all cursor-pointer border border-transparent hover:border-blue-200 group'>
+                              <div className='w-10 h-10 rounded-lg bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100'>
                                 <img
                                   src={relatedService.logo_url}
                                   alt={`${relatedService.name} logo`}
@@ -448,15 +366,15 @@ export function ServiceDetailContent({
                                       relatedService.name.charAt(0);
                                   }}
                                 />
-                                <span className='text-xs font-bold text-gray-600 dark:text-gray-400 hidden'>
+                                <span className='text-xs font-bold text-gray-600 hidden'>
                                   {relatedService.name.charAt(0)}
                                 </span>
                               </div>
                               <div className='flex-1 min-w-0'>
-                                <div className='text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'>
+                                <div className='text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors'>
                                   {relatedService.name}
                                 </div>
-                                <div className='text-xs text-gray-500 dark:text-gray-400 truncate'>
+                                <div className='text-xs text-gray-500 truncate'>
                                   {relatedService.description}
                                 </div>
                               </div>
@@ -468,7 +386,7 @@ export function ServiceDetailContent({
                           </Link>
                         ))
                       ) : (
-                        <div className='text-center py-8 text-gray-500 dark:text-gray-400'>
+                        <div className='text-center py-8 text-gray-500'>
                           <div className='text-sm'>
                             관련 서비스 정보가 준비 중입니다.
                           </div>
@@ -490,21 +408,21 @@ export function ServiceDetailContent({
                 return (
                   <Card
                     key={index}
-                    className='border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 group'
+                    className='border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 group bg-white'
                   >
                     <CardContent className='p-6'>
                       <div className='flex items-center gap-3 mb-4'>
-                        <div className='w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 rounded-xl flex items-center justify-center border border-blue-200 dark:border-blue-700 group-hover:scale-110 transition-transform'>
+                        <div className='w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center border border-blue-200 group-hover:scale-110 transition-transform'>
                           <FeatureIcon
                             size={20}
-                            className='text-blue-600 dark:text-blue-400'
+                            className='text-blue-600'
                           />
                         </div>
-                        <h3 className='font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'>
+                        <h3 className='font-semibold text-gray-900 group-hover:text-blue-600 transition-colors'>
                           {feature}
                         </h3>
                       </div>
-                      <p className='text-sm text-gray-600 dark:text-gray-400 leading-relaxed'>
+                      <p className='text-sm text-gray-600 leading-relaxed'>
                         {featureData.description}
                       </p>
                     </CardContent>

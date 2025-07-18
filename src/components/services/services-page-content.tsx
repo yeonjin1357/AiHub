@@ -109,19 +109,19 @@ export function ServicesPageContent() {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* 헤더 섹션 */}
         <div className='text-center mb-8'>
-          <h1 className='text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl'>
+          <h1 className='text-3xl font-bold text-gray-900 sm:text-4xl'>
             AI 서비스 카탈로그
           </h1>
-          <p className='mt-3 text-xl text-gray-500 dark:text-gray-400'>
+          <p className='mt-3 text-xl text-gray-500'>
             최고의 AI 도구들을 한눈에 비교하고 찾아보세요
           </p>
-          <p className='mt-2 text-sm text-gray-400 dark:text-gray-500'>
+          <p className='mt-2 text-sm text-gray-400'>
             총 {services.length}개의 AI 서비스 • 검색 결과 {filteredServices.length}개
           </p>
         </div>
 
         {/* 검색 및 필터 */}
-        <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm mb-8 border border-gray-200 dark:border-gray-700'>
+        <div className='bg-white rounded-lg p-6 shadow-sm mb-8 border border-gray-200'>
           <div className='flex flex-col lg:flex-row gap-4'>
             {/* 검색 */}
             <div className='flex-1'>
@@ -137,13 +137,13 @@ export function ServicesPageContent() {
               <ServiceSort value={sortBy} onChange={setSortBy} />
 
               {/* 뷰 모드 */}
-              <div className='flex rounded-lg border border-gray-300 dark:border-gray-600'>
+              <div className='flex rounded-lg border border-gray-200'>
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-l-lg ${
                     viewMode === 'grid'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                      : 'bg-white text-gray-700'
                   }`}
                 >
                   <Grid size={20} />
@@ -153,7 +153,7 @@ export function ServicesPageContent() {
                   className={`p-2 rounded-r-lg ${
                     viewMode === 'list'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                      : 'bg-white text-gray-700'
                   }`}
                 >
                   <List size={20} />
@@ -199,17 +199,16 @@ export function ServicesPageContent() {
             {filteredServices.length === 0 ? (
               <div className='text-center py-12'>
                 <Search className='mx-auto h-12 w-12 text-gray-400' />
-                <h3 className='mt-4 text-lg font-medium text-gray-900 dark:text-white'>
+                <h3 className='mt-4 text-lg font-medium text-gray-900'>
                   검색 결과가 없습니다
                 </h3>
-                <p className='mt-2 text-gray-500 dark:text-gray-400'>
+                <p className='mt-2 text-gray-500'>
                   다른 키워드로 검색해보거나 필터를 변경해보세요.
                 </p>
               </div>
             ) : (
               <div
-                className={
-                  viewMode === 'grid'
+                className={viewMode ==='grid'
                     ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'
                     : 'space-y-4'
                 }

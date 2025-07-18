@@ -63,9 +63,9 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {submitStatus === 'error' && (
-        <div className="flex items-center gap-2 p-4 bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg">
+        <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-300 rounded-lg">
           <AlertCircle className="w-5 h-5 text-red-600" />
-          <p className="text-red-600 dark:text-red-400">
+          <p className="text-red-600">
             문의 전송 중 오류가 발생했습니다. 다시 시도해주세요.
           </p>
         </div>
@@ -125,12 +125,12 @@ export function ContactForm() {
           onChange={handleChange}
           placeholder="문의 내용을 자세히 입력해주세요. 서비스 추가 요청, 정보 수정, 기능 개선 제안 등 무엇이든 환영합니다."
           rows={6}
-          className="w-full px-3 py-2 border border-input bg-background text-foreground rounded-md shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
+          className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md shadow-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
         />
       </div>
 
       <div className="flex items-center justify-between pt-4">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-gray-500">
           * 필수 입력 항목
         </p>
         <Button type="submit" disabled={isSubmitting} className="flex items-center gap-2">

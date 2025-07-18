@@ -96,7 +96,7 @@ export function SignInForm() {
   };
 
   return (
-    <Card className='mt-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur border-0 shadow-xl'>
+    <Card className='mt-8 bg-white/80 backdrop-blur border-0 shadow-xl'>
       <CardHeader className='space-y-1 pb-4'>
         <div className='space-y-2'>
           {/* 소셜 로그인 버튼들 */}
@@ -123,10 +123,10 @@ export function SignInForm() {
 
         <div className='relative'>
           <div className='absolute inset-0 flex items-center'>
-            <span className='w-full border-t border-gray-300 dark:border-gray-600' />
+            <span className='w-full border-t border-gray-200' />
           </div>
           <div className='relative flex justify-center text-xs uppercase'>
-            <span className='bg-white dark:bg-slate-800 px-2 text-gray-500 dark:text-gray-400'>
+            <span className='bg-white px-2 text-gray-500'>
               또는 이메일로 로그인
             </span>
           </div>
@@ -135,8 +135,8 @@ export function SignInForm() {
 
       <CardContent className='space-y-4'>
         {error && (
-          <div className='bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3'>
-            <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
+          <div className='bg-red-50 border border-red-200 rounded-md p-3'>
+            <p className='text-sm text-red-600'>{error}</p>
           </div>
         )}
 
@@ -148,7 +148,7 @@ export function SignInForm() {
               type='email'
               placeholder='example@email.com'
               {...register('email')}
-              className={errors.email ? 'border-red-500' : ''}
+              className={errors.email ?'border-red-500' : ''}
             />
             {errors.email && (
               <p className='text-sm text-red-500'>{errors.email.message}</p>
@@ -163,7 +163,7 @@ export function SignInForm() {
                 type={showPassword ? 'text' : 'password'}
                 placeholder='비밀번호를 입력하세요'
                 {...register('password')}
-                className={errors.password ? 'border-red-500 pr-10' : 'pr-10'}
+                className={errors.password ?'border-red-500 pr-10' : 'pr-10'}
               />
               <button
                 type='button'
@@ -186,7 +186,7 @@ export function SignInForm() {
             <div className='text-sm'>
               <button
                 type='button'
-                className='font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400'
+                className='font-medium text-blue-600 hover:text-blue-500'
                 onClick={() => {
                   // TODO: 비밀번호 재설정 기능 구현
                   alert('비밀번호 재설정 기능은 준비 중입니다.');
@@ -203,12 +203,12 @@ export function SignInForm() {
         </form>
 
         <div className='text-center text-sm'>
-          <span className='text-gray-600 dark:text-gray-400'>
+          <span className='text-gray-600'>
             아직 계정이 없으신가요?{' '}
           </span>
           <Link
             href='/signup'
-            className='font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400'
+            className='font-medium text-blue-600 hover:text-blue-500'
           >
             회원가입
           </Link>

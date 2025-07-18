@@ -192,7 +192,7 @@ export function SignUpForm() {
   };
 
   return (
-    <Card className='mt-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur border-0 shadow-xl'>
+    <Card className='mt-8 bg-white/80 backdrop-blur border-0 shadow-xl'>
       <CardHeader className='space-y-1 pb-4'>
         <div className='space-y-2'>
           {/* 소셜 로그인 버튼들 */}
@@ -219,10 +219,10 @@ export function SignUpForm() {
 
         <div className='relative'>
           <div className='absolute inset-0 flex items-center'>
-            <span className='w-full border-t border-gray-300 dark:border-gray-600' />
+            <span className='w-full border-t border-gray-200' />
           </div>
           <div className='relative flex justify-center text-xs uppercase'>
-            <span className='bg-white dark:bg-slate-800 px-2 text-gray-500 dark:text-gray-400'>
+            <span className='bg-white px-2 text-gray-500'>
               또는 이메일로 가입하기
             </span>
           </div>
@@ -231,14 +231,14 @@ export function SignUpForm() {
 
       <CardContent className='space-y-4'>
         {error && (
-          <div className='bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3'>
-            <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>
+          <div className='bg-red-50 border border-red-200 rounded-md p-3'>
+            <p className='text-sm text-red-600'>{error}</p>
           </div>
         )}
 
         {success && (
-          <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3'>
-            <p className='text-sm text-green-600 dark:text-green-400'>
+          <div className='bg-green-50 border border-green-200 rounded-md p-3'>
+            <p className='text-sm text-green-600'>
               {success}
             </p>
           </div>
@@ -252,7 +252,7 @@ export function SignUpForm() {
               type='text'
               placeholder='홍길동'
               {...register('name')}
-              className={errors.name ? 'border-red-500' : ''}
+              className={errors.name ?'border-red-500' : ''}
             />
             <div className='h-1 flex items-start'>
               {errors.name && (
@@ -317,7 +317,7 @@ export function SignUpForm() {
                 type={showPassword ? 'text' : 'password'}
                 placeholder='비밀번호를 입력하세요'
                 {...register('password')}
-                className={errors.password ? 'border-red-500 pr-10' : 'pr-10'}
+                className={errors.password ?'border-red-500 pr-10' : 'pr-10'}
               />
               <button
                 type='button'
@@ -348,8 +348,7 @@ export function SignUpForm() {
                 type={showConfirmPassword ? 'text' : 'password'}
                 placeholder='비밀번호를 다시 입력하세요'
                 {...register('confirmPassword')}
-                className={
-                  errors.confirmPassword ? 'border-red-500 pr-10' : 'pr-10'
+                className={errors.confirmPassword ?'border-red-500 pr-10' : 'pr-10'
                 }
               />
               <button
@@ -384,7 +383,7 @@ export function SignUpForm() {
             <Label htmlFor='terms' className='text-sm'>
               <button
                 type='button'
-                className='text-blue-600 hover:text-blue-500 dark:text-blue-400'
+                className='text-blue-600 hover:text-blue-500'
                 onClick={() => alert('이용약관 페이지는 준비 중입니다.')}
               >
                 이용약관
@@ -392,7 +391,7 @@ export function SignUpForm() {
               및{' '}
               <button
                 type='button'
-                className='text-blue-600 hover:text-blue-500 dark:text-blue-400'
+                className='text-blue-600 hover:text-blue-500'
                 onClick={() =>
                   alert('개인정보처리방침 페이지는 준비 중입니다.')
                 }
@@ -420,12 +419,12 @@ export function SignUpForm() {
         </form>
 
         <div className='text-center text-sm'>
-          <span className='text-gray-600 dark:text-gray-400'>
+          <span className='text-gray-600'>
             이미 계정이 있으신가요?{' '}
           </span>
           <Link
             href='/signin'
-            className='font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400'
+            className='font-medium text-blue-600 hover:text-blue-500'
           >
             로그인
           </Link>

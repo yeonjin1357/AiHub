@@ -12,14 +12,14 @@ export function HeroSection() {
             <Sparkles className='mr-2 h-3 w-3' />
             새로운 AI 서비스를 발견하세요
           </Badge>
-          <h1 className='text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl'>
+          <h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl'>
             AI 서비스의 모든 것을
             <span className='bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
               {' '}
               한곳에서
             </span>
           </h1>
-          <p className='mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300 sm:text-xl'>
+          <p className='mt-6 text-lg leading-8 text-gray-600 sm:text-xl'>
             100+ AI 구독 서비스를 비교하고, 실제 사용자 리뷰를 확인하여 당신에게
             맞는 최고의 AI 도구를 찾아보세요.
           </p>

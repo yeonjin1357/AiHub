@@ -35,7 +35,7 @@ export function ServiceSearch({
             variant="ghost"
             size="sm"
             onClick={() => onChange('')}
-            className="h-auto p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="h-auto p-1 hover:bg-gray-100"
           >
             <X className="h-4 w-4 text-gray-400" />
           </Button>

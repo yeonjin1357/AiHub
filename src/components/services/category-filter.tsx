@@ -61,11 +61,11 @@ export function CategoryFilter({
   };
 
   return (
-    <Card className='sticky top-16 border-gray-200 dark:border-gray-700'>
+    <Card className='sticky top-16 border-gray-200'>
       <CardHeader>
         <div className='flex items-center gap-2'>
           <Filter size={20} className='text-gray-500' />
-          <h3 className='font-semibold text-gray-900 dark:text-white'>
+          <h3 className='font-semibold text-gray-900'>
             카테고리
           </h3>
         </div>
@@ -81,8 +81,7 @@ export function CategoryFilter({
           <div className='flex items-center gap-3 w-full'>
             <Grid
               size={20}
-              className={
-                selectedCategory === 'all' ? 'text-white' : 'text-gray-500'
+              className={selectedCategory ==='all' ? 'text-white' : 'text-gray-500'
               }
             />
             <div className='flex-1 text-left'>
@@ -114,9 +113,7 @@ export function CategoryFilter({
               <div className='flex items-center gap-3 w-full'>
                 <Icon
                   size={20}
-                  className={
-                    selectedCategory === category.id
-                      ? 'text-white'
+                  className={selectedCategory === category.id ?'text-white'
                       : 'text-gray-500'
                   }
                 />

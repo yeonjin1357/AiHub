@@ -11,20 +11,20 @@ export function FeaturesSection() {
     <section className='py-20 px-4 sm:px-6 lg:px-8'>
       <div className='mx-auto max-w-7xl'>
         <div className='text-center mb-16'>
-          <h2 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
+          <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
             AIMOA가 특별한 이유
           </h2>
-          <p className='mt-4 text-lg text-gray-600 dark:text-gray-300'>
+          <p className='mt-4 text-lg text-gray-600'>
             최고의 AI 서비스를 찾기 위한 모든 도구를 제공합니다
           </p>
         </div>
 
         <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
-          <Card className='group transition-all duration-300 border-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur hover:shadow-lg'>
+          <Card className='group transition-all duration-300 border-0 bg-white/70 backdrop-blur hover:shadow-lg'>
             <CardHeader>
               <div className='flex items-center space-x-3'>
-                <div className='p-2 bg-blue-100 dark:bg-blue-900 rounded-lg'>
-                  <Search className='h-6 w-6 text-blue-600 dark:text-blue-400' />
+                <div className='p-2 bg-blue-100 rounded-lg'>
+                  <Search className='h-6 w-6 text-blue-600' />
                 </div>
                 <CardTitle className='text-xl'>스마트 검색</CardTitle>
               </div>
@@ -35,11 +35,11 @@ export function FeaturesSection() {
             </CardHeader>
           </Card>
 
-          <Card className='group transition-all duration-300 border-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur hover:shadow-lg'>
+          <Card className='group transition-all duration-300 border-0 bg-white/70 backdrop-blur hover:shadow-lg'>
             <CardHeader>
               <div className='flex items-center space-x-3'>
-                <div className='p-2 bg-green-100 dark:bg-green-900 rounded-lg'>
-                  <Star className='h-6 w-6 text-green-600 dark:text-green-400' />
+                <div className='p-2 bg-green-100 rounded-lg'>
+                  <Star className='h-6 w-6 text-green-600' />
                 </div>
                 <CardTitle className='text-xl'>실제 사용자 리뷰</CardTitle>
               </div>
@@ -50,11 +50,11 @@ export function FeaturesSection() {
             </CardHeader>
           </Card>
 
-          <Card className='group transition-all duration-300 border-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur hover:shadow-lg'>
+          <Card className='group transition-all duration-300 border-0 bg-white/70 backdrop-blur hover:shadow-lg'>
             <CardHeader>
               <div className='flex items-center space-x-3'>
-                <div className='p-2 bg-purple-100 dark:bg-purple-900 rounded-lg'>
-                  <TrendingUp className='h-6 w-6 text-purple-600 dark:text-purple-400' />
+                <div className='p-2 bg-purple-100 rounded-lg'>
+                  <TrendingUp className='h-6 w-6 text-purple-600' />
                 </div>
                 <CardTitle className='text-xl'>가격 비교</CardTitle>
               </div>
@@ -65,11 +65,11 @@ export function FeaturesSection() {
             </CardHeader>
           </Card>
 
-          <Card className='group transition-all duration-300 border-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur hover:shadow-lg'>
+          <Card className='group transition-all duration-300 border-0 bg-white/70 backdrop-blur hover:shadow-lg'>
             <CardHeader>
               <div className='flex items-center space-x-3'>
-                <div className='p-2 bg-yellow-100 dark:bg-yellow-900 rounded-lg'>
-                  <Users className='h-6 w-6 text-yellow-600 dark:text-yellow-400' />
+                <div className='p-2 bg-yellow-100 rounded-lg'>
+                  <Users className='h-6 w-6 text-yellow-600' />
                 </div>
                 <CardTitle className='text-xl'>커뮤니티</CardTitle>
               </div>
@@ -80,11 +80,11 @@ export function FeaturesSection() {
             </CardHeader>
           </Card>
 
-          <Card className='group transition-all duration-300 border-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur hover:shadow-lg'>
+          <Card className='group transition-all duration-300 border-0 bg-white/70 backdrop-blur hover:shadow-lg'>
             <CardHeader>
               <div className='flex items-center space-x-3'>
-                <div className='p-2 bg-red-100 dark:bg-red-900 rounded-lg'>
-                  <Sparkles className='h-6 w-6 text-red-600 dark:text-red-400' />
+                <div className='p-2 bg-red-100 rounded-lg'>
+                  <Sparkles className='h-6 w-6 text-red-600' />
                 </div>
                 <CardTitle className='text-xl'>신규 서비스 알림</CardTitle>
               </div>
@@ -95,11 +95,11 @@ export function FeaturesSection() {
             </CardHeader>
           </Card>
 
-          <Card className='group transition-all duration-300 border-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur hover:shadow-lg'>
+          <Card className='group transition-all duration-300 border-0 bg-white/70 backdrop-blur hover:shadow-lg'>
             <CardHeader>
               <div className='flex items-center space-x-3'>
-                <div className='p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg'>
-                  <Zap className='h-6 w-6 text-indigo-600 dark:text-indigo-400' />
+                <div className='p-2 bg-indigo-100 rounded-lg'>
+                  <Zap className='h-6 w-6 text-indigo-600' />
                 </div>
                 <CardTitle className='text-xl'>개인 맞춤 추천</CardTitle>
               </div>

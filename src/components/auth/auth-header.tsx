@@ -13,15 +13,15 @@ export function AuthHeader({ title, subtitle }: AuthHeaderProps) {
         <div className='p-2 bg-blue-600 rounded-lg'>
           <Sparkles className='h-6 w-6 text-white' />
         </div>
-        <span className='text-xl font-bold text-gray-900 dark:text-white'>
+        <span className='text-xl font-bold text-gray-900'>
           AIMOA
         </span>
       </Link>
       
-      <h2 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white'>
+      <h2 className='text-3xl font-bold tracking-tight text-gray-900'>
         {title}
       </h2>
-      <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
+      <p className='mt-2 text-sm text-gray-600'>
         {subtitle}
       </p>
     </div>

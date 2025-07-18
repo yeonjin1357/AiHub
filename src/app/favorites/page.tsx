@@ -32,10 +32,10 @@ export default function FavoritesPage() {
         <div className='min-h-screen flex items-center justify-center'>
           <div className='text-center'>
             <Heart size={64} className='mx-auto text-gray-300 mb-4' />
-            <h1 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+            <h1 className='text-2xl font-bold text-gray-900 mb-2'>
               로그인이 필요합니다
             </h1>
-            <p className='text-gray-600 dark:text-gray-400 mb-6'>
+            <p className='text-gray-600 mb-6'>
               찜한 AI 서비스를 확인하려면 로그인하세요.
             </p>
             <Button asChild>
@@ -61,14 +61,14 @@ export default function FavoritesPage() {
   return (
     <>
       <Header />
-      <div className='min-h-screen bg-gray-50 dark:bg-gray-900 py-8'>
+      <div className='min-h-screen bg-gray-50 py-8'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='mb-8'>
-          <h1 className='text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3'>
+          <h1 className='text-3xl font-bold text-gray-900 flex items-center gap-3'>
             <Heart size={32} className='text-red-500' fill='currentColor' />
             찜한 AI 서비스
           </h1>
-          <p className='mt-2 text-gray-600 dark:text-gray-400'>
+          <p className='mt-2 text-gray-600'>
             관심있는 AI 서비스들을 모아보세요.
           </p>
         </div>
@@ -76,10 +76,10 @@ export default function FavoritesPage() {
         {favorites.length === 0 ? (
           <div className='text-center py-16'>
             <Heart size={64} className='mx-auto text-gray-300 mb-4' />
-            <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-2'>
+            <h2 className='text-xl font-semibold text-gray-900 mb-2'>
               아직 찜한 서비스가 없습니다
             </h2>
-            <p className='text-gray-600 dark:text-gray-400 mb-6'>
+            <p className='text-gray-600 mb-6'>
               다양한 AI 서비스를 둘러보고 관심있는 서비스를 찜해보세요.
             </p>
             <Button asChild>
@@ -92,7 +92,7 @@ export default function FavoritesPage() {
         ) : (
           <>
             <div className='mb-6'>
-              <p className='text-sm text-gray-600 dark:text-gray-400'>
+              <p className='text-sm text-gray-600'>
                 총 {favorites.length}개의 서비스를 찜했습니다.
               </p>
             </div>
