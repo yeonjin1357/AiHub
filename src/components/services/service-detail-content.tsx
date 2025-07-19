@@ -13,7 +13,6 @@ import {
   Globe,
   Shield,
   Zap,
-  Clock,
   Award,
   ArrowRight,
   MessageCircle,
@@ -29,9 +28,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/auth-context';
 import { useFavorites } from '@/contexts/favorites-context';
 import { AIService } from '@/lib/api/services';
-import { ServiceFeaturesDisplay } from '@/components/service-features-display';
 import { ServiceLinksDisplay } from '@/components/service-links-display';
 import { ServiceFunctionsDisplay } from '@/components/service-functions-display';
+import { ServiceUpdatesDisplay } from '@/components/service-updates-display';
 
 interface ServiceDetailContentProps {
   service: AIService & {
@@ -247,12 +246,18 @@ export function ServiceDetailContent({
       <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <Tabs defaultValue='overview' className='space-y-10'>
           <div className='flex justify-center'>
-            <TabsList className='grid w-full max-w-md grid-cols-3 h-12 bg-gray-100 p-1 rounded-xl'>
+            <TabsList className='grid w-full max-w-2xl grid-cols-4 h-12 bg-gray-100 p-1 rounded-xl'>
               <TabsTrigger
                 value='overview'
                 className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-lg transition-all'
               >
                 개요
+              </TabsTrigger>
+              <TabsTrigger
+                value='updates'
+                className='text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-lg transition-all'
+              >
+                업데이트
               </TabsTrigger>
               <TabsTrigger
                 value='features'
@@ -299,47 +304,9 @@ export function ServiceDetailContent({
                     </div>
                   </CardContent>
                 </Card>
-
-                <ServiceFeaturesDisplay serviceId={service.id} />
               </div>
 
               <div className='space-y-8'>
-                <Card className='border-gray-100 shadow-sm bg-white'>
-                  <CardHeader className='pb-4'>
-                    <CardTitle className='flex items-center gap-2 text-lg'>
-                      <div className='p-2 bg-green-100 rounded-lg'>
-                        <Clock
-                          size={18}
-                          className='text-green-600'
-                        />
-                      </div>
-                      최근 업데이트
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className='space-y-3 text-sm'>
-                      <div className='pb-3 border-b border-gray-100'>
-                        <div className='font-medium'>새로운 기능 추가</div>
-                        <div className='text-gray-600'>
-                          2025년 1월
-                        </div>
-                      </div>
-                      <div className='pb-3 border-b border-gray-100'>
-                        <div className='font-medium'>성능 개선</div>
-                        <div className='text-gray-600'>
-                          2024년 12월
-                        </div>
-                      </div>
-                      <div>
-                        <div className='font-medium'>UI/UX 개선</div>
-                        <div className='text-gray-600'>
-                          2024년 11월
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
                 <Card className='border-gray-100 shadow-sm bg-white'>
                   <CardHeader className='pb-4'>
                     <CardTitle className='text-lg'>관련 서비스</CardTitle>
@@ -397,6 +364,11 @@ export function ServiceDetailContent({
                 </Card>
               </div>
             </div>
+          </TabsContent>
+
+          {/* Updates Tab */}
+          <TabsContent value='updates' className='space-y-8'>
+            <ServiceUpdatesDisplay serviceId={service.id} />
           </TabsContent>
 
           {/* Features Tab */}
