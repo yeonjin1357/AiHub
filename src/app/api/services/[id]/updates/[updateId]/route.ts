@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
-import { isAdmin } from '@/utils/auth'
 
 export async function PUT(
   request: NextRequest,
@@ -10,8 +9,19 @@ export async function PUT(
     const { id, updateId } = await params
     const supabase = await createClient()
 
-    const adminCheck = await isAdmin(supabase)
-    if (!adminCheck) {
+    // 관리자 권한 확인
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { data: userProfile } = await supabase
+      .from('user_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (userProfile?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -54,8 +64,19 @@ export async function DELETE(
     const { id, updateId } = await params
     const supabase = await createClient()
 
-    const adminCheck = await isAdmin(supabase)
-    if (!adminCheck) {
+    // 관리자 권한 확인
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { data: userProfile } = await supabase
+      .from('user_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (userProfile?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
