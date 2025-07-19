@@ -1,25 +1,26 @@
-import { redirect, notFound } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { ServiceLinksManager } from '@/components/admin/service-links-manager';
-import { createClient } from '@/utils/supabase/server';
-import { Header } from '@/components/layout/header';
+import { Suspense } from 'react'
+import { redirect, notFound } from 'next/navigation'
+import { createClient } from '@/utils/supabase/server'
+import UpdateManager from '@/components/admin/updates/UpdateManager'
+import { Header } from '@/components/layout/header'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
 
-interface ServiceLinksPageProps {
+interface ServiceUpdatesPageProps {
   params: Promise<{
-    slug: string;
-  }>;
+    slug: string
+  }>
 }
 
-export default async function ServiceLinksPage({ params }: ServiceLinksPageProps) {
-  const { slug } = await params;
-  const supabase = await createClient();
-  
-  const { data: { user } } = await supabase.auth.getUser();
+export default async function ServiceUpdatesPage({ params }: ServiceUpdatesPageProps) {
+  const { slug } = await params
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
   
   if (!user) {
-    redirect('/signin');
+    redirect('/signin')
   }
 
   // 관리자 권한 확인
@@ -27,13 +28,13 @@ export default async function ServiceLinksPage({ params }: ServiceLinksPageProps
     .from('user_profiles')
     .select('role')
     .eq('id', user.id)
-    .single();
+    .single()
 
   if (userProfile?.data?.role !== 'ADMIN') {
-    redirect('/');
+    redirect('/')
   }
 
-  // 서비스 정보 가져오기
+  // slug로 서비스 조회
   const { data: service } = await supabase
     .from('ai_services')
     .select(`
@@ -44,10 +45,10 @@ export default async function ServiceLinksPage({ params }: ServiceLinksPageProps
       )
     `)
     .eq('slug', slug)
-    .single();
+    .single()
 
   if (!service) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -81,7 +82,7 @@ export default async function ServiceLinksPage({ params }: ServiceLinksPageProps
                   )}
                   <div>
                     <h1 className="text-3xl font-bold text-gray-900">
-                      {service.name} 링크 관리
+                      {service.name} 업데이트 관리
                     </h1>
                     <p className="text-gray-600">
                       {service.categories?.name} • {service.description}
@@ -98,9 +99,11 @@ export default async function ServiceLinksPage({ params }: ServiceLinksPageProps
             </div>
           </div>
 
-          {/* Links Manager */}
+          {/* Update Manager */}
           <div className="space-y-6">
-            <ServiceLinksManager serviceId={service.id} />
+            <Suspense fallback={<div className="flex justify-center py-8">로딩 중...</div>}>
+              <UpdateManager serviceId={service.id} />
+            </Suspense>
           </div>
 
           {/* Instructions */}
@@ -109,14 +112,15 @@ export default async function ServiceLinksPage({ params }: ServiceLinksPageProps
               사용 방법
             </h3>
             <ul className="space-y-2 text-sm text-blue-800">
-              <li>• <strong>링크 추가</strong>: 서비스와 관련된 유용한 링크를 추가합니다 (문서, 튜토리얼, 커뮤니티 등).</li>
-              <li>• <strong>아이콘 선택</strong>: 링크의 성격에 맞는 적절한 아이콘을 선택하세요.</li>
-              <li>• <strong>표시 순서</strong>: 숫자가 작을수록 먼저 표시됩니다.</li>
-              <li>• <strong>설명 추가</strong>: 사용자가 링크의 내용을 이해할 수 있도록 간단한 설명을 추가하세요.</li>
+              <li>• <strong>업데이트 추가</strong>: 서비스의 새로운 기능이나 개선사항을 기록합니다.</li>
+              <li>• <strong>날짜 형식</strong>: 업데이트가 실제로 배포된 날짜를 선택하세요.</li>
+              <li>• <strong>변경 사항</strong>: 사용자가 이해하기 쉽게 구체적으로 작성해주세요.</li>
+              <li>• <strong>카테고리</strong>: 업데이트의 성격에 맞는 카테고리를 선택하세요 (새 기능, 개선, 버그 수정 등).</li>
+              <li>• <strong>정렬</strong>: 최신 업데이트가 상단에 표시됩니다.</li>
             </ul>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ExternalLink, Link as LinkIcon, Zap } from 'lucide-react';
+import { ExternalLink, Link as LinkIcon, Zap, FileText } from 'lucide-react';
 
 export default async function AdminServicesPage() {
   const supabase = await createClient();
@@ -99,7 +99,13 @@ export default async function AdminServicesPage() {
                           링크
                         </Link>
                       </Button>
-                      <Button asChild size="sm" variant="outline" className="col-span-2">
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/admin/services/${service.slug}/updates`}>
+                          <FileText className="h-4 w-4 mr-1" />
+                          업데이트
+                        </Link>
+                      </Button>
+                      <Button asChild size="sm" variant="outline">
                         <Link href={`/services/${service.slug}`} target="_blank">
                           <ExternalLink className="h-4 w-4 mr-1" />
                           서비스 보기

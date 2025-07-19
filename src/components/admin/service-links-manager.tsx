@@ -175,11 +175,24 @@ export function ServiceLinksManager({ serviceId }: ServiceLinksManagerProps) {
   };
 
   if (loading) {
-    return <div className="p-4">로딩 중...</div>;
+    return (
+      <Card className="border-gray-200 shadow-sm">
+        <CardHeader>
+          <CardTitle>유용한 링크 관리</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-16 bg-gray-100 rounded animate-pulse" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
-    <Card className="border-gray-100 shadow-sm bg-white">
+    <Card className="border-gray-200 shadow-sm">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>유용한 링크 관리</CardTitle>
@@ -203,7 +216,7 @@ export function ServiceLinksManager({ serviceId }: ServiceLinksManagerProps) {
       <CardContent className="space-y-4">
         {/* Add/Edit Form */}
         {(isAdding || editingId) && (
-          <form onSubmit={handleSubmit} className="space-y-4 p-4 border border-gray-100 rounded-lg bg-gray-50">
+          <form onSubmit={handleSubmit} className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium">레이블</label>
@@ -282,19 +295,35 @@ export function ServiceLinksManager({ serviceId }: ServiceLinksManagerProps) {
         {/* Links List */}
         <div className="space-y-2">
           {links.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">등록된 링크가 없습니다</p>
+            <div className="text-center py-8 text-gray-500">
+              <p>등록된 링크가 없습니다.</p>
+              <Button
+                onClick={() => {
+                  setIsAdding(true);
+                  setFormData({
+                    ...formData,
+                    display_order: links.length,
+                  });
+                }}
+                className="mt-4"
+                variant="outline"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                링크 추가하기
+              </Button>
+            </div>
           ) : (
             links.map((link) => (
               <div
                 key={link.id}
-                className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg"
               >
-                <GripVertical className="h-4 w-4 text-gray-400" />
+                <GripVertical className="h-5 w-5 text-gray-400" />
                 <div className="flex-1">
                   <div className="font-medium">{link.label}</div>
-                  <div className="text-sm text-gray-500">{link.url}</div>
+                  <div className="text-sm text-gray-600">{link.url}</div>
                   {link.description && (
-                    <div className="text-sm text-gray-400">{link.description}</div>
+                    <div className="text-sm text-gray-600 line-clamp-1">{link.description}</div>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
