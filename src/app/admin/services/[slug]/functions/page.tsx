@@ -90,7 +90,7 @@ export default async function AdminServiceFunctionsPage({ params }: AdminService
                 </div>
               </div>
               <Button asChild variant="outline">
-                <Link href={`/services/${service.slug}`} target="_blank">
+                <Link href={`/services/${service.slug}`}>
                   <ExternalLink className="h-4 w-4 mr-2" />
                   서비스 보기
                 </Link>

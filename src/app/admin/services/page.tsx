@@ -135,7 +135,6 @@ export default async function AdminServicesPage() {
                       <Button asChild size='sm' variant='outline'>
                         <Link
                           href={`/services/${service.slug}`}
-                          target='_blank'
                         >
                           <ExternalLink className='h-4 w-4 mr-1' />
                           서비스 보기
