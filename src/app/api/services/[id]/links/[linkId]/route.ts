@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string; linkId: string }> }
 ) {
   try {
-    const { linkId } = await params;
+    const { id: serviceId, linkId } = await params;
     const supabase = await createClient();
 
     // Check if user is admin
@@ -43,6 +43,12 @@ export async function PUT(
 
     if (error) throw error;
 
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', serviceId);
+
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error updating service link:', error);
@@ -58,7 +64,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string; linkId: string }> }
 ) {
   try {
-    const { linkId } = await params;
+    const { id: serviceId, linkId } = await params;
     const supabase = await createClient();
 
     // Check if user is admin
@@ -83,6 +89,12 @@ export async function DELETE(
       .eq('id', linkId);
 
     if (error) throw error;
+
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', serviceId);
 
     return NextResponse.json({ success: true });
   } catch (error) {

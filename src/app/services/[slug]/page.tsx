@@ -24,7 +24,8 @@ async function getService(slug: string) {
         description,
         icon
       ),
-      reviews:reviews(rating)
+      reviews:reviews(rating),
+      service_updates(published_at)
     `)
     .eq('slug', slug)
     .single();
@@ -43,8 +44,10 @@ async function getService(slug: string) {
   return {
     ...service,
     reviews: undefined, // reviews 필드 제거
+    service_updates: undefined, // service_updates 필드 제거
     review_count: reviewCount,
-    average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+    average_rating: Math.round(averageRating * 10) / 10, // 소수점 첫째자리까지
+    latest_update_at: service.updated_at
   };
 }
 

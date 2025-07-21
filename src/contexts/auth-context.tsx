@@ -27,26 +27,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [profileFetchPromise, setProfileFetchPromise] = useState<Promise<void> | null>(null);
 
-  // 사용자 프로필 가져오기
+  // 사용자 프로필 가져오기 (중복 호출 방지)
   const fetchUserProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-      
-      if (error) throw error;
-      setUserProfile(data);
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-      setUserProfile(null);
+    // 이미 같은 사용자의 프로필이 있으면 다시 가져오지 않음
+    if (userProfile?.id === userId) {
+      return;
     }
+    
+    // 이미 프로필 가져오기가 진행 중이면 기다림
+    if (profileFetchPromise) {
+      return profileFetchPromise;
+    }
+    
+    const promise = (async () => {
+      try {
+        console.log('Fetching user profile for:', userId);
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
+        
+        if (error) throw error;
+        setUserProfile(data);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+        setUserProfile(null);
+      } finally {
+        setProfileFetchPromise(null);
+      }
+    })();
+    
+    setProfileFetchPromise(promise);
+    return promise;
   };
 
   useEffect(() => {
     let mounted = true;
+    let isInitialLoad = true;
 
     // 초기 사용자 상태 확인
     const getInitialUser = async () => {
@@ -77,6 +97,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setLoading(false);
           setIsInitialized(true);
         }
+      } finally {
+        isInitialLoad = false;
       }
     };
 
@@ -84,9 +106,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // 인증 상태 변화 감지
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change:', event, 'isInitialLoad:', isInitialLoad);
+      
+      // 초기 로드 중에 INITIAL_SESSION 이벤트는 무시 (getInitialUser에서 처리)
+      if (isInitialLoad && event === 'INITIAL_SESSION') {
+        return;
+      }
+      
       if (mounted) {
-        // 초기화가 완료된 후에만 상태 업데이트
-        if (isInitialized || event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
+        // 로그인/로그아웃 이벤트만 처리
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
           setUser(session?.user ?? null);
           if (session?.user) {
             await fetchUserProfile(session.user.id);
@@ -100,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // 탭 간 세션 동기화를 위한 storage 이벤트 리스너
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'supabase.auth.token' && mounted) {
+      if (e.key === 'supabase.auth.token' && mounted && !loading) {
         getInitialUser();
       }
     };
@@ -116,7 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         window.removeEventListener('storage', handleStorageChange);
       }
     };
-  }, [isInitialized]);
+  }, []);
 
   const signOut = async () => {
     try {

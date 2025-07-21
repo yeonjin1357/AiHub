@@ -19,6 +19,7 @@ export interface AIService {
   updated_at: string;
   average_rating?: number;
   review_count?: number;
+  latest_update_at?: string;
 }
 
 export interface Category {
@@ -93,7 +94,8 @@ export async function getServiceBySlug(
     .from('ai_services')
     .select(`
       *,
-      reviews:reviews(rating)
+      reviews:reviews(rating),
+      service_updates(published_at)
     `)
     .eq('slug', slug)
     .single();
@@ -112,11 +114,20 @@ export async function getServiceBySlug(
     ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
     : 0;
 
+  // 최신 업데이트 날짜 찾기
+  const latestUpdate = data.service_updates?.length > 0
+    ? data.service_updates.reduce((latest: any, update: any) => 
+        new Date(update.published_at) > new Date(latest.published_at) ? update : latest
+      )
+    : null;
+
   return {
     ...data,
     reviews: undefined, // reviews 필드 제거
+    service_updates: undefined, // service_updates 필드 제거
     review_count: reviewCount,
-    average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+    average_rating: Math.round(averageRating * 10) / 10, // 소수점 첫째자리까지
+    latest_update_at: latestUpdate?.published_at || data.updated_at
   };
 }
 

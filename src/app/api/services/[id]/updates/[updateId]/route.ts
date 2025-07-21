@@ -37,7 +37,7 @@ export async function PUT(
         link_url,
         source,
         source_name,
-        published_at: published_at ? new Date(published_at.includes('-01') ? published_at : published_at + '-01').toISOString() : undefined
+        published_at: published_at ? new Date(published_at).toISOString() : undefined
       })
       .eq('id', updateId)
       .eq('service_id', id)
@@ -48,6 +48,12 @@ export async function PUT(
       console.error('Error updating service update:', error)
       return NextResponse.json({ error: 'Failed to update' }, { status: 500 })
     }
+
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', id)
 
     return NextResponse.json({ update: data })
   } catch (error) {
@@ -90,6 +96,12 @@ export async function DELETE(
       console.error('Error deleting service update:', error)
       return NextResponse.json({ error: 'Failed to delete' }, { status: 500 })
     }
+
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', id)
 
     return NextResponse.json({ success: true })
   } catch (error) {

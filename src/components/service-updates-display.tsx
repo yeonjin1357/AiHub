@@ -9,6 +9,7 @@ import {
   Youtube,
   FileText,
   Newspaper,
+  ListRestart,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -35,10 +36,14 @@ export function ServiceUpdatesDisplay({
   const [updates, setUpdates] = useState<ServiceUpdate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
-    fetchUpdates();
-  }, [serviceId]);
+    // 이미 데이터를 가져왔으면 다시 가져오지 않음
+    if (!hasFetched) {
+      fetchUpdates();
+    }
+  }, [serviceId, hasFetched]);
 
   const fetchUpdates = async () => {
     try {
@@ -51,6 +56,7 @@ export function ServiceUpdatesDisplay({
 
       const data = await response.json();
       setUpdates(data);
+      setHasFetched(true);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다'
@@ -62,8 +68,8 @@ export function ServiceUpdatesDisplay({
 
   const getSourceIcon = (source: string) => {
     switch (source) {
-      case 'official':
-        return <Globe size={16} className='text-blue-600' />;
+      case 'update':
+        return <ListRestart size={16} className='text-blue-600' />;
       case 'youtube':
         return <Youtube size={16} className='text-red-600' />;
       case 'blog':
@@ -77,7 +83,7 @@ export function ServiceUpdatesDisplay({
 
   const getSourceBadgeColor = (source: string) => {
     switch (source) {
-      case 'official':
+      case 'update':
         return 'bg-blue-100 text-blue-800';
       case 'youtube':
         return 'bg-red-100 text-red-800';

@@ -19,8 +19,12 @@ interface ServiceFunctionsDisplayProps {
 export function ServiceFunctionsDisplay({ serviceId }: ServiceFunctionsDisplayProps) {
   const [functions, setFunctions] = useState<ServiceFunction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
+    // 이미 데이터를 가져왔으면 다시 가져오지 않음
+    if (hasFetched) return;
+
     const loadFunctions = async () => {
       try {
         const response = await fetch(`/api/services/${serviceId}/functions`);
@@ -38,6 +42,7 @@ export function ServiceFunctionsDisplay({ serviceId }: ServiceFunctionsDisplayPr
         const data = await response.json();
         console.log('Loaded functions for display:', data);
         setFunctions(data);
+        setHasFetched(true);
       } catch (error) {
         console.error('Error loading service functions:', error);
       } finally {
@@ -46,7 +51,7 @@ export function ServiceFunctionsDisplay({ serviceId }: ServiceFunctionsDisplayPr
     };
 
     loadFunctions();
-  }, [serviceId]);
+  }, [serviceId, hasFetched]);
 
   // 아이콘 컴포넌트 가져오기
   const getIconComponent = (iconName: string) => {

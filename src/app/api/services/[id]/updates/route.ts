@@ -87,7 +87,7 @@ export async function POST(
         link_url,
         source,
         source_name,
-        published_at: new Date(published_at + '-01').toISOString()
+        published_at: new Date(published_at).toISOString()
       })
       .select()
       .single();
@@ -99,6 +99,12 @@ export async function POST(
         { status: 500 }
       );
     }
+
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', id);
 
     return NextResponse.json(update, { status: 201 });
   } catch (error) {

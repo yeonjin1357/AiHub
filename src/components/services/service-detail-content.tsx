@@ -16,6 +16,8 @@ import {
   Award,
   ArrowRight,
   MessageCircle,
+  ArrowLeft,
+  Calendar,
 } from 'lucide-react';
 import { RelatedService } from '@/lib/related-services';
 import { StarRating } from '@/components/ui/star-rating';
@@ -149,6 +151,17 @@ export function ServiceDetailContent({
       {/* Hero Section */}
       <section className='bg-white border-b border-gray-100'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
+          {/* 뒤로 가기 버튼 */}
+          <div className='mb-6'>
+            <Link
+              href='/services'
+              className='inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors'
+            >
+              <ArrowLeft size={20} className='mr-2' />
+              <span>서비스 목록으로</span>
+            </Link>
+          </div>
+
           <div className='grid lg:grid-cols-2 gap-8 items-center'>
             <div>
               <div className='flex items-center gap-4 mb-6'>
@@ -173,6 +186,19 @@ export function ServiceDetailContent({
                       <Badge variant='outline'>{service.categories.name}</Badge>
                     )}
                   </div>
+                  {/* 최근 업데이트 정보 */}
+                  {service.latest_update_at && (
+                    <div className='flex items-center gap-2 mt-2 text-sm text-gray-500'>
+                      <Calendar size={14} />
+                      <span>
+                        최근 업데이트: {new Date(service.latest_update_at).toLocaleDateString('ko-KR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 

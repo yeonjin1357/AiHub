@@ -68,6 +68,7 @@ export function ReviewList({
   const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState<string | null>(null);
+  const [hasFetched, setHasFetched] = useState(false);
 
   const fetchReviews = async (pageNum = 1, append = false) => {
     try {
@@ -98,15 +99,27 @@ export function ReviewList({
   };
 
   useEffect(() => {
+    // refreshTrigger가 변경되면 hasFetched 리셋
+    if (refreshTrigger > 0) {
+      setHasFetched(false);
+    }
+  }, [refreshTrigger]);
+
+  useEffect(() => {
+    // 이미 데이터를 가져왔으면 다시 가져오지 않음 (refreshTrigger 제외)
+    if (hasFetched && refreshTrigger === 0) return;
+
     // 로그인된 사용자만 리뷰를 불러옴
     if (user) {
       fetchReviews(1, false);
       setPage(1);
+      setHasFetched(true);
     } else {
       // 비로그인 사용자는 통계만 불러옴
       fetchReviewStats();
+      setHasFetched(true);
     }
-  }, [serviceId, refreshTrigger, user]);
+  }, [serviceId, user, hasFetched]);
 
   const fetchReviewStats = async () => {
     try {

@@ -125,6 +125,12 @@ export async function POST(
       );
     }
 
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', serviceId);
+
     return NextResponse.json(data);
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -234,6 +240,12 @@ export async function PUT(
         }
       }
     }
+
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', serviceId);
 
     return NextResponse.json({ success: true });
   } catch (error) {

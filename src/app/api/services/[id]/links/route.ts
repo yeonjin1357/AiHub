@@ -44,7 +44,7 @@ export async function POST(
     const { id: serviceId } = await params;
     const supabase = await createClient();
 
-    // Check if user is admin
+    // Check if user is admin (only for POST request)
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -89,6 +89,12 @@ export async function POST(
       
       throw error;
     }
+
+    // 서비스의 updated_at 갱신
+    await supabase
+      .from('ai_services')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', serviceId);
 
     return NextResponse.json(data);
   } catch (error) {

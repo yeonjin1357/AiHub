@@ -453,66 +453,38 @@ export function ServiceFunctionsManager({
             </Dialog>
           </>
         ) : (
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId='functions-view'>
-              {(provided) => (
+          <div className='space-y-3'>
+            {functions.length > 0 ? (
+              functions.map((func, index) => (
                 <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className='space-y-3'
+                  key={func.id || index}
+                  className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'
                 >
-                  {functions.length > 0 ? (
-                    functions.map((func, index) => (
-                      <Draggable
-                        key={func.id || index}
-                        draggableId={func.id || `view-${index}`}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            className={`flex items-center gap-3 p-4 bg-gray-50 rounded-lg ${
-                              snapshot.isDragging ? 'shadow-lg' : ''
-                            }`}
-                          >
-                            <div
-                              {...provided.dragHandleProps}
-                              className='flex items-center justify-center cursor-move'
-                            >
-                              <GripVertical className='h-5 w-5 text-gray-400' />
-                            </div>
-                            <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
-                              {getIconComponent(func.icon_name)}
-                            </div>
-                            <div className='flex-1'>
-                              <div className='font-medium'>{func.name}</div>
-                              <div className='text-sm text-gray-600'>
-                                {func.description}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))
-                  ) : (
-                    <div className='text-center py-8 text-gray-500'>
-                      <p>등록된 기능이 없습니다.</p>
-                      <Button
-                        onClick={() => setIsEditing(true)}
-                        className='mt-4'
-                        variant='outline'
-                      >
-                        <Plus className='h-4 w-4 mr-2' />
-                        기능 추가하기
-                      </Button>
+                  <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
+                    {getIconComponent(func.icon_name)}
+                  </div>
+                  <div className='flex-1'>
+                    <div className='font-medium'>{func.name}</div>
+                    <div className='text-sm text-gray-600'>
+                      {func.description}
                     </div>
-                  )}
-                  {provided.placeholder}
+                  </div>
                 </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+              ))
+            ) : (
+              <div className='text-center py-8 text-gray-500'>
+                <p>등록된 기능이 없습니다.</p>
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className='mt-4'
+                  variant='outline'
+                >
+                  <Plus className='h-4 w-4 mr-2' />
+                  기능 추가하기
+                </Button>
+              </div>
+            )}
+          </div>
         )}
       </CardContent>
     </Card>
