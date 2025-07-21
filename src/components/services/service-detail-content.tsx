@@ -198,16 +198,16 @@ export function ServiceDetailContent({
               </p>
 
               <div className='flex items-center gap-4'>
-                <Button size='lg' asChild>
-                  <a
-                    href={service.website_url}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='inline-flex items-center gap-2'
-                  >
-                    <ExternalLink size={18} />
-                    서비스 시작하기
-                  </a>
+                <Button 
+                  size='lg' 
+                  onClick={() => {
+                    // 클릭 시 새 탭으로 열기
+                    window.open(service.website_url, '_blank', 'noopener,noreferrer');
+                  }}
+                  className='inline-flex items-center gap-2 cursor-pointer'
+                >
+                  <ExternalLink size={18} />
+                  서비스 시작하기
                 </Button>
 
                 {user && (

@@ -34,7 +34,7 @@ export default function UpdateForm({ serviceId, update, onSave, onCancel }: Upda
     link_url: update?.link_url || '',
     source: update?.source || '',
     source_name: update?.source_name || '',
-    published_at: update?.published_at ? new Date(update.published_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+    published_at: update?.published_at ? new Date(update.published_at).toISOString().slice(0, 7) : new Date().toISOString().slice(0, 7)
   })
   const [submitting, setSubmitting] = useState(false)
 
@@ -140,13 +140,14 @@ export default function UpdateForm({ serviceId, update, onSave, onCancel }: Upda
       </div>
 
       <div>
-        <Label htmlFor="published_at">발행일 *</Label>
+        <Label htmlFor="published_at">발행일 (연월) *</Label>
         <Input
           id="published_at"
-          type="date"
+          type="month"
           value={formData.published_at}
           onChange={(e) => setFormData({ ...formData, published_at: e.target.value })}
           required
+          className="w-full"
         />
       </div>
 

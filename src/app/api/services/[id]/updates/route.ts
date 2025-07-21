@@ -14,8 +14,7 @@ export async function GET(
       .from('service_updates')
       .select('*')
       .eq('service_id', id)
-      .order('published_at', { ascending: false })
-      .limit(10);
+      .order('published_at', { ascending: false });
 
     if (error) {
       console.error('Error fetching service updates:', error);
@@ -88,7 +87,7 @@ export async function POST(
         link_url,
         source,
         source_name,
-        published_at: new Date(published_at).toISOString()
+        published_at: new Date(published_at + '-01').toISOString()
       })
       .select()
       .single();

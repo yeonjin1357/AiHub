@@ -100,8 +100,8 @@ export default async function AdminPage() {
                 <p className="text-xs text-gray-600 mb-4">
                   사용 통계 및 분석
                 </p>
-                <Button className="w-full" variant="outline" disabled>
-                  통계 보기 (준비중)
+                <Button asChild className="w-full">
+                  <Link href="/admin/dashboard">통계 보기</Link>
                 </Button>
               </CardContent>
             </Card>

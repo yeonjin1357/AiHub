@@ -37,7 +37,7 @@ export async function PUT(
         link_url,
         source,
         source_name,
-        published_at: published_at ? new Date(published_at).toISOString() : undefined
+        published_at: published_at ? new Date(published_at.includes('-01') ? published_at : published_at + '-01').toISOString() : undefined
       })
       .eq('id', updateId)
       .eq('service_id', id)

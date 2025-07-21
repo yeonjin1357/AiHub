@@ -8,3 +8,11 @@ export function formatDate(date: string | Date): string {
     minute: '2-digit'
   }).format(d)
 }
+
+export function formatDateYearMonth(date: string | Date): string {
+  const d = new Date(date)
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: 'long'
+  }).format(d)
+}

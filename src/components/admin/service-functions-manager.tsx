@@ -9,7 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import * as Icons from 'lucide-react';
 
@@ -27,11 +33,14 @@ interface ServiceFunctionsManagerProps {
   serviceId: string;
 }
 
-export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerProps) {
+export function ServiceFunctionsManager({
+  serviceId,
+}: ServiceFunctionsManagerProps) {
   const [functions, setFunctions] = useState<ServiceFunction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [editingFunction, setEditingFunction] = useState<ServiceFunction | null>(null);
+  const [editingFunction, setEditingFunction] =
+    useState<ServiceFunction | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // 폼 상태
@@ -46,20 +55,26 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
     try {
       setIsLoading(true);
       const response = await fetch(`/api/services/${serviceId}/functions`);
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error('API Error:', errorData);
         throw new Error(errorData.error || 'Failed to load functions');
       }
-      
+
       const data = await response.json();
       console.log('Loaded functions:', data);
       setFunctions(data);
     } catch (error) {
       console.error('Error loading functions:', error);
-      if (error instanceof Error && error.message.includes('relation') && error.message.includes('does not exist')) {
-        toast.error('서비스 기능 테이블이 생성되지 않았습니다. Supabase에서 SQL을 실행해주세요.');
+      if (
+        error instanceof Error &&
+        error.message.includes('relation') &&
+        error.message.includes('does not exist')
+      ) {
+        toast.error(
+          '서비스 기능 테이블이 생성되지 않았습니다. Supabase에서 SQL을 실행해주세요.'
+        );
       } else {
         toast.error('기능을 불러오는데 실패했습니다.');
       }
@@ -100,7 +115,9 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
       const newFunction: Omit<ServiceFunction, 'id'> = {
         service_id: serviceId,
         name: formData.name,
-        description: formData.description || '이 기능을 통해 더욱 효율적인 작업이 가능합니다.',
+        description:
+          formData.description ||
+          '이 기능을 통해 더욱 효율적인 작업이 가능합니다.',
         icon_name: formData.icon_name,
         display_order: functions.length,
         is_active: true,
@@ -158,7 +175,9 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
 
       const updatedFunction = await response.json();
       setFunctions(
-        functions.map((fn) => (fn.id === updatedFunction.id ? updatedFunction : fn))
+        functions.map((fn) =>
+          fn.id === updatedFunction.id ? updatedFunction : fn
+        )
       );
       setEditingFunction(null);
       setFormData({ name: '', description: '', icon_name: 'Zap' });
@@ -227,14 +246,14 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
 
   if (isLoading) {
     return (
-      <Card className="border-gray-200 shadow-sm">
+      <Card className='border-gray-200 shadow-sm'>
         <CardHeader>
           <CardTitle>서비스 기능 관리</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className='space-y-3'>
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-16 bg-gray-100 rounded animate-pulse" />
+              <div key={i} className='h-16 bg-gray-100 rounded animate-pulse' />
             ))}
           </div>
         </CardContent>
@@ -243,15 +262,15 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
   }
 
   return (
-    <Card className="border-gray-200 shadow-sm">
+    <Card className='border-gray-200 shadow-sm'>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className='flex items-center justify-between'>
           <CardTitle>서비스 기능 관리</CardTitle>
-          <div className="flex gap-2">
+          <div className='flex gap-2'>
             {isEditing ? (
               <>
-                <Button onClick={handleSaveAll} size="sm">
-                  <Save className="h-4 w-4 mr-2" />
+                <Button onClick={handleSaveAll} size='sm'>
+                  <Save className='h-4 w-4 mr-2' />
                   전체 저장
                 </Button>
                 <Button
@@ -259,16 +278,16 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
                     setIsEditing(false);
                     loadFunctions(); // 변경사항 취소
                   }}
-                  variant="outline"
-                  size="sm"
+                  variant='outline'
+                  size='sm'
                 >
-                  <X className="h-4 w-4 mr-2" />
+                  <X className='h-4 w-4 mr-2' />
                   취소
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)} size="sm">
-                <Edit2 className="h-4 w-4 mr-2" />
+              <Button onClick={() => setIsEditing(true)} size='sm'>
+                <Edit2 className='h-4 w-4 mr-2' />
                 편집 모드
               </Button>
             )}
@@ -279,12 +298,12 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
         {isEditing ? (
           <>
             <DragDropContext onDragEnd={handleOnDragEnd}>
-              <Droppable droppableId="functions">
+              <Droppable droppableId='functions'>
                 {(provided) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="space-y-2"
+                    className='space-y-2'
                   >
                     {functions.map((func, index) => (
                       <Draggable
@@ -296,26 +315,26 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className={`flex items-center gap-3 p-3 bg-white border rounded-lg ${
+                            className={`flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg ${
                               snapshot.isDragging ? 'shadow-lg' : ''
                             }`}
                           >
                             <div {...provided.dragHandleProps}>
-                              <GripVertical className="h-5 w-5 text-gray-400" />
+                              <GripVertical className='h-5 w-5 text-gray-400' />
                             </div>
-                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
                               {getIconComponent(func.icon_name)}
                             </div>
-                            <div className="flex-1">
-                              <div className="font-medium">{func.name}</div>
-                              <div className="text-sm text-gray-600 line-clamp-1">
+                            <div className='flex-1'>
+                              <div className='font-medium'>{func.name}</div>
+                              <div className='text-sm text-gray-600 line-clamp-1'>
                                 {func.description}
                               </div>
                             </div>
-                            <div className="flex gap-2">
+                            <div className='flex gap-2'>
                               <Button
-                                size="sm"
-                                variant="ghost"
+                                size='sm'
+                                variant='ghost'
                                 onClick={() => {
                                   setEditingFunction(func);
                                   setFormData({
@@ -326,14 +345,16 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
                                   setIsDialogOpen(true);
                                 }}
                               >
-                                <Edit2 className="h-4 w-4" />
+                                <Edit2 className='h-4 w-4' />
                               </Button>
                               <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => func.id && handleDeleteFunction(func.id)}
+                                size='sm'
+                                variant='ghost'
+                                onClick={() =>
+                                  func.id && handleDeleteFunction(func.id)
+                                }
                               >
-                                <Trash2 className="h-4 w-4 text-red-500" />
+                                <Trash2 className='h-4 w-4 text-red-500' />
                               </Button>
                             </div>
                           </div>
@@ -351,13 +372,16 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
                 <Button
                   onClick={() => {
                     setEditingFunction(null);
-                    setFormData({ name: '', description: '', icon_name: 'Zap' });
+                    setFormData({
+                      name: '',
+                      description: '',
+                      icon_name: 'Zap',
+                    });
                   }}
-                  className="w-full mt-4"
-                  variant="outline"
+                  className='w-full mt-4'
+                  variant='outline'
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  새 기능 추가
+                  <Plus className='h-4 w-4 mr-2' />새 기능 추가
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -366,54 +390,59 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
                     {editingFunction ? '기능 수정' : '새 기능 추가'}
                   </DialogTitle>
                 </DialogHeader>
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   <div>
-                    <Label htmlFor="name">기능 이름</Label>
+                    <Label htmlFor='name'>기능 이름</Label>
                     <Input
-                      id="name"
+                      id='name'
                       value={formData.name}
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
-                      placeholder="예: AI 텍스트 생성"
+                      placeholder='예: AI 텍스트 생성'
                     />
                   </div>
                   <div>
-                    <Label htmlFor="description">설명</Label>
+                    <Label htmlFor='description'>설명</Label>
                     <Textarea
-                      id="description"
+                      id='description'
                       value={formData.description}
                       onChange={(e) =>
-                        setFormData({ ...formData, description: e.target.value })
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
                       }
-                      placeholder="이 기능에 대한 설명을 입력하세요."
+                      placeholder='이 기능에 대한 설명을 입력하세요.'
                       rows={3}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="icon">아이콘</Label>
+                    <Label htmlFor='icon'>아이콘</Label>
                     <Input
-                      id="icon"
+                      id='icon'
                       value={formData.icon_name}
                       onChange={(e) =>
                         setFormData({ ...formData, icon_name: e.target.value })
                       }
-                      placeholder="예: Zap, Star, Brain"
+                      placeholder='예: Zap, Star, Brain'
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className='text-xs text-gray-500 mt-1'>
                       Lucide 아이콘 이름을 입력하세요.
                     </p>
                   </div>
-                  <div className="flex justify-end gap-2">
+                  <div className='flex justify-end gap-2'>
                     <Button
-                      variant="outline"
+                      variant='outline'
                       onClick={() => setIsDialogOpen(false)}
                     >
                       취소
                     </Button>
                     <Button
                       onClick={
-                        editingFunction ? handleUpdateFunction : handleAddFunction
+                        editingFunction
+                          ? handleUpdateFunction
+                          : handleAddFunction
                       }
                     >
                       {editingFunction ? '수정' : '추가'}
@@ -424,36 +453,66 @@ export function ServiceFunctionsManager({ serviceId }: ServiceFunctionsManagerPr
             </Dialog>
           </>
         ) : (
-          <div className="space-y-3">
-            {functions.length > 0 ? (
-              functions.map((func) => (
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId='functions-view'>
+              {(provided) => (
                 <div
-                  key={func.id}
-                  className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className='space-y-3'
                 >
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    {getIconComponent(func.icon_name)}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-medium">{func.name}</div>
-                    <div className="text-sm text-gray-600">{func.description}</div>
-                  </div>
+                  {functions.length > 0 ? (
+                    functions.map((func, index) => (
+                      <Draggable
+                        key={func.id || index}
+                        draggableId={func.id || `view-${index}`}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={`flex items-center gap-3 p-4 bg-gray-50 rounded-lg ${
+                              snapshot.isDragging ? 'shadow-lg' : ''
+                            }`}
+                          >
+                            <div
+                              {...provided.dragHandleProps}
+                              className='flex items-center justify-center cursor-move'
+                            >
+                              <GripVertical className='h-5 w-5 text-gray-400' />
+                            </div>
+                            <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
+                              {getIconComponent(func.icon_name)}
+                            </div>
+                            <div className='flex-1'>
+                              <div className='font-medium'>{func.name}</div>
+                              <div className='text-sm text-gray-600'>
+                                {func.description}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))
+                  ) : (
+                    <div className='text-center py-8 text-gray-500'>
+                      <p>등록된 기능이 없습니다.</p>
+                      <Button
+                        onClick={() => setIsEditing(true)}
+                        className='mt-4'
+                        variant='outline'
+                      >
+                        <Plus className='h-4 w-4 mr-2' />
+                        기능 추가하기
+                      </Button>
+                    </div>
+                  )}
+                  {provided.placeholder}
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-8 text-gray-500">
-                <p>등록된 기능이 없습니다.</p>
-                <Button
-                  onClick={() => setIsEditing(true)}
-                  className="mt-4"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  기능 추가하기
-                </Button>
-              </div>
-            )}
-          </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         )}
       </CardContent>
     </Card>
