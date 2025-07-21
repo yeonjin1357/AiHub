@@ -4,7 +4,9 @@ import { Header } from '@/components/layout/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Settings, Database, Users, BarChart3 } from 'lucide-react';
+import { Settings, Database, Users, BarChart3, Star, Clock, MessageSquare } from 'lucide-react';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -25,6 +27,23 @@ export default async function AdminPage() {
   if (userProfile?.data?.role !== 'ADMIN') {
     redirect('/');
   }
+
+  // 최근 리뷰 가져오기
+  const { data: recentReviews } = await supabase
+    .from('reviews')
+    .select(`
+      *,
+      user_profiles (
+        name,
+        email
+      ),
+      ai_services (
+        name,
+        slug
+      )
+    `)
+    .order('created_at', { ascending: false })
+    .limit(10);
 
   return (
     <>
@@ -65,8 +84,8 @@ export default async function AdminPage() {
                 <p className="text-xs text-gray-600 mb-4">
                   사용자 계정 및 권한 관리
                 </p>
-                <Button className="w-full" variant="outline" disabled>
-                  사용자 관리 (준비중)
+                <Button asChild className="w-full">
+                  <Link href="/admin/users">사용자 관리</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -90,22 +109,60 @@ export default async function AdminPage() {
 
           <div className="mt-8">
             <Card className="border-gray-200/60 shadow-sm">
-              <CardHeader>
-                <CardTitle>빠른 작업</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-xl font-semibold">최근 리뷰</CardTitle>
+                <MessageSquare className="h-5 w-5 text-gray-600" />
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button asChild variant="outline">
-                    <Link href="/admin/services">
-                      <Settings className="h-4 w-4 mr-2" />
-                      서비스 특징 관리
-                    </Link>
-                  </Button>
-                  <Button variant="outline" disabled>
-                    <Database className="h-4 w-4 mr-2" />
-                    카테고리 관리 (준비중)
-                  </Button>
-                </div>
+                {recentReviews && recentReviews.length > 0 ? (
+                  <div className="space-y-4">
+                    {recentReviews.map((review) => (
+                      <div key={review.id} className="border-b border-gray-100 pb-4 last:border-0">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Link 
+                                href={`/services/${review.ai_services?.slug}`}
+                                className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+                              >
+                                {review.ai_services?.name}
+                              </Link>
+                              <div className="flex items-center gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`h-4 w-4 ${
+                                      i < review.rating 
+                                        ? 'text-yellow-500 fill-yellow-500' 
+                                        : 'text-gray-300'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                              {review.comment}
+                            </p>
+                            <div className="flex items-center gap-4 text-xs text-gray-500">
+                              <span className="flex items-center gap-1">
+                                <Users className="h-3 w-3" />
+                                {review.user_profiles?.name || review.user_profiles?.email}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {format(new Date(review.created_at), 'MM월 dd일 HH:mm', { locale: ko })}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-gray-500 py-8">
+                    아직 작성된 리뷰가 없습니다.
+                  </p>
+                )}
               </CardContent>
             </Card>
           </div>

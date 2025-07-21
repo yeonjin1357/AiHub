@@ -82,7 +82,9 @@ export function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button variant='ghost' size='sm'>
                       <User className='mr-2 h-4 w-4' />
-                      {user.user_metadata?.name || userProfile?.name || '사용자'}
+                      <span className="max-w-[100px] truncate">
+                        {userProfile?.name || user.user_metadata?.name || user.email?.split('@')[0] || '사용자'}
+                      </span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end' className='w-56 bg-white border-gray-100 shadow-lg'>

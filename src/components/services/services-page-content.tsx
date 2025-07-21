@@ -15,10 +15,18 @@ import {
   Category,
 } from '@/lib/api/services';
 
-export function ServicesPageContent() {
-  const [services, setServices] = useState<AIService[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [filteredServices, setFilteredServices] = useState<AIService[]>([]);
+interface ServicesPageContentProps {
+  initialServices: AIService[];
+  initialCategories: Category[];
+}
+
+export function ServicesPageContent({ 
+  initialServices, 
+  initialCategories 
+}: ServicesPageContentProps) {
+  const [services] = useState<AIService[]>(initialServices);
+  const [categories] = useState<Category[]>(initialCategories);
+  const [filteredServices, setFilteredServices] = useState<AIService[]>(initialServices);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'featured' | 'freemium'>(
@@ -27,27 +35,6 @@ export function ServicesPageContent() {
   const [selectedPricingType, setSelectedPricingType] = useState<'all' | 'freemium' | 'paid'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  // 데이터 로딩
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [servicesData, categoriesData] = await Promise.all([
-          getServices(),
-          getCategories(),
-        ]);
-
-        setServices(servicesData);
-        setCategories(categoriesData);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   // 필터링 및 정렬
   useEffect(() => {
@@ -95,14 +82,6 @@ export function ServicesPageContent() {
 
     setFilteredServices(filtered);
   }, [services, selectedCategory, selectedPricingType, searchQuery, sortBy]);
-
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center min-h-screen'>
-        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
-      </div>
-    );
-  }
 
   return (
     <div className='py-8'>

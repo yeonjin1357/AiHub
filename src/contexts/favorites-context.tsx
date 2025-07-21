@@ -27,12 +27,13 @@ interface FavoritesContextType {
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const pathname = usePathname();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [favoriteServiceIds, setFavoriteServiceIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [loadingPromise, setLoadingPromise] = useState<Promise<void> | null>(null);
 
   // 찜 기능이 필요한 페이지인지 확인
   const needsFavorites = useCallback(() => {
@@ -47,13 +48,17 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     return true;
   }, [pathname]);
 
-  // 사용자의 찜 목록 로드 (한 번만 실행)
+  // 사용자의 찜 목록 로드 (중복 호출 방지)
   const loadFavorites = useCallback(async () => {
+    // 인증 로딩 중이면 대기
+    if (authLoading) return;
+
     if (!user) {
       setFavorites([]);
       setFavoriteServiceIds(new Set());
       setHasLoaded(false);
       setLoading(false);
+      setLoadingPromise(null);
       return;
     }
 
@@ -65,24 +70,34 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     // 이미 로드했다면 다시 로드하지 않음
     if (hasLoaded) return;
 
-    setLoading(true);
-    try {
-      const response = await fetch('/api/favorites');
-      if (response.ok) {
-        const data = await response.json();
-        setFavorites(data.favorites || []);
-        setFavoriteServiceIds(new Set(data.favorites?.map((f: Favorite) => f.service_id) || []));
-        setHasLoaded(true);
-      } else {
-        if (response.status !== 401) { // 401은 로그아웃 상태이므로 에러 토스트 표시하지 않음
-          toast.error('찜 목록을 불러오는데 실패했습니다.');
+    // 이미 로딩 중이면 기존 Promise 반환
+    if (loadingPromise) return loadingPromise;
+
+    const promise = (async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/favorites');
+        if (response.ok) {
+          const data = await response.json();
+          setFavorites(data.favorites || []);
+          setFavoriteServiceIds(new Set(data.favorites?.map((f: Favorite) => f.service_id) || []));
+          setHasLoaded(true);
+        } else {
+          if (response.status !== 401) { // 401은 로그아웃 상태이므로 에러 토스트 표시하지 않음
+            toast.error('찜 목록을 불러오는데 실패했습니다.');
+          }
         }
+      } catch (error) {
+        console.error('Error loading favorites:', error);
+      } finally {
+        setLoading(false);
+        setLoadingPromise(null);
       }
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  }, [user, hasLoaded, needsFavorites]);
+    })();
+
+    setLoadingPromise(promise);
+    return promise;
+  }, [user, authLoading, hasLoaded, needsFavorites, loadingPromise]);
 
   // 서비스를 찜 목록에 추가
   const addFavorite = useCallback(async (serviceId: string) => {

@@ -1,5 +1,6 @@
 import { Header } from '@/components/layout/header';
-import { ServicesPageContent } from '@/components/services/services-page-content';
+import { ServicesPageServerContent } from './page-content';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'AI 서비스 카탈로그',
@@ -10,7 +11,9 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <ServicesPageContent />
+      <Suspense fallback={<div className="flex justify-center py-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>}>
+        <ServicesPageServerContent />
+      </Suspense>
     </div>
   );
 }

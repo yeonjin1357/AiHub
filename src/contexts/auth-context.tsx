@@ -26,6 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // 사용자 프로필 가져오기
   const fetchUserProfile = async (userId: string) => {
@@ -45,17 +46,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    let mounted = true;
+
     // 초기 사용자 상태 확인
     const getInitialUser = async () => {
       try {
         const { data } = await auth.getCurrentUser();
-        setUser(data.user);
-        if (data.user) {
-          await fetchUserProfile(data.user.id);
+        if (mounted) {
+          setUser(data.user);
+          if (data.user) {
+            await fetchUserProfile(data.user.id);
+          }
+          setIsInitialized(true);
         }
       } catch (error) {
+        console.error('Error getting initial user:', error);
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -63,19 +72,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // 인증 상태 변화 감지
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchUserProfile(session.user.id);
-      } else {
-        setUserProfile(null);
+      if (mounted) {
+        // 초기화가 완료된 후에만 상태 업데이트
+        if (isInitialized || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+          setUser(session?.user ?? null);
+          if (session?.user) {
+            await fetchUserProfile(session.user.id);
+          } else {
+            setUserProfile(null);
+          }
+          setLoading(false);
+        }
       }
-      setLoading(false);
     });
 
     return () => {
+      mounted = false;
       subscription?.unsubscribe();
     };
-  }, []);
+  }, [isInitialized]);
 
   const signOut = async () => {
     try {

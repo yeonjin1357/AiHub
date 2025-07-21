@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/client';
+import { fetchWithCache } from '@/utils/api-cache';
 
 export type PricingType = 'free' | 'freemium' | 'paid';
 
@@ -30,53 +31,57 @@ export interface Category {
 }
 
 export async function getServices(): Promise<AIService[]> {
-  const supabase = createClient();
+  return fetchWithCache('services:all', async () => {
+    const supabase = createClient();
 
-  const { data, error } = await supabase
-    .from('ai_services')
-    .select(`
-      *,
-      reviews:reviews(rating)
-    `)
-    .order('is_featured', { ascending: false })
-    .order('name', { ascending: true });
+    const { data, error } = await supabase
+      .from('ai_services')
+      .select(`
+        *,
+        reviews:reviews(rating)
+      `)
+      .order('is_featured', { ascending: false })
+      .order('name', { ascending: true });
 
-  if (error) {
-    throw new Error('Failed to fetch services');
-  }
+    if (error) {
+      throw new Error('Failed to fetch services');
+    }
 
-  // 평점과 리뷰 수 계산
-  const servicesWithRatings = (data || []).map(service => {
-    const reviews = service.reviews || [];
-    const reviewCount = reviews.length;
-    const averageRating = reviewCount > 0 
-      ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
-      : 0;
+    // 평점과 리뷰 수 계산
+    const servicesWithRatings = (data || []).map(service => {
+      const reviews = service.reviews || [];
+      const reviewCount = reviews.length;
+      const averageRating = reviewCount > 0 
+        ? reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / reviewCount
+        : 0;
 
-    return {
-      ...service,
-      reviews: undefined, // reviews 필드 제거
-      review_count: reviewCount,
-      average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
-    };
-  });
+      return {
+        ...service,
+        reviews: undefined, // reviews 필드 제거
+        review_count: reviewCount,
+        average_rating: Math.round(averageRating * 10) / 10 // 소수점 첫째자리까지
+      };
+    });
 
-  return servicesWithRatings;
+    return servicesWithRatings;
+  }, { ttl: 60 }); // 1분 캐시
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const supabase = createClient();
+  return fetchWithCache('categories:all', async () => {
+    const supabase = createClient();
 
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name', { ascending: true });
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('name', { ascending: true });
 
-  if (error) {
-    throw new Error('Failed to fetch categories');
-  }
+    if (error) {
+      throw new Error('Failed to fetch categories');
+    }
 
-  return data || [];
+    return data || [];
+  }, { ttl: 300 }); // 5분 캐시
 }
 
 export async function getServiceBySlug(
