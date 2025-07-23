@@ -63,9 +63,9 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {submitStatus === 'error' && (
-        <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-300 rounded-lg">
-          <AlertCircle className="w-5 h-5 text-red-600" />
-          <p className="text-red-600">
+        <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+          <AlertCircle className="w-5 h-5 text-red-400" />
+          <p className="text-red-400">
             문의 전송 중 오류가 발생했습니다. 다시 시도해주세요.
           </p>
         </div>
@@ -73,7 +73,7 @@ export function ContactForm() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="name">이름 *</Label>
+          <Label htmlFor="name" className="text-white">이름 *</Label>
           <Input
             id="name"
             name="name"
@@ -82,12 +82,12 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             placeholder="홍길동"
-            className="w-full"
+            className="w-full bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:bg-white/10 focus:border-blue-500/50"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">이메일 *</Label>
+          <Label htmlFor="email" className="text-white">이메일 *</Label>
           <Input
             id="email"
             name="email"
@@ -96,13 +96,13 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             placeholder="example@email.com"
-            className="w-full"
+            className="w-full bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:bg-white/10 focus:border-blue-500/50"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="subject">제목 *</Label>
+        <Label htmlFor="subject" className="text-white">제목 *</Label>
         <Input
           id="subject"
           name="subject"
@@ -111,12 +111,12 @@ export function ContactForm() {
           value={formData.subject}
           onChange={handleChange}
           placeholder="문의 제목을 입력해주세요"
-          className="w-full"
+          className="w-full bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:bg-white/10 focus:border-blue-500/50"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message">메시지 *</Label>
+        <Label htmlFor="message" className="text-white">메시지 *</Label>
         <textarea
           id="message"
           name="message"
@@ -125,15 +125,15 @@ export function ContactForm() {
           onChange={handleChange}
           placeholder="문의 내용을 자세히 입력해주세요. 서비스 추가 요청, 정보 수정, 기능 개선 제안 등 무엇이든 환영합니다."
           rows={6}
-          className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md shadow-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 border border-white/10 bg-white/5 text-white rounded-md shadow-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent focus:bg-white/10 resize-none transition-all"
         />
       </div>
 
       <div className="flex items-center justify-between pt-4">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-zinc-500">
           * 필수 입력 항목
         </p>
-        <Button type="submit" disabled={isSubmitting} className="flex items-center gap-2">
+        <Button type="submit" disabled={isSubmitting} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0">
           {isSubmitting ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

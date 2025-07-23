@@ -88,19 +88,19 @@ export function ServicesPageContent({
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* 헤더 섹션 */}
         <div className='text-center mb-8'>
-          <h1 className='text-3xl font-bold text-gray-900 sm:text-4xl'>
+          <h1 className='text-3xl font-bold text-white sm:text-4xl'>
             AI 서비스 카탈로그
           </h1>
-          <p className='mt-3 text-xl text-gray-500'>
+          <p className='mt-3 text-xl text-zinc-400'>
             최고의 AI 도구들을 한눈에 비교하고 찾아보세요
           </p>
-          <p className='mt-2 text-sm text-gray-400'>
+          <p className='mt-2 text-sm text-zinc-500'>
             총 {services.length}개의 AI 서비스 • 검색 결과 {filteredServices.length}개
           </p>
         </div>
 
         {/* 검색 및 필터 */}
-        <div className='bg-white rounded-lg p-6 shadow-sm mb-8 border border-gray-200'>
+        <div className='glass rounded-lg p-6 mb-8'>
           <div className='flex flex-col lg:flex-row gap-4'>
             {/* 검색 */}
             <div className='flex-1'>
@@ -116,23 +116,23 @@ export function ServicesPageContent({
               <ServiceSort value={sortBy} onChange={setSortBy} />
 
               {/* 뷰 모드 */}
-              <div className='flex rounded-lg border border-gray-200'>
+              <div className='flex rounded-lg border border-white/10 overflow-hidden'>
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-l-lg ${
+                  className={`p-2 transition-all ${
                     viewMode === 'grid'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-700'
+                      : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <Grid size={20} />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-r-lg ${
+                  className={`p-2 transition-all ${
                     viewMode === 'list'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-700'
+                      : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <List size={20} />
@@ -177,11 +177,11 @@ export function ServicesPageContent({
             
             {filteredServices.length === 0 ? (
               <div className='text-center py-12'>
-                <Search className='mx-auto h-12 w-12 text-gray-400' />
-                <h3 className='mt-4 text-lg font-medium text-gray-900'>
+                <Search className='mx-auto h-12 w-12 text-zinc-500' />
+                <h3 className='mt-4 text-lg font-medium text-white'>
                   검색 결과가 없습니다
                 </h3>
-                <p className='mt-2 text-gray-500'>
+                <p className='mt-2 text-zinc-400'>
                   다른 키워드로 검색해보거나 필터를 변경해보세요.
                 </p>
               </div>

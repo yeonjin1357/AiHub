@@ -84,9 +84,18 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const relatedServices = await getRelatedServices(slug);
 
   return (
-    <>
+    <div className="min-h-screen bg-[#0a0a0b] relative overflow-hidden">
+      {/* Background gradient effects */}
+      <div className='absolute inset-0 overflow-hidden pointer-events-none'>
+        <div className='absolute inset-0'>
+          <div className='absolute top-0 left-1/3 w-96 h-96 bg-blue-600/5 rounded-full blur-[120px]'></div>
+          <div className='absolute top-1/2 right-1/4 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[150px]'></div>
+          <div className='absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-pink-600/5 rounded-full blur-[180px]'></div>
+        </div>
+      </div>
+      
       <Header />
       <ServiceDetailContent service={service} relatedServices={relatedServices} />
-    </>
+    </div>
   );
 }

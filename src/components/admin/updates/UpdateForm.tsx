@@ -244,7 +244,7 @@ export default function UpdateForm({
             />
           </div>
         </div>
-        <p className='text-sm text-gray-500 mt-1'>
+        <p className='text-xs text-zinc-400 mt-1'>
           일자는 선택사항입니다. 비워두면 1일로 저장됩니다.
         </p>
       </div>
@@ -253,6 +253,7 @@ export default function UpdateForm({
         <Button
           type='button'
           variant='outline'
+          className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
           onClick={onCancel}
           disabled={submitting}
         >

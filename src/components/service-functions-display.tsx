@@ -63,11 +63,11 @@ export function ServiceFunctionsDisplay({ serviceId }: ServiceFunctionsDisplayPr
     return (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
-          <Card key={i} className="border-gray-100 shadow-sm">
+          <Card key={i} className="glass border-0">
             <CardContent className="p-6">
-              <div className="h-12 w-12 bg-gray-200 rounded-xl mb-4 animate-pulse" />
-              <div className="h-6 bg-gray-200 rounded mb-3 animate-pulse" />
-              <div className="h-4 bg-gray-200 rounded animate-pulse" />
+              <div className="h-12 w-12 bg-zinc-800 rounded-xl mb-4 animate-pulse" />
+              <div className="h-6 bg-zinc-800 rounded mb-3 animate-pulse" />
+              <div className="h-4 bg-zinc-800 rounded animate-pulse" />
             </CardContent>
           </Card>
         ))}
@@ -78,7 +78,7 @@ export function ServiceFunctionsDisplay({ serviceId }: ServiceFunctionsDisplayPr
   if (functions.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">이 서비스의 기능 정보가 준비 중입니다.</p>
+        <p className="text-zinc-500">이 서비스의 기능 정보가 준비 중입니다.</p>
       </div>
     );
   }
@@ -90,21 +90,21 @@ export function ServiceFunctionsDisplay({ serviceId }: ServiceFunctionsDisplayPr
         return (
           <Card
             key={func.id}
-            className="border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 group bg-white"
+            className="glass border-0 gradient-border-effect hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-200 hover:scale-105 group"
           >
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center border border-blue-200 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
                   <FeatureIcon
                     size={20}
-                    className="text-blue-600"
+                    className="text-blue-400"
                   />
                 </div>
-                <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
                   {func.name}
                 </h3>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-zinc-400 leading-relaxed">
                 {func.description}
               </p>
             </CardContent>

@@ -45,21 +45,25 @@ export default async function AdminServicesPage() {
   return (
     <>
       <Header />
-      <div className='min-h-screen bg-gray-50'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+      <div className='min-h-screen bg-[#0a0a0b]'>
+        {/* Background gradient effects */}
+        <div className='fixed inset-0 pointer-events-none'>
+          <div className='absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 blur-[128px] rounded-full animate-blob' />
+          <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 blur-[128px] rounded-full animate-blob animation-delay-2000' />
+        </div>
+
+        <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
           <div className='mb-8'>
             <div className='flex items-center justify-between'>
               <div>
-                <h1 className='text-3xl font-bold text-gray-900'>
-                  서비스 관리
-                </h1>
-                <p className='mt-2 text-gray-600'>
+                <h1 className='text-3xl font-bold text-white'>서비스 관리</h1>
+                <p className='mt-2 text-zinc-400'>
                   AI 서비스 정보 및 특징 관리
                 </p>
               </div>
               <Link
                 href='/admin'
-                className='inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'
+                className='inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:border-white/20 transition-all'
               >
                 <svg
                   className='w-4 h-4 mr-2'
@@ -83,36 +87,51 @@ export default async function AdminServicesPage() {
             {services?.map((service) => (
               <Card
                 key={service.id}
-                className='border-gray-200/60 shadow-sm hover:shadow-lg transition-shadow flex flex-col justify-between'
+                className='glass border-0 gradient-border-effect hover:shadow-2xl hover:shadow-blue-500/10 transition-all flex flex-col justify-between'
               >
                 <CardHeader className='pb-3'>
                   <div className='flex items-center gap-3'>
                     {service.logo_url ? (
-                      <img
-                        src={service.logo_url}
-                        alt={`${service.name} logo`}
-                        className='w-10 h-10 rounded-lg object-contain'
-                      />
+                      <div className='w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm p-1.5 shadow-inner border border-white/30 relative'>
+                        <div className='absolute inset-0 bg-gradient-to-br from-white/10 to-white/20 rounded-lg'></div>
+                        <img
+                          src={service.logo_url}
+                          alt={`${service.name} logo`}
+                          className='relative z-10 w-full h-full object-contain rounded drop-shadow-lg'
+                          style={{
+                            filter:
+                              'brightness(1.2) contrast(1.3) saturate(1.2)',
+                            mixBlendMode: 'normal',
+                          }}
+                        />
+                      </div>
                     ) : (
-                      <div className='w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold'>
+                      <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold'>
                         {service.name.charAt(0)}
                       </div>
                     )}
                     <div>
-                      <CardTitle className='text-lg'>{service.name}</CardTitle>
-                      <p className='text-sm text-gray-500'>
+                      <CardTitle className='text-lg text-white'>
+                        {service.name}
+                      </CardTitle>
+                      <p className='text-sm text-zinc-500'>
                         {service.categories?.name}
                       </p>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className='flex-1 flex flex-col justify-between'>
-                  <p className='text-sm text-gray-600 mb-4 line-clamp-2'>
+                  <p className='text-sm text-zinc-400 mb-4 line-clamp-2'>
                     {service.description}
                   </p>
                   <div className='space-y-2'>
                     <div className='grid grid-cols-2 gap-2'>
-                      <Button asChild size='sm' variant='outline'>
+                      <Button
+                        asChild
+                        size='sm'
+                        variant='outline'
+                        className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
+                      >
                         <Link
                           href={`/admin/services/${service.slug}/functions`}
                         >
@@ -120,22 +139,34 @@ export default async function AdminServicesPage() {
                           기능
                         </Link>
                       </Button>
-                      <Button asChild size='sm' variant='outline'>
+                      <Button
+                        asChild
+                        size='sm'
+                        variant='outline'
+                        className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
+                      >
                         <Link href={`/admin/services/${service.slug}/links`}>
                           <LinkIcon className='h-4 w-4 mr-1' />
                           링크
                         </Link>
                       </Button>
-                      <Button asChild size='sm' variant='outline'>
+                      <Button
+                        asChild
+                        size='sm'
+                        variant='outline'
+                        className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
+                      >
                         <Link href={`/admin/services/${service.slug}/updates`}>
                           <FileText className='h-4 w-4 mr-1' />
                           업데이트
                         </Link>
                       </Button>
-                      <Button asChild size='sm' variant='outline'>
-                        <Link
-                          href={`/services/${service.slug}`}
-                        >
+                      <Button
+                        asChild
+                        size='sm'
+                        className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
+                      >
+                        <Link href={`/services/${service.slug}`}>
                           <ExternalLink className='h-4 w-4 mr-1' />
                           서비스 보기
                         </Link>
@@ -149,7 +180,7 @@ export default async function AdminServicesPage() {
 
           {!services?.length && (
             <div className='text-center py-12'>
-              <p className='text-gray-500'>등록된 서비스가 없습니다.</p>
+              <p className='text-zinc-500'>등록된 서비스가 없습니다.</p>
             </div>
           )}
         </div>

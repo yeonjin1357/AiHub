@@ -67,14 +67,25 @@ export function ServiceCard({
   const getLogoElement = () => {
     if (service.logo_url && !imageError) {
       return (
-        <Image
-          src={service.logo_url}
-          alt={`${service.name} logo`}
-          width={viewMode === 'list' ? 80 : 48}
-          height={viewMode === 'list' ? 80 : 48}
-          className='rounded-lg object-contain'
-          onError={() => setImageError(true)}
-        />
+        <div
+          className={`relative ${
+            viewMode === 'list' ? 'w-20 h-20' : 'w-12 h-12'
+          } rounded-lg bg-white/10 backdrop-blur-sm p-2 shadow-inner border border-white/20`}
+        >
+          <div className='absolute inset-0 bg-gradient-to-br from-white/10 to-white/20 rounded-lg'></div>
+          <Image
+            src={service.logo_url}
+            alt={`${service.name} logo`}
+            width={viewMode === 'list' ? 64 : 32}
+            height={viewMode === 'list' ? 64 : 32}
+            className='relative z-10 w-full h-full object-contain rounded drop-shadow-lg'
+            style={{
+              filter: 'brightness(1.2) contrast(1.3) saturate(1.2)',
+              mixBlendMode: 'normal',
+            }}
+            onError={() => setImageError(true)}
+          />
+        </div>
       );
     }
 
@@ -83,7 +94,7 @@ export function ServiceCard({
       <div
         className={`${
           viewMode === 'list' ? 'w-20 h-20 text-2xl' : 'w-12 h-12 text-lg'
-        } rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold`}
+        } rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold`}
       >
         {service.name.charAt(0).toUpperCase()}
       </div>
@@ -97,20 +108,17 @@ export function ServiceCard({
         case 'free':
           return {
             label: '무료',
-            color:
-              'bg-green-100 text-green-800',
+            color: 'bg-green-500/20 text-green-400 border-green-500/30',
           };
         case 'freemium':
           return {
             label: '프리미엄',
-            color:
-              'bg-blue-100 text-blue-800',
+            color: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
           };
         case 'paid':
           return {
             label: '유료',
-            color:
-              'bg-orange-100 text-orange-800',
+            color: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
           };
       }
     }
@@ -119,13 +127,12 @@ export function ServiceCard({
     if (service.pricing_type === 'freemium') {
       return {
         label: '프리미엄',
-        color: 'bg-blue-100 text-blue-800',
+        color: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
       };
     }
     return {
       label: '유료',
-      color:
-        'bg-orange-100 text-orange-800',
+      color: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
     };
   };
 
@@ -133,8 +140,8 @@ export function ServiceCard({
 
   if (viewMode === 'list') {
     return (
-      <Card className='flex flex-col md:flex-row overflow-hidden hover:shadow-lg transition-shadow duration-200 border-gray-200'>
-        <div className='md:w-48 p-6 flex items-center justify-center bg-gray-50'>
+      <Card className='flex flex-col md:flex-row overflow-hidden hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 glass border-0 group gradient-border-effect'>
+        <div className='md:w-48 p-6 flex items-center justify-center'>
           {getLogoElement()}
         </div>
 
@@ -142,11 +149,11 @@ export function ServiceCard({
           <div className='flex items-start justify-between'>
             <div className='flex-1'>
               <div className='flex items-center gap-2 mb-2'>
-                <h3 className='text-xl font-semibold text-gray-900'>
+                <h3 className='text-xl font-semibold text-white group-hover:text-blue-400 transition-colors'>
                   {service.name}
                 </h3>
                 {service.is_featured && (
-                  <Badge className='bg-yellow-100 text-yellow-800'>
+                  <Badge className='bg-yellow-500/20 text-yellow-400 border-yellow-500/30'>
                     <Star size={12} className='mr-1' />
                     추천
                   </Badge>
@@ -155,20 +162,18 @@ export function ServiceCard({
               </div>
 
               {category && (
-                <div className='text-sm text-gray-500 mb-2'>
+                <div className='text-sm text-zinc-500 mb-2'>
                   {category.name}
                 </div>
               )}
 
-              <p className='text-gray-600 mb-4'>
-                {service.description}
-              </p>
+              <p className='text-zinc-400 mb-4'>{service.description}</p>
 
               <div className='flex flex-wrap gap-2 mb-4'>
                 {service.features.slice(0, 3).map((feature, index) => (
                   <span
                     key={index}
-                    className='inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800'
+                    className='inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-white/5 text-zinc-400 border border-white/10'
                   >
                     <Check size={10} className='mr-1' />
                     {feature}
@@ -177,13 +182,10 @@ export function ServiceCard({
               </div>
 
               {/* 평점 및 리뷰 수 */}
-              <div className='flex items-center gap-3 text-sm text-gray-500 mb-4'>
+              <div className='flex items-center gap-3 text-sm text-zinc-500 mb-4'>
                 <div className='flex items-center gap-1'>
-                  <StarRating 
-                    rating={service.average_rating || 0} 
-                    size={14}
-                  />
-                  <span className='font-medium'>
+                  <StarRating rating={service.average_rating || 0} size={14} />
+                  <span className='font-medium text-zinc-400'>
                     {(service.average_rating || 0).toFixed(1)}
                   </span>
                 </div>
@@ -200,7 +202,10 @@ export function ServiceCard({
                   variant='ghost'
                   size='sm'
                   onClick={handleFavorite}
-                  className={isServiceFavorited ?'text-red-500' : 'text-gray-400'
+                  className={
+                    isServiceFavorited
+                      ? 'text-red-500 hover:text-red-400'
+                      : 'text-zinc-400 hover:text-white'
                   }
                 >
                   <Heart
@@ -215,75 +220,76 @@ export function ServiceCard({
                   variant='ghost'
                   size='sm'
                   asChild
+                  className='text-zinc-400 hover:text-white hover:bg-white/10'
                 >
-                  <Link href={`/admin/services/${service.slug}/features` as any}>
+                  <Link href={`/admin/services/${service.slug}/updates`}>
                     <Settings size={16} />
                   </Link>
                 </Button>
               )}
-
-              <Button size='sm' asChild>
-                <Link href={`/services/${service.slug}` as any}>
-                  자세히 보기
-                </Link>
-              </Button>
-
-              <Button variant='outline' size='sm' asChild>
-                <a
-                  href={service.website_url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <ExternalLink size={14} className='mr-2' />
-                  방문하기
-                </a>
-              </Button>
             </div>
+          </div>
+
+          <div className='flex items-center gap-2 mt-4'>
+            <Button
+              size='sm'
+              variant='default'
+              asChild
+              className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
+            >
+              <Link href={`/services/${service.slug}`}>자세히 보기</Link>
+            </Button>
+            <Button
+              size='sm'
+              variant='outline'
+              asChild
+              className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
+            >
+              <a
+                href={service.website_url}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <ExternalLink size={14} className='mr-1' />
+                공식 사이트
+              </a>
+            </Button>
           </div>
         </div>
       </Card>
     );
   }
 
+  // Grid view
   return (
-    <Card className='group hover:shadow-lg transition-all duration-200 hover:-translate-y-1 overflow-hidden border-gray-200'>
-      <CardHeader className='pb-3'>
-        <div className='flex items-center justify-between'>
+    <Card className='overflow-hidden hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 glass border-0 group hover:-translate-y-1 gradient-border-effect'>
+      <CardHeader className='pb-4'>
+        <div className='flex items-start justify-between'>
           <div className='flex items-center gap-3'>
-            <div className='relative'>
-              {getLogoElement()}
-              {service.is_featured && (
-                <div className='absolute -top-2 -right-2 bg-yellow-500 text-white rounded-full p-1'>
-                  <Star size={10} fill='currentColor' />
-                </div>
-              )}
-            </div>
-
-            <div className='flex-1'>
-              <h3 className='font-semibold text-gray-900 group-hover:text-blue-600 transition-colors whitespace-nowrap overflow-hidden text-ellipsis'>
+            {getLogoElement()}
+            <div>
+              <h3 className='font-semibold text-lg leading-tight text-white group-hover:text-blue-400 transition-colors'>
                 {service.name}
               </h3>
               {category && (
-                <p className='text-sm text-gray-500'>
-                  {category.name}
-                </p>
+                <p className='text-xs text-zinc-500'>{category.name}</p>
               )}
             </div>
           </div>
-
           <div className='flex items-center gap-1'>
+            {service.is_featured && (
+              <Star size={14} className='text-yellow-500' fill='currentColor' />
+            )}
             {user && !isAdmin && (
               <Button
                 variant='ghost'
                 size='sm'
                 onClick={handleFavorite}
-                className={`${
-                  isServiceFavorited ? 'text-red-500' : 'text-gray-400'
-                } ${
+                className={`p-1 h-auto ${
                   isServiceFavorited
-                    ? 'opacity-100'
-                    : 'opacity-0 group-hover:opacity-100'
-                } transition-opacity`}
+                    ? 'text-red-500 hover:text-red-400'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
               >
                 <Heart
                   size={16}
@@ -291,15 +297,14 @@ export function ServiceCard({
                 />
               </Button>
             )}
-
             {isAdmin && (
               <Button
                 variant='ghost'
                 size='sm'
                 asChild
-                className='opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-600'
+                className='p-1 h-auto text-zinc-400 hover:text-white hover:bg-white/10'
               >
-                <Link href={`/admin/services/${service.slug}/features` as any}>
+                <Link href={`/admin/services/${service.slug}/updates`}>
                   <Settings size={16} />
                 </Link>
               </Button>
@@ -309,60 +314,60 @@ export function ServiceCard({
       </CardHeader>
 
       <CardContent className='pb-4'>
-        <p className='text-sm text-gray-600 mb-3 line-clamp-2'>
+        <p className='text-sm text-zinc-400 line-clamp-2 mb-3'>
           {service.description}
         </p>
 
-        <div className='flex items-center gap-2 mb-3'>
-          <Badge className={pricing.color}> <DollarSign size={10} className='mr-1' />
-            {pricing.label}
-          </Badge>
-        </div>
+        <div className='flex items-center justify-between mb-3'>
+          <Badge className={pricing.color}>{pricing.label}</Badge>
 
-        <div className='space-y-1 mb-3'>
-          {service.features.slice(0, 2).map((feature, index) => (
-            <div
-              key={index}
-              className='flex items-center text-xs text-gray-500'
-            >
-              <Check size={10} className='mr-2 text-green-500' />
-              {feature}
-            </div>
-          ))}
-        </div>
-
-        {/* 평점 및 리뷰 수 */}
-        <div className='flex items-center gap-2 text-xs text-gray-500'>
-          <div className='flex items-center gap-1'>
-            <StarRating 
-              rating={service.average_rating || 0} 
-              size={12}
-            />
-            <span className='font-medium'>
+          {/* 평점 */}
+          <div className='flex items-center gap-1 text-xs'>
+            <StarRating rating={service.average_rating || 0} size={12} />
+            <span className='text-zinc-500'>
               {(service.average_rating || 0).toFixed(1)}
             </span>
           </div>
-          <div className='flex items-center gap-1'>
-            <MessageCircle size={10} />
-            <span>{service.review_count || 0}</span>
-          </div>
+        </div>
+
+        <div className='space-y-1'>
+          {service.features.slice(0, 2).map((feature, index) => (
+            <div
+              key={index}
+              className='text-xs text-zinc-500 flex items-center gap-1'
+            >
+              <Check size={10} className='text-green-400' />
+              <span className='truncate'>{feature}</span>
+            </div>
+          ))}
         </div>
       </CardContent>
 
-      <CardFooter className='pt-0 gap-2'>
-        <Button className='flex-1' size='sm' asChild>
-          <Link href={`/services/${service.slug}` as any}>자세히 보기</Link>
-        </Button>
-
-        <Button variant='outline' size='sm' asChild>
-          <a
-            href={service.website_url}
-            target='_blank'
-            rel='noopener noreferrer'
+      <CardFooter className='pt-4 border-t border-white/5'>
+        <div className='w-full flex gap-2'>
+          <Button
+            size='sm'
+            variant='default'
+            asChild
+            className='flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
           >
-            <ExternalLink size={14} />
-          </a>
-        </Button>
+            <Link href={`/services/${service.slug}`}>자세히 보기</Link>
+          </Button>
+          <Button
+            size='icon'
+            variant='outline'
+            asChild
+            className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
+          >
+            <a
+              href={service.website_url}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <ExternalLink size={16} />
+            </a>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

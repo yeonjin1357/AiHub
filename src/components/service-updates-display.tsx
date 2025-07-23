@@ -69,30 +69,30 @@ export function ServiceUpdatesDisplay({
   const getSourceIcon = (source: string) => {
     switch (source) {
       case 'update':
-        return <ListRestart size={16} className='text-blue-600' />;
+        return <ListRestart size={16} className='text-blue-400' />;
       case 'youtube':
-        return <Youtube size={16} className='text-red-600' />;
+        return <Youtube size={16} className='text-red-400' />;
       case 'blog':
-        return <FileText size={16} className='text-green-600' />;
+        return <FileText size={16} className='text-green-400' />;
       case 'news':
-        return <Newspaper size={16} className='text-purple-600' />;
+        return <Newspaper size={16} className='text-purple-400' />;
       default:
-        return <ExternalLink size={16} className='text-gray-600' />;
+        return <ExternalLink size={16} className='text-zinc-400' />;
     }
   };
 
   const getSourceBadgeColor = (source: string) => {
     switch (source) {
       case 'update':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
       case 'youtube':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-500/20 text-red-400 border-red-500/30';
       case 'blog':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-500/20 text-green-400 border-green-500/30';
       case 'news':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-zinc-500/20 text-zinc-400 border-zinc-500/30';
     }
   };
 
@@ -108,12 +108,12 @@ export function ServiceUpdatesDisplay({
     return (
       <div className='space-y-4'>
         {[...Array(3)].map((_, index) => (
-          <Card key={index} className='border-gray-100 shadow-sm bg-white'>
+          <Card key={index} className='glass border-0'>
             <CardContent className='p-6'>
               <div className='animate-pulse'>
-                <div className='h-4 bg-gray-200 rounded w-3/4 mb-3'></div>
-                <div className='h-3 bg-gray-200 rounded w-1/2 mb-2'></div>
-                <div className='h-3 bg-gray-200 rounded w-full'></div>
+                <div className='h-4 bg-zinc-800 rounded w-3/4 mb-3'></div>
+                <div className='h-3 bg-zinc-800 rounded w-1/2 mb-2'></div>
+                <div className='h-3 bg-zinc-800 rounded w-full'></div>
               </div>
             </CardContent>
           </Card>
@@ -124,15 +124,15 @@ export function ServiceUpdatesDisplay({
 
   if (error) {
     return (
-      <Card className='border-red-100 shadow-sm bg-red-50'>
+      <Card className='glass border-0 border-red-500/20'>
         <CardContent className='p-6 text-center'>
-          <div className='text-red-600 mb-2'>오류가 발생했습니다</div>
-          <div className='text-sm text-red-500 mb-4'>{error}</div>
+          <div className='text-red-400 mb-2'>오류가 발생했습니다</div>
+          <div className='text-sm text-red-400/80 mb-4'>{error}</div>
           <Button
             variant='outline'
             size='sm'
             onClick={fetchUpdates}
-            className='border-red-200 text-red-600 hover:bg-red-50'
+            className='border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300'
           >
             다시 시도
           </Button>
@@ -143,12 +143,14 @@ export function ServiceUpdatesDisplay({
 
   if (updates.length === 0) {
     return (
-      <Card className='border-gray-100 shadow-sm bg-white'>
+      <Card className='glass border-0'>
         <CardContent className='p-8 text-center'>
-          <div className='text-gray-500 mb-2'>
-            <FileText size={48} className='mx-auto mb-4 text-gray-300' />
-            <div className='text-lg font-medium'>업데이트 정보가 없습니다</div>
-            <div className='text-sm'>
+          <div className='text-zinc-500 mb-2'>
+            <FileText size={48} className='mx-auto mb-4 text-zinc-600' />
+            <div className='text-lg font-medium text-zinc-300'>
+              업데이트 정보가 없습니다
+            </div>
+            <div className='text-sm text-zinc-500'>
               이 서비스의 최신 업데이트나 뉴스가 준비되면 여기에 표시됩니다.
             </div>
           </div>
@@ -160,10 +162,10 @@ export function ServiceUpdatesDisplay({
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
-        <h3 className='text-xl font-semibold text-gray-900'>
+        <h3 className='text-xl font-semibold text-white'>
           최신 업데이트 & 뉴스
         </h3>
-        <div className='text-sm text-gray-500'>
+        <div className='text-sm text-zinc-500'>
           총 {updates.length}개의 업데이트
         </div>
       </div>
@@ -172,7 +174,7 @@ export function ServiceUpdatesDisplay({
         {updates.map((update) => (
           <Card
             key={update.id}
-            className='border-gray-100 shadow-sm bg-white hover:shadow-md transition-shadow'
+            className='glass border-0 gradient-border-effect hover:shadow-2xl hover:shadow-blue-500/10 transition-all'
           >
             <CardContent className='p-6'>
               <div className='flex items-start justify-between gap-4'>
@@ -182,24 +184,29 @@ export function ServiceUpdatesDisplay({
                     <Badge className={getSourceBadgeColor(update.source)}>
                       {update.source_name || update.source}
                     </Badge>
-                    <div className='flex items-center gap-1 text-sm text-gray-500'>
+                    <div className='flex items-center gap-1 text-sm text-zinc-500'>
                       <Calendar size={14} />
                       {formatDate(update.published_at)}
                     </div>
                   </div>
 
-                  <h4 className='text-lg font-medium text-gray-900 mb-2 leading-snug'>
+                  <h4 className='text-lg font-medium text-white mb-2 leading-snug'>
                     {update.title}
                   </h4>
 
                   {update.description && (
-                    <p className='text-gray-600 text-sm leading-relaxed mb-4'>
+                    <p className='text-zinc-400 text-sm leading-relaxed mb-4'>
                       {update.description}
                     </p>
                   )}
 
                   {update.link_url && (
-                    <Button asChild variant='outline' size='sm'>
+                    <Button
+                      asChild
+                      variant='outline'
+                      size='sm'
+                      className='border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10 hover:border-white/20'
+                    >
                       <a
                         href={update.link_url}
                         target='_blank'

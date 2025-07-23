@@ -109,13 +109,13 @@ inputRef.current?.focus();
 const getPricingColor = (pricingType: string) => {
 switch (pricingType) {
 case 'free':
-return 'bg-green-100 text-green-800';
+return 'bg-green-500/20 text-green-400 border-green-500/30';
 case 'freemium':
-return 'bg-blue-100 text-blue-800';
+return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
 case 'paid':
-return 'bg-orange-100 text-orange-800';
+return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
 default:
-return 'bg-gray-100 text-gray-800';
+return 'bg-zinc-800 text-zinc-400 border-zinc-700';
 }
 };
 const getPricingText = (pricingType: string) => {
@@ -133,7 +133,7 @@ return '정보 없음';
 return (
 <div ref={searchRef} className="relative w-full max-w-md md:max-w-sm lg:max-w-md">
 <div className="relative">
-<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
 <Input
 ref={inputRef}
 type="text"
@@ -144,25 +144,25 @@ onKeyDown={handleKeyDown}
 onFocus={() => {
 if (results.length > 0) setIsOpen(true);
 }}
-className="pl-10 pr-10 bg-white border-gray-200 focus:border-blue-500"
+className="pl-10 pr-10 bg-white/5 border-white/10 focus:border-blue-500/50 text-white placeholder:text-zinc-500 backdrop-blur-sm"
 />
 {query && (
 <Button
 variant="ghost"
 size="sm"
 onClick={handleClear}
-className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6 hover:bg-gray-100"
+className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6 hover:bg-white/10 text-zinc-400 hover:text-white"
 >
 <X className="w-3 h-3" />
 </Button>
 )}
 {isLoading && (
-<Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />
+<Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-blue-500" />
 )}
 </div>
 {/* 검색 결과 드롭다운 */}
 {isOpen && (
-<Card className="absolute top-full mt-2 w-full max-w-lg left-0 right-0 md:left-auto md:right-auto z-50 shadow-lg border-gray-200">
+<Card className="absolute top-full mt-2 w-full max-w-lg left-0 right-0 md:left-auto md:right-auto z-50 shadow-xl glass border-white/10">
 <CardContent className="p-0">
 {results.length > 0 ? (
 <div className="max-h-96 overflow-y-auto">
@@ -170,12 +170,12 @@ className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 h-6 w-6 hover
 <button
 key={result.id}
 onClick={() => handleResultClick(result)}
-className={`w-full text-left p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors ${
-index === selectedIndex ? 'bg-blue-50' : ''
+className={`w-full text-left p-3 hover:bg-white/5 border-b border-white/5 last:border-b-0 transition-colors ${
+index === selectedIndex ? 'bg-white/10' : ''
 }`}
 >
 <div className="flex items-center gap-3">
-<div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100">
+<div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/10">
 <img
 src={result.logo_url}
 alt={`${result.name} logo`}
@@ -186,13 +186,13 @@ target.style.display = 'none';
 target.nextElementSibling!.textContent = result.name.charAt(0);
 }}
 />
-<span className="text-xs font-bold text-gray-600 hidden">
+<span className="text-xs font-bold text-zinc-400 hidden">
 {result.name.charAt(0)}
 </span>
 </div>
 <div className="flex-1 min-w-0">
 <div className="flex items-center gap-2 mb-1">
-<h3 className="font-semibold text-gray-900 truncate">
+<h3 className="font-semibold text-white truncate">
 {result.name}
 </h3>
 <Badge
@@ -202,10 +202,10 @@ className={`text-xs px-2 py-0.5 ${getPricingColor(result.pricing_type)}`}
 {getPricingText(result.pricing_type)}
 </Badge>
 </div>
-<p className="text-sm text-gray-600 truncate">
+<p className="text-sm text-zinc-400 truncate">
 {result.short_description}
 </p>
-<p className="text-xs text-gray-500 mt-1">
+<p className="text-xs text-zinc-500 mt-1">
 {result.category.name}
 </p>
 </div>
@@ -214,7 +214,7 @@ className={`text-xs px-2 py-0.5 ${getPricingColor(result.pricing_type)}`}
 ))}
 </div>
 ) : (
-<div className="p-4 text-center text-gray-500">
+<div className="p-4 text-center text-zinc-500">
 <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
 <p>검색 결과가 없습니다.</p>
 </div>

@@ -246,14 +246,17 @@ export function ServiceFunctionsManager({
 
   if (isLoading) {
     return (
-      <Card className='border-gray-200 shadow-sm'>
+      <Card className='glass border-0 gradient-border-effect'>
         <CardHeader>
-          <CardTitle>서비스 기능 관리</CardTitle>
+          <CardTitle className='text-white'>서비스 기능 관리</CardTitle>
         </CardHeader>
         <CardContent>
           <div className='space-y-3'>
             {[...Array(3)].map((_, i) => (
-              <div key={i} className='h-16 bg-gray-100 rounded animate-pulse' />
+              <div
+                key={i}
+                className='h-16 bg-white/5 rounded-lg animate-pulse'
+              />
             ))}
           </div>
         </CardContent>
@@ -262,14 +265,18 @@ export function ServiceFunctionsManager({
   }
 
   return (
-    <Card className='border-gray-200 shadow-sm'>
+    <Card className='glass border-0 gradient-border-effect' style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}>
       <CardHeader>
         <div className='flex items-center justify-between'>
-          <CardTitle>서비스 기능 관리</CardTitle>
+          <CardTitle className='text-white'>서비스 기능 관리</CardTitle>
           <div className='flex gap-2'>
             {isEditing ? (
               <>
-                <Button onClick={handleSaveAll} size='sm'>
+                <Button
+                  onClick={handleSaveAll}
+                  size='sm'
+                  className='bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white border-0'
+                >
                   <Save className='h-4 w-4 mr-2' />
                   전체 저장
                 </Button>
@@ -280,13 +287,18 @@ export function ServiceFunctionsManager({
                   }}
                   variant='outline'
                   size='sm'
+                  className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
                 >
                   <X className='h-4 w-4 mr-2' />
                   취소
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)} size='sm'>
+              <Button
+                onClick={() => setIsEditing(true)}
+                size='sm'
+                className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
+              >
                 <Edit2 className='h-4 w-4 mr-2' />
                 편집 모드
               </Button>
@@ -315,19 +327,32 @@ export function ServiceFunctionsManager({
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className={`flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg ${
-                              snapshot.isDragging ? 'shadow-lg' : ''
+                            className={`flex items-center gap-3 p-3 rounded-lg ${
+                              snapshot.isDragging
+                                ? 'bg-white/10 border border-white/20 shadow-2xl shadow-blue-500/20'
+                                : 'bg-white/5 border border-white/10 backdrop-blur-sm'
                             }`}
+                            style={{
+                              ...provided.draggableProps.style,
+                              // 드래그 중일 때 backdrop-filter 제거
+                              backdropFilter: snapshot.isDragging
+                                ? 'none'
+                                : undefined,
+                            }}
                           >
                             <div {...provided.dragHandleProps}>
-                              <GripVertical className='h-5 w-5 text-gray-400' />
+                              <GripVertical className='h-5 w-5 text-zinc-400' />
                             </div>
-                            <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
-                              {getIconComponent(func.icon_name)}
+                            <div className='w-10 h-10 bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/10'>
+                              <div className='text-blue-400'>
+                                {getIconComponent(func.icon_name)}
+                              </div>
                             </div>
                             <div className='flex-1'>
-                              <div className='font-medium'>{func.name}</div>
-                              <div className='text-sm text-gray-600 line-clamp-1'>
+                              <div className='font-medium text-white'>
+                                {func.name}
+                              </div>
+                              <div className='text-sm text-zinc-400 line-clamp-1'>
                                 {func.description}
                               </div>
                             </div>
@@ -335,6 +360,7 @@ export function ServiceFunctionsManager({
                               <Button
                                 size='sm'
                                 variant='ghost'
+                                className='hover:bg-white/10 text-zinc-400 hover:text-white'
                                 onClick={() => {
                                   setEditingFunction(func);
                                   setFormData({
@@ -350,11 +376,12 @@ export function ServiceFunctionsManager({
                               <Button
                                 size='sm'
                                 variant='ghost'
+                                className='hover:bg-red-500/10 text-zinc-400 hover:text-red-400'
                                 onClick={() =>
                                   func.id && handleDeleteFunction(func.id)
                                 }
                               >
-                                <Trash2 className='h-4 w-4 text-red-500' />
+                                <Trash2 className='h-4 w-4' />
                               </Button>
                             </div>
                           </div>
@@ -378,21 +405,23 @@ export function ServiceFunctionsManager({
                       icon_name: 'Zap',
                     });
                   }}
-                  className='w-full mt-4'
+                  className='w-full mt-4 border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
                   variant='outline'
                 >
                   <Plus className='h-4 w-4 mr-2' />새 기능 추가
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className='bg-[#0a0a0b] border border-white/10'>
                 <DialogHeader>
-                  <DialogTitle>
+                  <DialogTitle className='text-white'>
                     {editingFunction ? '기능 수정' : '새 기능 추가'}
                   </DialogTitle>
                 </DialogHeader>
                 <div className='space-y-4'>
                   <div>
-                    <Label htmlFor='name'>기능 이름</Label>
+                    <Label htmlFor='name' className='text-zinc-300'>
+                      기능 이름
+                    </Label>
                     <Input
                       id='name'
                       value={formData.name}
@@ -400,10 +429,13 @@ export function ServiceFunctionsManager({
                         setFormData({ ...formData, name: e.target.value })
                       }
                       placeholder='예: AI 텍스트 생성'
+                      className='bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:border-blue-500/50'
                     />
                   </div>
                   <div>
-                    <Label htmlFor='description'>설명</Label>
+                    <Label htmlFor='description' className='text-zinc-300'>
+                      설명
+                    </Label>
                     <Textarea
                       id='description'
                       value={formData.description}
@@ -415,10 +447,13 @@ export function ServiceFunctionsManager({
                       }
                       placeholder='이 기능에 대한 설명을 입력하세요.'
                       rows={3}
+                      className='bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:border-blue-500/50'
                     />
                   </div>
                   <div>
-                    <Label htmlFor='icon'>아이콘</Label>
+                    <Label htmlFor='icon' className='text-zinc-300'>
+                      아이콘
+                    </Label>
                     <Input
                       id='icon'
                       value={formData.icon_name}
@@ -426,8 +461,9 @@ export function ServiceFunctionsManager({
                         setFormData({ ...formData, icon_name: e.target.value })
                       }
                       placeholder='예: Zap, Star, Brain'
+                      className='bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:border-blue-500/50'
                     />
-                    <p className='text-xs text-gray-500 mt-1'>
+                    <p className='text-xs text-zinc-500 mt-1'>
                       Lucide 아이콘 이름을 입력하세요.
                     </p>
                   </div>
@@ -435,6 +471,7 @@ export function ServiceFunctionsManager({
                     <Button
                       variant='outline'
                       onClick={() => setIsDialogOpen(false)}
+                      className='border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
                     >
                       취소
                     </Button>
@@ -444,6 +481,7 @@ export function ServiceFunctionsManager({
                           ? handleUpdateFunction
                           : handleAddFunction
                       }
+                      className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
                     >
                       {editingFunction ? '수정' : '추가'}
                     </Button>
@@ -458,25 +496,27 @@ export function ServiceFunctionsManager({
               functions.map((func, index) => (
                 <div
                   key={func.id || index}
-                  className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'
+                  className='flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm'
                 >
-                  <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
-                    {getIconComponent(func.icon_name)}
+                  <div className='w-10 h-10 bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/10'>
+                    <div className='text-blue-400'>
+                      {getIconComponent(func.icon_name)}
+                    </div>
                   </div>
                   <div className='flex-1'>
-                    <div className='font-medium'>{func.name}</div>
-                    <div className='text-sm text-gray-600'>
+                    <div className='font-medium text-white'>{func.name}</div>
+                    <div className='text-sm text-zinc-400'>
                       {func.description}
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className='text-center py-8 text-gray-500'>
+              <div className='text-center py-8 text-zinc-500'>
                 <p>등록된 기능이 없습니다.</p>
                 <Button
                   onClick={() => setIsEditing(true)}
-                  className='mt-4'
+                  className='mt-4 border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20'
                   variant='outline'
                 >
                   <Plus className='h-4 w-4 mr-2' />

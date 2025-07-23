@@ -111,15 +111,20 @@ export function ServiceLinksDisplay({ serviceId, serviceSlug, serviceName, websi
   };
 
   return (
-    <Card className="border-gray-100 shadow-sm bg-white">
+    <Card className="glass border-0 relative overflow-hidden group">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-purple-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       <CardHeader className="pb-4">
-        <CardTitle className="text-center text-lg flex items-center justify-between">
+        <CardTitle className="text-center text-lg flex items-center justify-between text-white">
           유용한 링크
           {isAdmin && (
             <Button
               variant="ghost"
               size="sm"
               asChild
+              className="text-zinc-400 hover:text-white hover:bg-white/10"
             >
               <Link href={`/admin/services/${serviceSlug}/links`}>
                 <Settings className="h-4 w-4 mr-2" />
@@ -130,12 +135,12 @@ export function ServiceLinksDisplay({ serviceId, serviceSlug, serviceName, websi
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="pt-6 border-t border-gray-100 space-y-3">
+        <div className="pt-6 border-t border-white/10 space-y-3">
           <div className="grid grid-cols-1 gap-2">
             {loading ? (
-              <div className="text-center py-4 text-gray-500">로딩 중...</div>
+              <div className="text-center py-4 text-zinc-500">로딩 중...</div>
             ) : links.length === 0 ? (
-              <div className="text-center py-4 text-gray-500">등록된 링크가 없습니다</div>
+              <div className="text-center py-4 text-zinc-500">등록된 링크가 없습니다</div>
             ) : (
               links.map((link, index) => {
                 const IconComponent = getIconForLinkType(link.icon);
@@ -145,7 +150,7 @@ export function ServiceLinksDisplay({ serviceId, serviceSlug, serviceName, websi
                     variant='ghost'
                     size='sm'
                     asChild
-                    className='h-auto p-3 justify-start text-left hover:bg-gray-50'
+                    className='h-auto p-3 justify-start text-left hover:bg-white/10 border-0'
                   >
                     <a
                       href={link.url}
@@ -153,23 +158,23 @@ export function ServiceLinksDisplay({ serviceId, serviceSlug, serviceName, websi
                       rel='noopener noreferrer'
                       className='flex items-center gap-3'
                     >
-                      <div className='w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0'>
+                      <div className='w-8 h-8 rounded-lg bg-blue-600/20 flex items-center justify-center flex-shrink-0'>
                         <IconComponent
                           size={14}
-                          className='text-blue-600'
+                          className='text-blue-400'
                         />
                       </div>
                       <div className='flex-1 min-w-0'>
-                        <div className='text-sm font-medium text-gray-900'>
+                        <div className='text-sm font-medium text-white'>
                           {link.label}
                         </div>
-                        <div className='text-xs text-gray-500 truncate'>
+                        <div className='text-xs text-zinc-500 truncate'>
                           {link.description}
                         </div>
                       </div>
                       <ExternalLink
                         size={12}
-                        className='text-gray-400 flex-shrink-0'
+                        className='text-zinc-400 flex-shrink-0'
                       />
                     </a>
                   </Button>

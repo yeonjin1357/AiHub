@@ -61,11 +61,11 @@ export function CategoryFilter({
   };
 
   return (
-    <Card className='sticky top-16 border-gray-200'>
+    <Card className='sticky top-20 glass border-0'>
       <CardHeader>
         <div className='flex items-center gap-2'>
-          <Filter size={20} className='text-gray-500' />
-          <h3 className='font-semibold text-gray-900'>
+          <Filter size={20} className='text-zinc-400' />
+          <h3 className='font-semibold text-white'>
             카테고리
           </h3>
         </div>
@@ -75,20 +75,23 @@ export function CategoryFilter({
         {/* 전체 카테고리 */}
         <Button
           variant={selectedCategory === 'all' ? 'default' : 'ghost'}
-          className='w-full justify-start h-auto py-3'
+          className={`w-full justify-start h-auto py-3 ${
+            selectedCategory === 'all' 
+              ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0' 
+              : 'text-zinc-400 hover:text-white hover:bg-white/10'
+          }`}
           onClick={() => onCategoryChange('all')}
         >
           <div className='flex items-center gap-3 w-full'>
             <Grid
               size={20}
-              className={selectedCategory ==='all' ? 'text-white' : 'text-gray-500'
-              }
+              className={selectedCategory ==='all' ? 'text-white' : 'text-zinc-400'}
             />
             <div className='flex-1 text-left'>
               <div className='font-medium'>전체 서비스</div>
               <div
                 className={`text-sm ${
-                  selectedCategory === 'all' ? 'text-white/80' : 'text-gray-500'
+                  selectedCategory === 'all' ? 'text-white/80' : 'text-zinc-500'
                 }`}
               >
                 {services.length}개 서비스
@@ -107,14 +110,18 @@ export function CategoryFilter({
             <Button
               key={category.id}
               variant={selectedCategory === category.id ? 'default' : 'ghost'}
-              className='w-full justify-start h-auto py-3'
+              className={`w-full justify-start h-auto py-3 ${
+                selectedCategory === category.id 
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0' 
+                  : 'text-zinc-400 hover:text-white hover:bg-white/10'
+              }`}
               onClick={() => onCategoryChange(category.id)}
             >
               <div className='flex items-center gap-3 w-full'>
                 <Icon
                   size={20}
                   className={selectedCategory === category.id ?'text-white'
-                      : 'text-gray-500'
+                      : 'text-zinc-400'
                   }
                 />
                 <div className='flex-1 text-left'>
@@ -123,7 +130,7 @@ export function CategoryFilter({
                     className={`text-sm ${
                       selectedCategory === category.id
                         ? 'text-white/80'
-                        : 'text-gray-500'
+                        : 'text-zinc-500'
                     }`}
                   >
                     {serviceCount}개 서비스

@@ -52,13 +52,13 @@ const aiServices = [
 
 export function AILogosSection() {
   return (
-    <section className='py-16 px-4 sm:px-6 lg:px-8 bg-white/50 backdrop-blur'>
+    <section className='relative py-16 px-4 sm:px-6 lg:px-8'>
       <div className='mx-auto max-w-7xl'>
         <div className='text-center mb-12'>
-          <p className='text-sm font-semibold text-gray-500 uppercase tracking-wide'>
+          <p className='text-sm font-semibold text-zinc-500 uppercase tracking-wide'>
             인기 AI 서비스 모음
           </p>
-          <h2 className='mt-2 text-2xl font-bold text-gray-900 sm:text-3xl'>
+          <h2 className='mt-2 text-2xl font-bold text-white sm:text-3xl'>
             개발자부터 창작자까지 모두가 사용하는
           </h2>
         </div>
@@ -73,24 +73,27 @@ export function AILogosSection() {
                 className='flex-shrink-0 flex items-center justify-center group'
                 style={{ minWidth: '120px', height: '80px' }}
               >
-                <Image
-                  src={service.logo}
-                  alt={`${service.name} logo`}
-                  width={64}
-                  height={64}
-                  className='w-12 h-12 sm:w-16 sm:h-16 object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0'
-                />
+                <div className='relative'>
+                  <Image
+                    src={service.logo}
+                    alt={`${service.name} logo`}
+                    width={64}
+                    height={64}
+                    className='w-12 h-12 sm:w-16 sm:h-16 object-contain opacity-60 group-hover:opacity-100 transition-all duration-500 filter brightness-0 invert grayscale group-hover:brightness-100 group-hover:invert-0 group-hover:grayscale-0'
+                  />
+                  <div className='absolute inset-0 bg-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500'></div>
+                </div>
               </div>
             ))}
           </div>
 
           {/* 그라데이션 페이드 */}
-          <div className='absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white/80 to-transparent pointer-events-none z-10'></div>
-          <div className='absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white/80 to-transparent pointer-events-none z-10'></div>
+          <div className='absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0a0a0b] to-transparent pointer-events-none z-10'></div>
+          <div className='absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0a0a0b] to-transparent pointer-events-none z-10'></div>
         </div>
 
         <div className='text-center mt-8'>
-          <p className='text-sm text-gray-500'>
+          <p className='text-sm text-zinc-500'>
             검증된 AI 도구들을 한눈에 확인하세요
           </p>
         </div>

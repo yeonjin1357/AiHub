@@ -35,36 +35,34 @@ export function PricingTypeFilter({
   // 각 가격 타입별 서비스 수 계산
   const getPricingCount = (pricingType: 'all' | 'freemium' | 'paid') => {
     if (pricingType === 'all') return services.length;
-    
+
     return services.filter((service) => {
       return service.pricing_type === pricingType;
     }).length;
   };
 
   const pricingTypes = [
-    { 
-      value: 'all' as const, 
-      label: '전체', 
-      description: null 
+    {
+      value: 'all' as const,
+      label: '전체',
+      description: null,
     },
-    { 
-      value: 'freemium' as const, 
-      label: '프리미엄', 
-      description: getPricingDescription('freemium')
+    {
+      value: 'freemium' as const,
+      label: '프리미엄',
+      description: getPricingDescription('freemium'),
     },
-    { 
-      value: 'paid' as const, 
-      label: '유료', 
-      description: getPricingDescription('paid')
+    {
+      value: 'paid' as const,
+      label: '유료',
+      description: getPricingDescription('paid'),
     },
   ];
 
   return (
     <div className='flex flex-wrap items-center gap-2 mb-4'>
-      <span className='text-sm font-medium text-gray-700 mr-2'>
-        가격 유형:
-      </span>
-      
+      <span className='text-sm font-medium text-zinc-400 mr-2'>가격 유형:</span>
+
       <TooltipProvider>
         {pricingTypes.map((type) => {
           const count = getPricingCount(type.value);
@@ -76,31 +74,35 @@ export function PricingTypeFilter({
                 variant={isSelected ? 'default' : 'outline'}
                 size='sm'
                 onClick={() => onPricingTypeChange(type.value)}
-                className='h-8'
+                className={`h-8 ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
+                    : 'border-white/10 bg-white/5 text-zinc-400 hover:bg-white/10 hover:border-white/20'
+                }`}
               >
                 {type.label}
-                <Badge 
-                  variant='secondary' 
+                <Badge
+                  variant='outline'
                   className={`ml-2 h-5 ${
-                    isSelected 
-                      ? 'bg-white/20 text-white border-white/30' 
-                      : 'bg-gray-100 text-gray-600'
+                    isSelected
+                      ? 'bg-white/20 text-white border-white/30'
+                      : 'bg-white/10 text-zinc-400 border-white/10'
                   }`}
                 >
                   {count}
                 </Badge>
               </Button>
-              
+
               {type.description && (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle
                       size={14}
-                      className='text-gray-400 hover:text-gray-600 cursor-help'
+                      className='text-zinc-500 hover:text-zinc-300 cursor-help'
                     />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p className='max-w-xs'>{type.description}</p>
+                  <TooltipContent className='glass border-white/10'>
+                    <p className='max-w-xs text-white'>{type.description}</p>
                   </TooltipContent>
                 </Tooltip>
               )}

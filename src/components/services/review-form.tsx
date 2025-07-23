@@ -73,106 +73,97 @@ export function ReviewForm({ serviceId, onReviewSubmitted }: ReviewFormProps) {
     }
   };
 
-  if (!user) {
-    return (
-      <Card className='border-gray-200 shadow-sm'>
-        <CardContent className='p-8 text-center'>
-          <div className='mb-4'>
-            <Star className='w-12 h-12 text-gray-400 mx-auto mb-2' />
-            <h3 className='text-lg font-semibold text-gray-900 mb-2'>
-              리뷰 작성
-            </h3>
-            <p className='text-gray-600'>
-              이 서비스에 대한 리뷰를 작성하려면 로그인이 필요합니다.
-            </p>
-          </div>
-          <Button asChild>
-            <Link href='/signin'>로그인하기</Link>
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card className='border-gray-200 shadow-sm'>
+    <Card className='glass border-0 gradient-border-effect'>
       <CardHeader>
-        <CardTitle className='text-lg'>리뷰 작성</CardTitle>
+        <CardTitle className='text-lg text-white'>리뷰 작성</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className='space-y-6'>
-          {/* 별점 선택 */}
-          <div>
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
-              별점 *
-            </label>
-            <div className='flex items-center gap-1'>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type='button'
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(0)}
-                  className='p-1 rounded transition-colors hover:bg-gray-100'
-                >
-                  <Star
-                    size={24}
-                    className={`transition-colors ${
-                      star <= (hoverRating || rating)
-                        ? 'text-yellow-400 fill-current'
-                        : 'text-gray-300'
-                    }`}
-                  />
-                </button>
-              ))}
-              {rating > 0 && (
-                <span className='ml-2 text-sm text-gray-600'>{rating}점</span>
-              )}
-            </div>
-          </div>
-
-          {/* 리뷰 내용 */}
-          <div>
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
-              리뷰 내용 *
-            </label>
-            <Textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder='이 서비스에 대한 경험을 자세히 공유해주세요. (최소 10자)'
-              rows={4}
-              className='resize-none'
-              maxLength={1000}
-            />
-            <div className='flex justify-between items-center mt-1'>
-              <span className='text-xs text-gray-500'>
-                최소 10자 이상 작성해주세요.
-              </span>
-              <span className='text-xs text-gray-500'>
-                {comment.length}/1000
-              </span>
-            </div>
-          </div>
-
-          {/* 제출 버튼 */}
-          <div className='flex justify-end'>
-            <Button
-              type='submit'
-              disabled={
-                isSubmitting || rating === 0 || comment.trim().length < 10
-              }
-              className='flex items-center gap-2'
-            >
-              {isSubmitting ? (
-                <Loader2 className='w-4 h-4 animate-spin' />
-              ) : (
-                <Send className='w-4 h-4' />
-              )}
-              {isSubmitting ? '작성 중...' : '리뷰 작성'}
+        {!user ? (
+          <div className='text-center py-6'>
+            <Star className='w-12 h-12 text-zinc-400 mx-auto mb-3' />
+            <p className='text-zinc-400 mb-4'>
+              이 서비스에 대한 리뷰를 작성하려면 로그인이 필요합니다.
+            </p>
+            <Button asChild className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'>
+              <Link href='/signin'>로그인하기</Link>
             </Button>
           </div>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit} className='space-y-6'>
+            {/* 별점 선택 */}
+            <div>
+              <label className='block text-sm font-medium text-zinc-300 mb-2'>
+                별점 *
+              </label>
+              <div className='flex items-center gap-1'>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type='button'
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className='p-1 rounded transition-colors hover:bg-white/10'
+                  >
+                    <Star
+                      size={24}
+                      className={`transition-colors ${
+                        star <= (hoverRating || rating)
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-zinc-600'
+                      }`}
+                    />
+                  </button>
+                ))}
+                {rating > 0 && (
+                  <span className='ml-2 text-sm text-zinc-400'>{rating}점</span>
+                )}
+              </div>
+            </div>
+
+            {/* 리뷰 내용 */}
+            <div>
+              <label className='block text-sm font-medium text-zinc-300 mb-2'>
+                리뷰 내용 *
+              </label>
+              <Textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder='이 서비스에 대한 경험을 자세히 공유해주세요. (최소 10자)'
+                rows={4}
+                className='resize-none bg-white/5 border-white/10 text-white placeholder:text-zinc-500 focus:border-blue-500/50'
+                maxLength={1000}
+              />
+              <div className='flex justify-between items-center mt-1'>
+                <span className='text-xs text-zinc-500'>
+                  최소 10자 이상 작성해주세요.
+                </span>
+                <span className='text-xs text-zinc-500'>
+                  {comment.length}/1000
+                </span>
+              </div>
+            </div>
+
+            {/* 제출 버튼 */}
+            <div className='flex justify-end'>
+              <Button
+                type='submit'
+                disabled={
+                  isSubmitting || rating === 0 || comment.trim().length < 10
+                }
+                className='flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white border-0'
+              >
+                {isSubmitting ? (
+                  <Loader2 className='w-4 h-4 animate-spin' />
+                ) : (
+                  <Send className='w-4 h-4' />
+                )}
+                {isSubmitting ? '작성 중...' : '리뷰 작성'}
+              </Button>
+            </div>
+          </form>
+        )}
       </CardContent>
     </Card>
   );
