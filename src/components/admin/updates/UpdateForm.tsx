@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ServiceUpdate {
   id: string;
@@ -209,27 +210,31 @@ export default function UpdateForm({
             />
           </div>
           <div>
-            <select
+            <Select
               value={formData.published_month}
-              onChange={(e) =>
-                setFormData({ ...formData, published_month: e.target.value })
+              onValueChange={(value) =>
+                setFormData({ ...formData, published_month: value })
               }
               required
-              className='w-full h-10 px-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
             >
-              <option value='01'>1월</option>
-              <option value='02'>2월</option>
-              <option value='03'>3월</option>
-              <option value='04'>4월</option>
-              <option value='05'>5월</option>
-              <option value='06'>6월</option>
-              <option value='07'>7월</option>
-              <option value='08'>8월</option>
-              <option value='09'>9월</option>
-              <option value='10'>10월</option>
-              <option value='11'>11월</option>
-              <option value='12'>12월</option>
-            </select>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white hover:bg-white/10">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-[#0a0a0b] border border-white/10">
+                <SelectItem value='01' className="text-white hover:bg-white/10">1월</SelectItem>
+                <SelectItem value='02' className="text-white hover:bg-white/10">2월</SelectItem>
+                <SelectItem value='03' className="text-white hover:bg-white/10">3월</SelectItem>
+                <SelectItem value='04' className="text-white hover:bg-white/10">4월</SelectItem>
+                <SelectItem value='05' className="text-white hover:bg-white/10">5월</SelectItem>
+                <SelectItem value='06' className="text-white hover:bg-white/10">6월</SelectItem>
+                <SelectItem value='07' className="text-white hover:bg-white/10">7월</SelectItem>
+                <SelectItem value='08' className="text-white hover:bg-white/10">8월</SelectItem>
+                <SelectItem value='09' className="text-white hover:bg-white/10">9월</SelectItem>
+                <SelectItem value='10' className="text-white hover:bg-white/10">10월</SelectItem>
+                <SelectItem value='11' className="text-white hover:bg-white/10">11월</SelectItem>
+                <SelectItem value='12' className="text-white hover:bg-white/10">12월</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Input

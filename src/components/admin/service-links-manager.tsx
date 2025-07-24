@@ -289,7 +289,7 @@ export function ServiceLinksManager({ serviceId }: ServiceLinksManagerProps) {
                   value={formData.icon}
                   onValueChange={(value) => setFormData({ ...formData, icon: value })}
                 >
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white hover:bg-white/10">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-[#0a0a0b] border border-white/10">
